@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Twinkle Twinkle Little Star | Kid's Song 🌟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78; --rainbow-orange: #FF9F43; --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71; --rainbow-blue: #4D96FF; --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436; --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        /* --- Page Reset and Background --- */
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+            color: white;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* 🚪 Sidebar Styles */
+        .sidebar {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            height: 100vh;
+            border-right: 1px solid rgba(0,0,0,0.08);
+            padding: 25px 15px;
+            position: fixed;
+            width: 260px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+        .child-profile-box { text-align: center; background: white; border-radius: 25px; padding: 15px; margin-bottom: 20px; border: 2px solid rgba(0,0,0,0.03); position: relative; }
+        .avatar-img { width: 65px; height: 65px; background: #f0f4f8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 10px; border: 3px solid var(--rainbow-blue); position: relative; z-index: 2; }
+
+        .nav-link-custom { transition: all 0.3s; border-left: 5px solid transparent; margin-bottom: 5px; font-weight: 700; padding: 10px 18px; border-radius: 12px; display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem; }
+        .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+
+        .nav-songs.active {
+            color: var(--rainbow-red) !important;
+            background: rgba(255, 94, 120, 0.08);
+            border-left-color: var(--rainbow-red);
+        }
+
+        .nav-link-custom:hover {
+            color: var(--rainbow-purple) !important;
+            background: rgba(146, 125, 255, 0.08);
+            border-left-color: var(--rainbow-purple);
+            transform: translateX(5px);
+        }
+
+        .logout-container {
+            margin-top: auto;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 15px;
+        }
+
+        .btn-logout {
+            color: var(--rainbow-red) !important;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover { background: rgba(255, 94, 120, 0.08); transform: translateX(5px); }
+
+        /* 📝 Main Content Area */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- Main Compact Card --- */
+        .song-container {
+            position: relative;
+            z-index: 10;
+            max-width: 400px;
+            width: 90%;
+            border: 6px solid #f1c40f;
+            border-radius: 25px;
+            padding: 25px;
+            background: rgba(10, 20, 40, 0.85);
+            box-shadow: 0 0 25px rgba(241, 196, 15, 0.6);
+            text-align: center;
+            transition: 0.3s ease;
+        }
+
+        .song-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(241, 196, 15, 0.8);
+        }
+
+        /* --- Header: Title --- */
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            color: #f1c40f;
+            font-size: 24px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.8);
+            animation: textPulse 2s infinite ease-in-out;
+        }
+
+        /* --- Audio Player Styles --- */
+        audio {
+            width: 100%;
+            margin: 10px 0;
+            filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.5));
+        }
+
+        /* --- Lyrics Area --- */
+        .lyrics {
+            font-size: 18px;
+            line-height: 1.6;
+            font-weight: bold;
+            color: #ecf0f1;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+
+        .lyrics::-webkit-scrollbar { width: 6px; }
+        .lyrics::-webkit-scrollbar-thumb {
+            background-color: rgba(241, 196, 15, 0.5);
+            border-radius: 10px;
+        }
+
+        /* --- Decorations --- */
+        .card-star {
+            position: absolute;
+            color: #f1c40f;
+            font-size: 20px;
+            animation: starSparkle 1.5s infinite alternate;
+        }
+        #star1 { top: -15px; left: 15px; }
+        #star2 { top: -15px; right: 15px; }
+        #star3 { bottom: 15px; right: -25px; }
+
+        @keyframes textPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.9; }
+        }
+
+        @keyframes starSparkle {
+            from { transform: scale(0.8); opacity: 0.5; }
+            to { transform: scale(1.2); opacity: 1; text-shadow: 0 0 10px #f1c40f; }
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: move-twinkle linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes move-twinkle {
+            from { transform: translateY(110vh); }
+            to { transform: translateY(-10vh); }
+        }
+
+        /* --- 📱 Mobile responsive styles --- */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 90px;
+                padding: 20px 10px;
+                align-items: center;
+                background: #FFFDF5;
+            }
+            .sidebar span, .sidebar-brand, .child-profile-box h6, .child-profile-box small {
+                display: none !important;
+            }
+            .main-content { margin-left: 90px; }
+
+            .child-profile-box {
+                background: transparent; border: none; padding: 0; margin-bottom: 25px; width: 65px; display: flex; justify-content: center;
+            }
+            .child-profile-box::before {
+                content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                width: 45px; height: 85px; background: white; border-radius: 25px; z-index: 1;
+            }
+            .avatar-img {
+                width: 60px; height: 60px; font-size: 1.8rem; margin: 0; background: white; border: 4px solid var(--rainbow-blue); box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links { display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%; }
+            .nav-link-custom { width: 50px; height: 50px; justify-content: center; padding: 0; border-radius: 18px; border-left: none; }
+            .nav-link-custom:hover { transform: none; }
+            .nav-link-custom i { font-size: 1.5rem; margin-right: 0; }
+            .nav-songs.active { color: var(--rainbow-red) !important; background: #FFF0F2; }
+
+            .logout-container { border-top: none; }
+            .btn-logout { width: 50px; height: 50px; justify-content: center; padding: 0; border-radius: 18px; display: flex; align-items: center; }
+            .btn-logout:hover { transform: none; }
+            .btn-logout i { font-size: 1.5rem; margin-right: 0; }
+        }
+
+        @media (max-width: 576px) {
+            .song-container { padding: 20px; }
+            h1 { font-size: 20px; }
+            .lyrics { font-size: 16px; max-height: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size:1.8rem; margin-top:-5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <a href="profile.html" class="text-decoration-none">
+        <div class="child-profile-box shadow-sm">
+            <div class="avatar-img" id="sidebar-avatar">👦</div>
+            <h6 class="fw-bold mb-0" style="color: var(--dark-navy);" id="sidebar-name">Little Adventurer</h6>
+            <small class="text-muted fw-bold" id="sidebar-level">Explorer</small>
+        </div>
+    </a>
+
+    <nav class="nav-links">
+        <a href="child-dashboard.html" class="nav-link-custom nav-dashboard" title="Dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+        <a href="lessons.html" class="nav-link-custom nav-lessons" title="Lessons"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+        <a href="songs.html" class="nav-link-custom nav-songs active" title="Fun Songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+        <a href="cartoons.html" class="nav-link-custom nav-cartoons" title="Cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+        <a href="quizzes.html" class="nav-link-custom nav-quizzes" title="Quizzes"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+    </nav>
+
+    <div class="logout-container">
+        <a href="index.html" class="btn-logout" id="logout-btn" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="song-container">
+        <div id="star1" class="card-star">⭐</div>
+        <div id="star2" class="card-star">⭐</div>
+        <div id="star3" class="card-star">🌟</div>
+
+        <h1>🌟 Twinkle Twinkle Little Star 🌟</h1>
+
+        <audio controls>
+            <source src="/src/main/resources/audios/01%20Twinkle%20Twinkle%20Little%20Star.mp3" type="audio/mpeg">
+            ඔබේ Browser එක audio element එකට සහය නොදක්වයි.
+        </audio>
+
+        <div class="lyrics">
+            <p class="mb-0">
+                Twinkle, twinkle, little star,<br>
+                How I wonder what you are!<br>
+                Up above the world so high,<br>
+                Like a diamond in the sky.<br><br>
+
+                When the blazing sun is gone,<br>
+                When he nothing shines upon,<br>
+                Then you show your little light,<br>
+                Twinkle, twinkle, all the night.<br><br>
+
+                Twinkle, twinkle, little star,<br>
+                How I wonder what you are!
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Background floating stars script
+    for (let i = 0; i < 40; i++) {
+        let star = document.createElement("div");
+        star.className = "star";
+        let size = Math.random() * 3 + "px";
+        star.style.width = size;
+        star.style.height = size;
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.animationDuration = Math.random() * 4 + 3 + "s";
+        star.style.opacity = Math.random() * 0.7;
+        document.body.appendChild(star);
+    }
+
+    // Profile load Script
+    document.addEventListener("DOMContentLoaded", function() {
+        const name = sessionStorage.getItem("childName");
+        const gender = sessionStorage.getItem("childGender");
+        const level = sessionStorage.getItem("childLevel");
+
+        if (name) document.getElementById("sidebar-name").innerText = name;
+        if (level) document.getElementById("sidebar-level").innerText = level;
+
+        const avatarElement = document.getElementById("sidebar-avatar");
+        if (gender && avatarElement) {
+            const upperGender = gender.toUpperCase();
+            if (upperGender === "FEMALE" || upperGender === "GIRL") {
+                avatarElement.innerText = "👧";
+                avatarElement.style.borderColor = "var(--rainbow-red)";
+            } else {
+                avatarElement.innerText = "👦";
+                avatarElement.style.borderColor = "var(--rainbow-blue)";
+            }
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

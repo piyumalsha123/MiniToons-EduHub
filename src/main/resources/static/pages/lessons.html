@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Lessons | MiniToons EduHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78;
+            --rainbow-orange: #FF9F43;
+            --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71;
+            --rainbow-blue: #4D96FF;
+            --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #cfb5f6;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- Sidebar (No Scroll) --- */
+        .sidebar {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            height: 100vh;
+            border-right: 1px solid rgba(0,0,0,0.08);
+            padding: 25px 15px;
+            position: fixed;
+            width: 260px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent sidebar scroll */
+        }
+
+        .sidebar-brand {
+            font-family: 'Fredoka', cursive;
+            text-align: center;
+            margin-bottom: 25px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+        .child-profile-box {
+            text-align: center; background: white; border-radius: 25px;
+            padding: 15px; margin-bottom: 20px; border: 2px solid rgba(0,0,0,0.03);
+        }
+
+        .avatar-img {
+            width: 65px; height: 65px; background: #f0f4f8; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; margin: 0 auto 10px; border: 3px solid var(--rainbow-blue);
+        }
+
+        .nav-link-custom {
+            transition: all 0.3s;
+            border-left: 5px solid transparent;
+            margin-bottom: 5px;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #636e72;
+            font-size: 0.95rem;
+        }
+
+        .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+
+        /* Sidebar Hover Effects */
+        .nav-dashboard:hover { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+        .nav-profiles:hover { color: var(--rainbow-orange) !important; background: rgba(255, 159, 67, 0.08); border-left-color: var(--rainbow-orange); }
+        .nav-lessons.active { color: var(--rainbow-green) !important; background: rgba(46, 204, 113, 0.08); border-left-color: var(--rainbow-green); }
+        .nav-songs:hover { color: var(--rainbow-blue) !important; background: rgba(77, 150, 255, 0.08); border-left-color: var(--rainbow-blue); }
+        .nav-cartoons:hover { color: var(--rainbow-purple) !important; background: rgba(146, 125, 255, 0.08); border-left-color: var(--rainbow-purple); }
+        .nav-quizzes:hover { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+        .nav-analytics:hover { color: var(--dark-navy) !important; background: rgba(0,0,0,0.05); border-left-color: var(--dark-navy); }
+
+        .logout-container { margin-top: auto; padding-top: 10px; }
+
+        /* --- Main Content --- */
+        .main-content { margin-left: 260px; padding: 35px; }
+
+        .filter-pill {
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            background: white;
+            color: var(--dark-navy);
+            margin-right: 8px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .filter-pill.active { background: var(--rainbow-purple); color: white; }
+
+        /* Lesson Cards Smart Design */
+        .lesson-card {
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+            transition: 0.3s ease;
+            border: none;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lesson-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+
+        .lesson-img-top {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+        }
+
+        .card-body-custom { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+
+        .btn-play {
+            border-radius: 12px;
+            font-weight: 800;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        .subject-tag {
+            font-weight: 800;
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; }
+            .sidebar span, .brand-text { display: none; }
+            .main-content { margin-left: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text" style="font-size: 2.2rem;">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size: 1.8rem; margin-top: -5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <a href="profile.html" class="text-decoration-none">
+        <div class="child-profile-box shadow-sm" style="cursor: pointer; transition: 0.3s;">
+            <div class="avatar-img">👦</div>
+            <h6 class="fw-bold mb-0" style="color: var(--dark-navy);">Little Piyum</h6>
+            <small class="text-muted fw-bold">Level 5 Explorer</small>
+        </div>
+    </a>
+    <nav class="nav-links">
+        <a href="child-dashboard.html" class="nav-link-custom nav-dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+        <a href="lessons.html" class="nav-link-custom nav-lessons active"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+        <a href="songs.html" class="nav-link-custom nav-songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+        <a href="cartoons.html" class="nav-link-custom nav-cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+        <a href="quizzes.html" class="nav-link-custom nav-quizzes"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+    </nav>
+
+    <div class="logout-container mt-auto">
+        <a href="index.html" class="nav-link-custom text-danger border-0 bg-transparent">
+            <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1" style="color: var(--dark-navy); font-family: 'Fredoka';">Preschool Lessons 🎈</h2>
+        <p class="text-muted fw-bold">Let's learn and discover something new today!</p>
+
+        <div class="mt-4 d-flex flex-wrap">
+            <button class="filter-pill active">All Lessons</button>
+            <button class="filter-pill">Numbers</button>
+            <button class="filter-pill">Alphabets</button>
+            <button class="filter-pill">Nature</button>
+            <button class="filter-pill">Logic</button>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background: #fff0f3;">🔢</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="background: rgba(255, 94, 120, 0.1); color: var(--rainbow-red);">Mathematics</span>
+                    <h5 class="fw-bold mb-1">Happy Counting</h5>
+                    <p class="text-muted small fw-bold">Learn numbers 1 to 10 with fun objects!</p>
+                    <button class="btn-play" style="background: var(--rainbow-red);">Start Learning 🚀</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background: #eefdf3;">🔤</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="background: rgba(46, 204, 113, 0.1); color: var(--rainbow-green);">Language</span>
+                    <h5 class="fw-bold mb-1">Magic Letters</h5>
+                    <p class="text-muted small fw-bold">Discover A to Z and their sounds.</p>
+                    <button class="btn-play" style="background: var(--rainbow-green);">Play Lesson 🎵</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background: #fff9e6;">👯</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="background: rgba(255, 159, 67, 0.1); color: var(--rainbow-orange);">Logic</span>
+                    <h5 class="fw-bold mb-1">Find the Same</h5>
+                    <p class="text-muted small fw-bold">Matching identical items and shapes.</p>
+                    <button class="btn-play" style="background: var(--rainbow-orange);">Try it 🧩</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background: #e0f2fe;">🦁</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="background: rgba(77, 150, 255, 0.1); color: var(--rainbow-blue);">Animals</span>
+                    <h5 class="fw-bold mb-1">Animal Kingdom</h5>
+                    <p class="text-muted small fw-bold">Identify domestic and wild animals.</p>
+                    <button class="btn-play" style="background: var(--rainbow-blue);">See Animals 🐾</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background: #f5f3ff;">🌸</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="background: rgba(146, 125, 255, 0.1); color: var(--rainbow-purple);">Nature</span>
+                    <h5 class="fw-bold mb-1">Pretty Flowers</h5>
+                    <p class="text-muted small fw-bold">Learn the names of colorful flowers.</p>
+                    <button class="btn-play" style="background: var(--rainbow-purple);">Explore 🌻</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background: #fff0f3;">🍎</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="background: rgba(255, 94, 120, 0.1); color: var(--rainbow-red);">Healthy Food</span>
+                    <h5 class="fw-bold mb-1">Sweet Fruits</h5>
+                    <p class="text-muted small fw-bold">Yummy fruits we eat every day.</p>
+                    <button class="btn-play" style="background: var(--rainbow-red);">Learn More 🍓</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background: #eefdf3;">🥦</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="background: rgba(46, 204, 113, 0.1); color: var(--rainbow-green);">Healthy Food</span>
+                    <h5 class="fw-bold mb-1">Green Veggies</h5>
+                    <p class="text-muted small fw-bold">Healthy vegetables for strong kids.</p>
+                    <button class="btn-play" style="background: var(--rainbow-green);">Start Now 🥕</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

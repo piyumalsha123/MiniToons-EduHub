@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | MiniToons EduHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --pastel-blue: #A2D2FF;
+            --pastel-pink: #fda8c4;
+            --pastel-yellow: #FFD93D;
+            --soft-purple: #BDB2FF;
+            --dark-navy: #2D3436;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #e1f5fe 0%, #fce4ec 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .signin-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 50px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Left Side: Video/Branding */
+        .visual-side {
+            flex: 1;
+            background: linear-gradient(135deg, var(--soft-purple), var(--pastel-blue));
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .visual-side h2 {
+            font-family: 'Fredoka', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .video-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 5px solid rgba(255,255,255,0.3);
+        }
+
+        /* Right Side: Form */
+        .form-side {
+            flex: 1.1;
+            padding: 60px;
+            background: white;
+        }
+
+        .back-to-home {
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .back-to-home a {
+            color: var(--dark-navy);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .form-title {
+            font-family: 'Fredoka', cursive;
+            color: var(--dark-navy);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .form-subtitle {
+            color: #636e72;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .input-group-custom {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-group-custom label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #636e72;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control-custom {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 20px;
+            border: 2px solid #f1f2f6;
+            background: #f8f9fa;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        .form-control-custom:focus {
+            border-color: deeppink;
+            background: white;
+            box-shadow: 0 8px 20px rgba(255, 133, 161, 0.15);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 40px;
+            color: #b2bec3;
+            cursor: pointer;
+        }
+
+        .btn-signin {
+            background: var(--pastel-blue);
+            color: #2d3436;
+            width: 100%;
+            padding: 15px;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(162, 210, 255, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-signin:hover {
+            transform: translateY(-3px);
+            background: #89c2ff;
+            box-shadow: 0 15px 25px rgba(162, 210, 255, 0.4);
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.95rem;
+        }
+
+        .signup-prompt a {
+            color: deeppink;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        @media (max-width: 992px) {
+            .signin-container { flex-direction: column; }
+            .visual-side { padding: 40px; border-radius: 0; }
+            .form-side { padding: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="signin-container">
+    <div class="visual-side">
+        <h2>Welcome Back!</h2>
+        <p class="mb-4">Log in to keep learning and having fun with MiniToons!</p>
+        <div class="video-container">
+            <video width="100%" autoplay muted loop playsinline>
+                <source src="/src/main/resources/videos/b__Animate_the_two_sma.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <div class="form-side">
+        <div class="back-to-home">
+            <a href="index.html"><i class="bi bi-arrow-left me-1"></i> Back to Home</a>
+        </div>
+
+        <h2 class="form-title">Sign In ✨</h2>
+        <p class="form-subtitle">Welcome back! Please enter your details.</p>
+
+        <form action="/api/v1/auth/signin" method="POST">
+            <div class="input-group-custom">
+                <label>Email or Username</label>
+                <input type="text" name="login" class="form-control-custom" placeholder="Enter email or username" required>
+            </div>
+
+            <div class="input-group-custom">
+                <label>Password</label>
+                <input type="password" id="password" name="password" class="form-control-custom" placeholder="••••••••" required>
+                <i class="bi bi-eye password-toggle" onclick="togglePassword()"></i>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="remember">
+                    <label class="form-check-label small" for="remember">Remember me</label>
+                </div>
+                <a href="forget-password.html" class="small text-decoration-none" style="color: var(--pastel-pink); font-weight: 600;">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-signin">Let's Play! 🌈</button>
+        </form>
+
+        <div class="signup-prompt">
+            Don't have an account? <a href="signup.html">Sign Up for free</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector("form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const login = this.login.value;
+        const password = this.password.value;
+
+        const loginData = {
+            username: login, // backend eke username field ekata yanne
+            password: password
+        };
+
+        try {
+            const res = await fetch("http://localhost:8080/api/v1/auth/signin", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(loginData)
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                const token = data.data.access_token;
+                localStorage.setItem("jwtToken", token);
+
+                const role = JSON.parse(atob(token.split('.')[1])).role;
+
+                window.location.href =
+                    role === "ROLE_ADMIN" ? "admin-dashboard.html" :
+                        role === "ROLE_PARENT" ? "parent-dashboard.html" :
+                            role === "ROLE_CHILD" ? "child-dashboard.html" :
+                                "#";
+
+            } else {
+                alert(data.message || "Login failed ❌");
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert("Server error 🚨");
+        }
+    });
+</script>
+
+</body>
+</html>

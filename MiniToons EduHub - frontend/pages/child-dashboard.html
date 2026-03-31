@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard | MiniToons EduHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    :root {
+      --rainbow-red: #FF5E78; --rainbow-orange: #FF9F43; --rainbow-yellow: #FFD93D;
+      --rainbow-green: #2ecc71; --rainbow-blue: #4D96FF; --rainbow-purple: #927DFF;
+      --dark-navy: #2D3436; --glass: rgba(255, 255, 255, 0.95);
+    }
+
+    body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; min-height: 100vh; margin: 0; }
+
+    /* --- Sidebar --- */
+    .sidebar {
+      background: var(--glass); backdrop-filter: blur(15px); height: 100vh;
+      border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px;
+      position: fixed; width: 260px; z-index: 1000; display: flex; flex-direction: column;
+    }
+
+    .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 15px; text-decoration: none; display: block; }
+    .brand-text { display: flex; justify-content: center; line-height: 1.1; font-weight: bolder; }
+
+    .child-profile-box {
+      text-align: center; background: white; border-radius: 25px;
+      padding: 15px; margin-bottom: 20px; border: 2px solid rgba(0,0,0,0.03);
+      position: relative; /* 👈 Mobile oval effect එකට */
+    }
+    .avatar-img {
+      width: 65px; height: 65px; background: #f0f4f8; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; margin: 0 auto 10px; border: 3px solid var(--rainbow-blue);
+      position: relative; z-index: 2; /* 👈 Mobile view එකට */
+    }
+
+    .nav-link-custom {
+      transition: all 0.3s; border-left: 5px solid transparent; margin-bottom: 5px;
+      font-weight: 700; padding: 10px 18px; border-radius: 12px;
+      display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem;
+    }
+    .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+
+    .nav-dashboard.active { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+    .nav-lessons:hover { color: var(--rainbow-green) !important; background: rgba(46, 204, 113, 0.08); border-left-color: var(--rainbow-green); }
+    .nav-songs:hover { color: var(--rainbow-blue) !important; background: rgba(77, 150, 255, 0.08); border-left-color: var(--rainbow-blue); }
+    .nav-cartoons:hover { color: var(--rainbow-purple) !important; background: rgba(146, 125, 255, 0.08); border-left-color: var(--rainbow-purple); }
+    .nav-quizzes:hover { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+
+    /* --- Main Content --- */
+    .main-content { margin-left: 260px; padding: 35px; }
+
+    .welcome-banner {
+      background: white; border-radius: 30px; padding: 30px;
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;
+    }
+
+    .stat-pill {
+      background: white; border-radius: 20px; padding: 12px 20px;
+      display: flex; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    }
+
+    .play-card {
+      background: white; border-radius: 30px; overflow: hidden;
+      transition: 0.3s ease; border: none; height: 100%;
+    }
+    .play-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+    .play-img-top { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+
+    /* --- ⚠️ මෙන්න මේ RESPONSIVE කොටස විතරයි මම වෙනස් කළේ --- */
+    @media (max-width: 992px) {
+      /* Sidebar එක කෙට්ටු කිරීම */
+      .sidebar {
+        width: 90px;
+        padding: 20px 10px;
+        align-items: center;
+        background: #FFFDF5; /* Photo එකේ තිබුණු background පාට */
+      }
+      .sidebar span, .sidebar-brand, .child-profile-box h6, .child-profile-box small {
+        display: none !important;
+      }
+      .main-content { margin-left: 90px; padding: 20px; }
+
+      /* Avatar එක Image එකේ වගේ overflow oval shape එකක් කිරීම */
+      .child-profile-box {
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin-bottom: 25px;
+        width: 65px;
+        display: flex;
+        justify-content: center;
+      }
+      .child-profile-box::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 45px; height: 85px;
+        background: white;
+        border-radius: 25px;
+        z-index: 1;
+      }
+      .avatar-img {
+        width: 60px; height: 60px;
+        font-size: 1.8rem;
+        margin: 0;
+        background: white;
+        border: 4px solid var(--rainbow-blue);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+
+      /* Nav Links Icons Only කිරීම */
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        width: 100%;
+      }
+      .nav-link-custom {
+        width: 50px; height: 50px;
+        justify-content: center;
+        padding: 0;
+        border-radius: 18px;
+        border-left: none;
+      }
+      .nav-link-custom i { font-size: 1.5rem; margin-right: 0; }
+
+      /* Active icon එකට Photo එකේ වගේ soft background එකක් දීම */
+      .nav-dashboard.active {
+        color: var(--rainbow-red) !important;
+        background: #FFF0F2;
+      }
+
+      /* Logout Button එකත් රවුම් කිරීම */
+      .btn-logout, .sidebar .text-danger {
+        width: 50px; height: 50px;
+        justify-content: center;
+        padding: 0;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+      }
+      .btn-logout i, .sidebar .text-danger i { font-size: 1.5rem; margin-right: 0; }
+
+      /* Welcome banner එක mobile එකේදී පිළිවෙලකට පෙන්වීමට */
+      .welcome-banner { flex-direction: column; text-align: center; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+  <a href="#" class="sidebar-brand">
+    <div class="brand-text" style="font-size: 2.2rem;">
+      <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+    </div>
+    <div class="brand-text" style="font-size: 1.8rem; margin-top: -5px;">
+      <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+    </div>
+  </a>
+
+  <a href="profile.html" class="text-decoration-none">
+    <div class="child-profile-box shadow-sm" style="cursor: pointer; transition: 0.3s;">
+      <div class="avatar-img" id="sidebar-avatar">👦</div>
+      <h6 class="fw-bold mb-0" style="color: var(--dark-navy);" id="sidebar-name">Little Adventurer</h6>
+      <small class="text-muted fw-bold" id="sidebar-level">Explorer</small>
+    </div>
+  </a>
+
+  <nav class="nav-links">
+    <a href="child-dashboard.html" class="nav-link-custom nav-dashboard active" title="Dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+    <a href="lessons.html" class="nav-link-custom nav-lessons" title="Lessons"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+    <a href="songs.html" class="nav-link-custom nav-songs" title="Fun Songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+    <a href="cartoons.html" class="nav-link-custom nav-cartoons" title="Cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+    <a href="quizzes.html" class="nav-link-custom nav-quizzes" title="Quizzes"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+  </nav>
+
+  <div class="logout-container mt-auto">
+    <a href="index.html" class="nav-link-custom text-danger border-0 bg-transparent btn-logout" id="logout-btn" title="Logout">
+      <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
+    </a>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="welcome-banner shadow-sm">
+    <div>
+      <h1 class="fw-bold mb-1" style="color: var(--dark-navy); font-family: 'Fredoka';" id="welcome-text">Hello, Friend! 👋</h1>
+      <p class="text-muted fw-bold mb-0">It's a beautiful day to learn something fun!</p>
+    </div>
+    <div class="d-flex gap-3">
+      <div class="stat-pill">
+        <span class="fs-3 me-2">⭐</span>
+        <div><h5 class="fw-bold mb-0" id="stat-stars">0</h5><small class="text-muted fw-bold">Stars</small></div>
+      </div>
+      <div class="stat-pill">
+        <span class="fs-3 me-2">🏆</span>
+        <div><h5 class="fw-bold mb-0" id="stat-lessons">0</h5><small class="text-muted fw-bold">Lessons</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="play-card p-4 shadow-sm mb-5">
+    <h4 class="fw-bold mb-4" style="font-family: 'Fredoka'; color: var(--dark-navy);">My Learning Progress 📈</h4>
+    <div id="dashboard-progress-container">
+      <p class="text-muted">Loading your progress...</p>
+    </div>
+  </div>
+
+  <h4 class="fw-bold mb-4" style="font-family: 'Fredoka'; color: var(--dark-navy);">My Next Adventure 📖</h4>
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="play-card shadow-sm">
+        <div class="play-img-top" style="background: #fff0f3;">🔢</div>
+        <div class="p-4 text-center">
+          <h5 class="fw-bold">Counting 1-10</h5>
+          <a href="counting-quiz.html" class="btn w-100 rounded-pill text-white fw-bold" style="background: var(--rainbow-red);">Play Now 🚀</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="play-card shadow-sm">
+        <div class="play-img-top" style="background: #eefdf3;">🦁</div>
+        <div class="p-4 text-center">
+          <h5 class="fw-bold">Animal Kingdom</h5>
+          <a href="animal-quiz.html" class="btn w-100 rounded-pill text-white fw-bold" style="background: var(--rainbow-green);">Play Now 🚀</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <a href="songs.html" class="text-decoration-none d-block h-100">
+        <div class="play-card p-4 d-flex align-items-center shadow-sm" style="background: var(--rainbow-blue); color: white; cursor: pointer;">
+          <span class="fs-1 me-4">🎵</span>
+          <div>
+            <h4 class="fw-bold mb-0">Sing Songs</h4>
+            <small class="fw-bold">Sing and Dance!</small>
+          </div>
+          <i class="bi bi-chevron-right ms-auto fs-3"></i>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-6">
+      <a href="cartoons.html" class="text-decoration-none d-block h-100">
+        <div class="play-card p-4 d-flex align-items-center shadow-sm" style="background: var(--rainbow-purple); color: white; cursor: pointer;">
+          <span class="fs-1 me-4">🎬</span>
+          <div>
+            <h4 class="fw-bold mb-0">Watch Cartoons</h4>
+            <small class="fw-bold">Fun Adventures!</small>
+          </div>
+          <i class="bi bi-chevron-right ms-auto fs-3"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const token = localStorage.getItem("jwtToken");
+
+  function loadDashboard(childId) {
+    document.getElementById('stat-stars').innerText = '0';
+    document.getElementById('stat-lessons').innerText = '0';
+    const container = document.getElementById('dashboard-progress-container');
+    container.innerHTML = '<p class="text-muted">Loading your progress...</p>';
+
+    fetch(`http://localhost:8080/api/progress/total-stars/${childId}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
+            .then(res => res.text())
+            .then(stars => {
+              document.getElementById('stat-stars').innerText = stars || 0;
+            })
+            .catch(err => console.error('Error fetching stars:', err));
+
+    fetch(`http://localhost:8080/api/progress/total-lessons/${childId}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
+            .then(res => res.text())
+            .then(lessons => {
+              document.getElementById('stat-lessons').innerText = lessons || 0;
+            })
+            .catch(err => console.error('Error fetching lessons:', err));
+
+    fetch(`http://localhost:8080/api/progress/category-progress/${childId}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
+            .then(res => res.json())
+            .then(data => {
+              container.innerHTML = '';
+              const progressList = Array.isArray(data) ? data : (data ? [data] : []);
+
+              if (progressList.length === 0) {
+                container.innerHTML = '<p class="text-muted">No quizzes completed yet! Play a game to see your progress 🚀</p>';
+                return;
+              }
+
+              const colors = ['bg-danger', 'bg-info', 'bg-success', 'bg-warning', 'bg-primary'];
+
+              progressList.forEach((item, index) => {
+                const colorClass = colors[index % colors.length];
+                const categoryName = item.category || 'General';
+                const percent = item.percentage || 0;
+
+                container.innerHTML += `
+            <div class="mb-4">
+              <div class="d-flex justify-content-between fw-bold">
+                <span>${categoryName}</span>
+                <span>${percent}%</span>
+              </div>
+              <div class="progress" style="height: 15px; border-radius: 10px; background-color: #f1f2f6;">
+                <div class="progress-bar ${colorClass} progress-bar-striped progress-bar-animated"
+                     role="progressbar"
+                     style="width: ${percent}%"
+                     aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>`;
+              });
+            })
+            .catch(err => {
+              console.error('Error fetching progress:', err);
+              container.innerHTML = '<p class="text-muted">No quizzes completed yet! Play a game to see your progress 🚀</p>';
+            });
+  }
+
+  function updateSidebar(childName, childGender, childLevel) {
+    document.getElementById("sidebar-name").innerText = childName || "Little Friend";
+    document.getElementById("welcome-text").innerText = `Hello, ${childName || 'Friend'}! 👋`;
+    document.getElementById("sidebar-level").innerText = childLevel || 'Explorer';
+
+    const avatar = document.getElementById("sidebar-avatar");
+    if (childGender) {
+      const g = childGender.toLowerCase();
+      if (g === "female" || g === "girl") {
+        avatar.innerText = "👧";
+        avatar.style.borderColor = "var(--rainbow-red)";
+      } else {
+        avatar.innerText = "👦";
+        avatar.style.borderColor = "var(--rainbow-blue)";
+      }
+    }
+  }
+
+  window.onload = function() {
+    if (!token) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    let childId = sessionStorage.getItem("childId");
+
+    if (!childId || isNaN(childId)) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        childId = payload.id || payload.sub;
+        sessionStorage.setItem("childId", childId);
+      } catch(e) {
+        console.error("Token decoding error", e);
+      }
+    }
+
+    if (!childId) {
+      alert("Child ID not found! Please log in again. ⚠️");
+      window.location.href = "index.html";
+      return;
+    }
+
+    const childName = sessionStorage.getItem("childName") || "Little Friend";
+    const childGender = sessionStorage.getItem("childGender") || "boy";
+    const childLevel = sessionStorage.getItem("childLevel") || "Explorer";
+
+    updateSidebar(childName, childGender, childLevel);
+    loadDashboard(childId);
+  };
+
+  document.getElementById("logout-btn").onclick = function(e) {
+    e.preventDefault();
+    sessionStorage.clear();
+    localStorage.removeItem("jwtToken");
+    window.location.href = "index.html";
+  };
+</script>
+
+</body>
+</html>

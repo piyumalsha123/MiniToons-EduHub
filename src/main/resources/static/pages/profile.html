@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | MiniToons EduHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    :root {
+      --rainbow-red: #FF5E78; --rainbow-orange: #FF9F43; --rainbow-yellow: #FFD93D;
+      --rainbow-green: #2ecc71; --rainbow-blue: #4D96FF; --rainbow-purple: #927DFF;
+      --dark-navy: #2D3436; --glass: rgba(255, 255, 255, 0.95);
+    }
+
+    body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; min-height: 100vh; margin: 0; }
+
+    /* --- Sidebar (Matched with Lessons Page Screenshot) --- */
+    .sidebar {
+      background: var(--glass); backdrop-filter: blur(15px); height: 100vh;
+      border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px;
+      position: fixed; width: 260px; z-index: 1000; display: flex; flex-direction: column;
+    }
+
+    /* The Logo Box from your Lessons screenshot */
+    .sidebar-brand {
+      border: 2px solid #2D3436; border-radius: 15px; padding: 10px;
+      margin-bottom: 25px; background: white; text-decoration: none; display: block;
+    }
+    .brand-text { display: flex; justify-content: center; line-height: 1.1; font-weight: bolder; font-family: 'Fredoka'; }
+
+    .nav-link-custom {
+      transition: all 0.3s; border-left: 5px solid transparent; margin-bottom: 5px;
+      font-weight: 700; padding: 10px 18px; border-radius: 12px;
+      display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem;
+    }
+    .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+
+    /* Sidebar Colors & Hover Effects */
+    .nav-dashboard:hover { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+    .nav-profiles.active { color: var(--rainbow-orange) !important; background: rgba(255, 159, 67, 0.08); border-left-color: var(--rainbow-orange); }
+    .nav-lessons:hover { color: var(--rainbow-green) !important; background: rgba(46, 204, 113, 0.08); border-left-color: var(--rainbow-green); }
+    .nav-songs:hover { color: var(--rainbow-blue) !important; background: rgba(77, 150, 255, 0.08); border-left-color: var(--rainbow-blue); }
+    .nav-cartoons:hover { color: var(--rainbow-purple) !important; background: rgba(146, 125, 255, 0.08); border-left-color: var(--rainbow-purple); }
+    .nav-quizzes:hover { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+    .nav-analytics:hover { color: var(--dark-navy) !important; background: rgba(0,0,0,0.05); border-left-color: var(--dark-navy); }
+
+    /* --- Main Content --- */
+    .main-content { margin-left: 260px; padding: 35px; }
+
+    .profile-header-card {
+      background: white; border-radius: 40px; padding: 40px; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px;
+    }
+    .big-avatar {
+      width: 120px; height: 120px; background: #f0f4f8; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 4rem;
+      margin: 0 auto 20px; border: 6px solid var(--rainbow-orange);
+    }
+
+    .info-card { background: white; border-radius: 30px; padding: 25px; border: none; box-shadow: 0 8px 20px rgba(0,0,0,0.03); }
+
+    @media (max-width: 992px) {
+      .sidebar { width: 80px; } .sidebar span, .brand-text { display: none; } .main-content { margin-left: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+  <a href="child-dashboard.html" class="sidebar-brand">
+    <div class="brand-text" style="font-size: 2.2rem;">
+      <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+    </div>
+    <div class="brand-text" style="font-size: 1.8rem; margin-top: -5px;">
+      <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+    </div>
+  </a>
+
+  <nav class="nav-links">
+    <a href="child-dashboard.html" class="nav-link-custom nav-dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+    <a href="profile.html" class="nav-link-custom nav-profiles active"><i class="bi bi-person-circle"></i> <span>My Profile</span></a>
+    <a href="lessons.html" class="nav-link-custom nav-lessons"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+    <a href="#" class="nav-link-custom nav-songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+    <a href="#" class="nav-link-custom nav-cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+    <a href="#" class="nav-link-custom nav-quizzes"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+    <a href="#" class="nav-link-custom nav-analytics"><i class="bi bi-graph-up-arrow"></i> <span>Analytics</span></a>
+  </nav>
+
+  <div class="logout-container mt-auto">
+    <a href="index.html" class="nav-link-custom text-danger border-0 bg-transparent">
+      <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
+    </a>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="profile-header-card">
+    <div class="big-avatar">👦</div>
+    <h1 class="fw-bold" style="font-family: 'Fredoka'; color: var(--dark-navy);">Little Piyum</h1>
+    <div class="d-flex justify-content-center gap-2">
+      <span class="badge rounded-pill px-3 py-2" style="background: var(--rainbow-orange);">Explorer Level 5</span>
+      <span class="badge rounded-pill px-3 py-2" style="background: var(--rainbow-blue);">6 Years Old</span>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-12">
+      <div class="info-card">
+        <h4 class="fw-bold mb-4" style="font-family: 'Fredoka';">My Learning Progress 📈</h4>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between fw-bold"><small>Math Master</small><small>80%</small></div>
+          <div class="progress" style="height: 15px; border-radius: 10px;"><div class="progress-bar bg-danger" style="width: 80%"></div></div>
+        </div>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between fw-bold"><small>Animal Expert</small><small>95%</small></div>
+          <div class="progress" style="height: 15px; border-radius: 10px;"><div class="progress-bar bg-info" style="width: 95%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

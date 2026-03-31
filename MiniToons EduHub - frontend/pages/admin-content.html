@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management | MiniToons EduHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78; --rainbow-orange: #FF9F43; --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71; --rainbow-blue: #4D96FF; --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436; --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body { font-family: 'Quicksand', sans-serif; background: #ecbcf8; margin: 0; overflow-x: hidden; }
+
+        /* --- 🚪 Sidebar (Synced & Responsive) --- */
+        .sidebar {
+            background:var(--glass); backdrop-filter:blur(15px); height:100vh;
+            border-right:1px solid rgba(0,0,0,0.08); padding:25px 15px;
+            position:fixed; width:260px; display:flex; flex-direction:column;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+        .nav-link-custom {
+            transition: 0.3s; border-left: 5px solid transparent; margin-bottom: 8px;
+            font-weight: 700; padding: 12px 18px; border-radius: 12px;
+            display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem;
+        }
+
+        /* Dashboard එකේ තිබ්බ Hover Colors ටික */
+        .nav-overview:hover, .nav-overview.active { color: var(--rainbow-blue) !important; background: rgba(77, 150, 255, 0.08); border-left-color: var(--rainbow-blue); }
+        .nav-users:hover, .nav-users.active { color: var(--rainbow-green) !important; background: rgba(46, 204, 113, 0.08); border-left-color: var(--rainbow-green); }
+        .nav-content:hover, .nav-content.active { color: var(--rainbow-purple) !important; background: rgba(146, 125, 255, 0.08); border-left-color: var(--rainbow-purple); }
+
+        /* --- 📝 Main Content --- */
+        .main-content { margin-left: 260px; padding: 40px; transition: all 0.3s ease; }
+
+        .content-card {
+            background: white; border-radius: 25px; padding: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03); border: none;
+            margin-bottom: 30px;
+        }
+
+        /* --- Tabs --- */
+        .nav-pills .nav-link {
+            border-radius: 15px; font-weight: 700; color: #636e72;
+            padding: 10px 20px; transition: 0.3s; border: 2px solid transparent;
+        }
+        .nav-pills .nav-link.active {
+            background-color: var(--rainbow-purple) !important;
+            box-shadow: 0 8px 20px rgba(146, 125, 255, 0.3);
+            color: white !important;
+        }
+
+        /* --- Buttons --- */
+        .btn-add-main {
+            background: var(--rainbow-green); color: white; border-radius: 15px;
+            padding: 10px 22px; font-weight: 700; border: none; transition: 0.3s;
+        }
+        .btn-add-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(46, 204, 113, 0.2); color: white; }
+
+        /* --- Table Styling --- */
+        .table { border-collapse: separate; border-spacing: 0 10px; }
+        .table thead th { border: none; color: #b2bec3; font-weight: 700; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 1px; }
+        .table tbody tr { background: #fdfdfd; transition: 0.3s; border-radius: 15px; }
+        .table td { border: none; padding: 15px 12px; font-size: 0.9rem; vertical-align: middle; }
+        .table td:first-child { border-radius: 15px 0 0 15px; }
+        .table td:last-child { border-radius: 0 15px 15px 0; }
+
+        /* Badges & Status */
+        .badge-date { background: #f1f2f6; color: #7f8c8d; font-weight: 600; font-size: 0.8rem; border-radius: 8px; padding: 5px 10px; }
+        .status-active { background: rgba(46, 204, 113, 0.15); color: #27ae60; border-radius: 10px; padding: 6px 12px; font-weight: 700; font-size: 0.8rem; }
+        .status-draft { background: rgba(255, 159, 67, 0.15); color: #e67e22; border-radius: 10px; padding: 6px 12px; font-weight: 700; font-size: 0.8rem; }
+
+        /* Actions */
+        .action-btn {
+            width: 35px; height: 35px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 10px; transition: 0.3s; cursor: pointer; text-decoration: none; border: none;
+        }
+        .btn-edit { background: rgba(77, 150, 255, 0.1); color: var(--rainbow-blue); }
+        .btn-delete { background: rgba(255, 94, 120, 0.1); color: var(--rainbow-red); }
+        .action-btn:hover { transform: translateY(-3px); color: white !important; }
+        .btn-edit:hover { background: var(--rainbow-blue); }
+        .btn-delete:hover { background: var(--rainbow-red); }
+
+        /* Modals */
+        .modal-content { border-radius: 35px; border: none; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
+        .form-control, .form-select { background: #f9f9f9; border: 2px solid #f1f1f1; border-radius: 15px; padding: 12px 18px; transition: 0.3s; }
+        .form-control:focus { border-color: var(--rainbow-purple); box-shadow: none; background: white; }
+
+        /* 📱 💻 Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; }
+            .sidebar span, .brand-text { display: none !important; }
+            .nav-link-custom { width: 50px; height: 50px; justify-content: center; padding: 0; border-radius: 15px; border-left: none; }
+            .nav-link-custom i { margin-right: 0 !important; font-size: 1.3rem; }
+            .main-content { margin-left: 80px; padding: 25px; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .content-card { padding: 20px; }
+            .nav-pills { width: 100%; display: flex; flex-wrap: wrap; gap: 5px; }
+            .nav-pills .nav-item { flex: 1 1 45%; }
+            .nav-pills .nav-link { width: 100%; text-align: center; }
+            .pills-container { max-width: 100% !important; border-radius: 20px !important; }
+        }
+
+        @media (max-width: 576px) {
+            .nav-pills .nav-item { flex: 1 1 100%; }
+            .d-flex.justify-content-between { flex-direction: column; align-items: flex-start !important; }
+            .d-flex.justify-content-between .text-end { text-align: left !important; margin-top: 10px; }
+            .content-card .d-flex { flex-direction: column; gap: 10px; }
+            .btn-add-main { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="admin-dashboard.html" class="sidebar-brand text-decoration-none">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size: 1.8rem; margin-top: -5px;">
+            <span style="color: var(--dark-navy);">Admin</span>🌈
+        </div>
+    </a>
+    <nav class="w-100 d-flex flex-column align-items-center align-items-lg-stretch">
+        <a href="admin-dashboard.html" class="nav-link-custom nav-overview"><i class="bi bi-grid-1x2-fill me-2"></i> <span>Overview</span></a>
+        <a href="admin-users.html" class="nav-link-custom nav-users"><i class="bi bi-people-fill me-2"></i> <span>Manage Users</span></a>
+        <a href="#" class="nav-link-custom nav-content active"><i class="bi bi-play-btn-fill me-2"></i> <span>Content Management</span></a>
+    </nav>
+
+    <div class="logout-container mt-auto w-100 d-flex flex-column align-items-center align-items-lg-stretch">
+        <a href="index.html" class="nav-link-custom text-danger border-0"><i class="bi bi-box-arrow-right me-2"></i> <span>Logout</span></a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <h2 class="fw-bold mb-0" style="font-family: 'Fredoka'; color: var(--dark-navy);">Content Hub 🎨</h2>
+            <p class="text-muted fw-bold mb-0">Live Content Management & Tracking</p>
+        </div>
+        <div class="text-end">
+            <span class="badge-date p-2"><i class="bi bi-calendar3 me-2"></i>March 31, 2026</span>
+        </div>
+    </div>
+
+    <div class="pills-container d-flex justify-content-between align-items-center mb-4 p-2 bg-white rounded-pill shadow-sm" style="max-width: fit-content;">
+        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-lesson-tab" data-bs-toggle="pill" data-bs-target="#lesson-tab" type="button">Lessons</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-song-tab" data-bs-toggle="pill" data-bs-target="#song-tab" type="button">Songs</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-cartoon-tab" data-bs-toggle="pill" data-bs-target="#cartoon-tab" type="button">Cartoons</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-quiz-tab" data-bs-toggle="pill" data-bs-target="#quiz-tab" type="button">Quizzes</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content" id="pills-tabContent">
+
+        <div class="tab-pane fade show active" id="lesson-tab" role="tabpanel">
+            <div class="content-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold m-0 text-dark">Lessons Inventory 📚</h4>
+                    <button class="btn-add-main shadow-sm" data-bs-toggle="modal" data-bs-target="#lessonModal"><i class="bi bi-plus-circle-fill me-2"></i> New Lesson</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle text-center">
+                        <thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Age Group</th><th>Created Date</th><th>Status</th><th>URL</th><th>Actions</th></tr></thead>
+                        <tbody>
+                        <tr>
+                            <td class="fw-bold text-muted">#L000</td>
+                            <td class="text-start"><span class="fw-bold">Counting 1-10</span></td>
+                            <td>Math</td>
+                            <td>3-5Y</td>
+                            <td><span class="badge-date">2026-03-20</span></td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>
+                                <a href="#" target="_blank" class="text-primary fw-bold">Open</a>
+                            </td>
+                            <td>
+                                <div class="action-btn btn-edit me-1"><i class="bi bi-pencil-fill"></i></div>
+                                <div class="action-btn btn-delete"><i class="bi bi-trash3-fill"></i></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="song-tab" role="tabpanel">
+            <div class="content-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold m-0 text-dark">Songs & Rhymes Inventory 🎵</h4>
+                    <button class="btn-add-main shadow-sm" data-bs-toggle="modal" data-bs-target="#songModal">
+                        <i class="bi bi-music-note-beamed me-2"></i> Add Song
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle text-center">
+                        <thead>
+                        <tr><th>ID</th><th>Title</th><th>Age Group</th><th>Created Date</th><th>Status</th><th>URL</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="songTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="cartoon-tab" role="tabpanel">
+            <div class="content-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold m-0 text-dark">Cartoon Library 📺</h4>
+                    <button class="btn-add-main shadow-sm" data-bs-toggle="modal" data-bs-target="#cartoonModal" style="background: var(--rainbow-orange);">
+                        <i class="bi bi-tv-fill me-2"></i> Add Cartoon
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle text-center">
+                        <thead>
+                        <tr><th>ID</th><th>Title</th><th>Category</th><th>Video URL</th><th>Age Group</th><th>Created Date</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="cartoonTableBody">
+                        <tr>
+                            <td class="fw-bold text-muted">#C000</td>
+                            <td class="text-start"><span class="fw-bold">Little Ant Adventures</span></td>
+                            <td>Mini Series</td>
+                            <td><a href="https://example.com/video.mp4" target="_blank">Watch</a></td>
+                            <td>3-5Y</td>
+                            <td><span class="badge-date">2026-03-25</span></td>
+                            <td><span class="status-draft">Draft</span></td>
+                            <td>
+                                <div class="action-btn btn-edit me-1"><i class="bi bi-pencil-fill"></i></div>
+                                <div class="action-btn btn-delete"><i class="bi bi-trash3-fill"></i></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="quiz-tab" role="tabpanel">
+            <div class="content-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold m-0 text-dark">Quiz Inventory 🧠</h4>
+                    <button class="btn-add-main shadow-sm" data-bs-toggle="modal" data-bs-target="#quizModal" style="background: var(--rainbow-purple);"><i class="bi bi-brain me-2"></i> Create Quiz</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle text-center">
+                        <thead>
+                        <tr><th>ID</th><th>Title</th><th>Quiz URL</th><th>Difficulty</th><th>Category</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="quizTableBody">
+                        <tr>
+                            <td class="fw-bold text-muted">#Q001</td>
+                            <td class="text-start fw-bold">Math Basics</td>
+                            <td><a href="quiz-math.html" target="_blank">Open</a></td>
+                            <td><span class="badge bg-success">Easy</span></td>
+                            <td>Math</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>
+                                <div class="action-btn btn-edit me-1"><i class="bi bi-pencil-fill"></i></div>
+                                <div class="action-btn btn-delete"><i class="bi bi-trash3-fill"></i></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="lessonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0 pb-0">
+                <h3 class="fw-bold" style="font-family: 'Fredoka'; color: var(--rainbow-purple);">Lesson Magic ✨</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-muted small">Lesson ID</label>
+                        <input type="text" class="form-control" placeholder="#L-000" id="lessonId">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold text-muted small">Lesson Title</label>
+                        <input type="text" class="form-control" id="lessonTitle">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Category</label>
+                        <select class="form-select" id="lessonCategory">
+                            <option value="" selected disabled>Select Category</option>
+                            <option value="Maths">Maths 🔢</option>
+                            <option value="Language">Language & Alphabet 🔤</option>
+                            <option value="Nature">Nature & Animals 🦁</option>
+                            <option value="Colors">Colors & Shapes 🎨</option>
+                            <option value="Logic">Logic & Puzzles 🧩</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Difficulty</label>
+                        <select class="form-select" id="lessonDifficulty">
+                            <option>Beginner</option>
+                            <option>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Age Group</label>
+                        <input type="text" class="form-control" id="lessonAgeGroup">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Created Date</label>
+                        <input type="date" class="form-control" id="lessonCreatedDate">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Status</label>
+                        <select class="form-select" id="lessonStatus">
+                            <option>Active</option>
+                            <option>Draft</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-muted small">Lesson Page URL</label>
+                        <input type="text" class="form-control" id="lessonUrl" placeholder="happy-counting.html">
+                    </div>
+                    <div class="col-12 text-end mt-4">
+                        <button type="submit" class="btn-add-main px-5 shadow">Save Lesson</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="songModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0 pb-0">
+                <h3 class="fw-bold" style="font-family: 'Fredoka'; color: var(--rainbow-blue);">New Musical Rhyme 🎵</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="songForm" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Song ID</label>
+                        <input type="text" id="songId" class="form-control" placeholder="S000">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold small">Title</label>
+                        <input type="text" id="title" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Age Group</label>
+                        <input type="text" id="ageGroup" class="form-control">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">Video URL</label>
+                        <input type="text" id="videoUrl" class="form-control">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">Lyrics</label>
+                        <textarea id="lyrics" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Created Date</label>
+                        <input type="date" id="createdAt" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Status</label>
+                        <select id="status" class="form-select">
+                            <option>ACTIVE</option>
+                            <option>DRAFT</option>
+                        </select>
+                    </div>
+                    <div class="col-12 text-end mt-4">
+                        <button type="submit" class="btn-add-main px-5 shadow">Save Song</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cartoonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0 pb-0">
+                <h3 class="fw-bold" style="font-family: 'Fredoka'; color: var(--rainbow-orange);">Add Cartoon Episode 📺</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="cartoonForm" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-muted small">Cartoon ID</label>
+                        <input type="text" id="cartoonId" class="form-control" placeholder="C000">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold text-muted small">Episode Title</label>
+                        <input type="text" class="form-control" id="cartoonTitle" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Category</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" value="Education" id="catEdu"><label class="form-check-label">Education</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" value="Adventure" id="catAdv"><label class="form-check-label">Adventure</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" value="Funny" id="catFun"><label class="form-check-label">Funny</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" value="Kids Series" id="catKids"><label class="form-check-label">Kids Series</label></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Video URL</label>
+                        <input type="text" id="cartoonVideoUrl" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Age Group</label>
+                        <input type="text" class="form-control" id="cartoonAgeGroup" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Created Date</label>
+                        <input type="date" class="form-control" id="cartoonCreatedAt" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-muted small">Status</label>
+                        <select class="form-select" id="cartoonStatus">
+                            <option>Active</option>
+                            <option>Draft</option>
+                        </select>
+                    </div>
+                    <div class="col-12 text-end mt-4">
+                        <button type="submit" class="btn-add-main px-5 shadow" style="background: var(--rainbow-orange);">Save Cartoon</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="quizModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0 pb-0">
+                <h3 class="fw-bold" style="font-family: 'Fredoka'; color: var(--rainbow-purple);">Create Quiz 🧠</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="quizForm" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Quiz ID</label>
+                        <input type="text" id="quizId" class="form-control" placeholder="Q001">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold small">Title</label>
+                        <input type="text" id="quizTitle" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Quiz URL</label>
+                        <input type="text" id="quizUrl" class="form-control" placeholder="quiz-math.html">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Category</label>
+                        <select id="quizCategory" class="form-select">
+                            <option value="" selected disabled>Select Category</option>
+                            <option value="Maths">Maths 🔢</option>
+                            <option value="Language">Language & Alphabet 🔤</option>
+                            <option value="Nature">Nature & Animals 🦁</option>
+                            <option value="Colors">Colors & Shapes 🎨</option>
+                            <option value="Logic">Logic & Puzzles 🧩</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Difficulty</label>
+                        <select id="quizDifficulty" class="form-select">
+                            <option>Easy</option>
+                            <option>Medium</option>
+                            <option>Hard</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Status</label>
+                        <select id="quizStatus" class="form-select">
+                            <option>Active</option>
+                            <option>Draft</option>
+                        </select>
+                    </div>
+                    <div class="col-12 text-end mt-4">
+                        <button type="submit" class="btn-add-main px-5 shadow" style="background: var(--rainbow-purple);">Save Quiz</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/MiniToons%20EduHub%20-%20frontend/js/lessons.js"></script>
+<script src="/MiniToons%20EduHub%20-%20frontend/js/songs.js"></script>
+<script src="/MiniToons%20EduHub%20-%20frontend/js/cartoons.js"></script>
+<script src="/MiniToons%20EduHub%20-%20frontend/js/quizzes.js"></script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Analytics | MiniToons EduHub</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78; --rainbow-orange: #FF9F43; --rainbow-yellow: #edd464;
+            --rainbow-green: #2ecc71; --rainbow-blue: #d154ef; --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436; --glass: rgba(255, 255, 255, 0.95);
+        }
+        body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; margin: 0; }
+
+        /* 🚪 Sidebar Styles */
+        .sidebar {
+            background: var(--glass); backdrop-filter: blur(15px); height: 100vh;
+            border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px;
+            position: fixed; width: 260px; z-index: 1000; display: flex; flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .sidebar-brand { text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; font-family: 'Fredoka', cursive; }
+        .nav-link-custom {
+            transition: 0.3s; border-left: 5px solid transparent; margin-bottom: 8px;
+            font-weight: 700; padding: 12px 18px; border-radius: 12px;
+            display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem;
+        }
+        .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+        .nav-dashboard:hover, .nav-dashboard.active { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+        .nav-profiles:hover { color: var(--rainbow-orange) !important; background: rgba(255, 159, 67, 0.08); border-left-color: var(--rainbow-orange); }
+        .nav-lessons:hover { color: var(--rainbow-green) !important; background: rgba(46, 204, 113, 0.08); border-left-color: var(--rainbow-green); }
+
+        /* 📝 Main Content Area */
+        .main-content { margin-left: 260px; padding: 35px; transition: all 0.3s ease; }
+
+        /* Stat Cards */
+        .stat-card {
+            background: white; border-radius: 25px; padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid rgba(255, 255, 255, 0.6); height: 100%;
+        }
+
+        .stat-card-custom {
+            background: white; border-radius: 24px; padding: 25px;
+            display: flex; align-items: center; gap: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6); height: 100%;
+        }
+        .stat-card-custom:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06); }
+
+        .card-icon-wrapper { width: 70px; height: 70px; border-radius: 20px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+
+        /* Soft Gradients */
+        .stars-gradient .card-icon-wrapper { background: linear-gradient(135deg, #FFF9E6 0%, #FFF1C5 100%); }
+        .lessons-gradient .card-icon-wrapper { background: linear-gradient(135deg, #E8FBF0 0%, #C1F6D7 100%); }
+        .score-gradient .card-icon-wrapper { background: linear-gradient(135deg, #E6F2FF 0%, #CBE3FF 100%); }
+
+        .card-info h2 { font-family: 'Fredoka', sans-serif; color: #2D3436; font-size: 2rem; }
+        .text-muted-custom { color: #7A8B94; font-weight: 700; font-size: 0.9rem; display: block; margin-top: 2px; }
+
+        .progress { height: 10px; border-radius: 10px; background: #e9ecef; }
+        .quiz-table { background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+        .table thead { background: #f8fafc; }
+        .table th { border: none; padding: 20px; font-weight: 800; color: var(--dark-navy); }
+        .table td { padding: 18px 20px; vertical-align: middle; border-top: 1px solid #f1f3f5; font-weight: 600; }
+        .badge-score { padding: 6px 15px; border-radius: 10px; font-weight: 800; display: inline-block; }
+
+        /* 📱 💻 Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; background: #FFFDF5; }
+            .sidebar span, .brand-text { display: none !important; }
+            .nav-link-custom { width: 50px; height: 50px; justify-content: center; padding: 0; border-radius: 15px; border-left: none; }
+            .nav-link-custom i { margin-right: 0; font-size: 1.3rem; }
+            .main-content { margin-left: 80px; padding: 20px; }
+            .nav-dashboard:hover, .nav-dashboard.active { background: rgba(255, 94, 120, 0.15); }
+        }
+
+        @media (max-width: 768px) {
+            .stat-card-custom { padding: 15px; gap: 12px; }
+            .card-icon-wrapper { width: 50px; height: 50px; border-radius: 15px; }
+            .card-icon-wrapper span { font-size: 1.5rem !important; }
+            .card-info h2 { font-size: 1.5rem; }
+            .text-muted-custom { font-size: 0.8rem; }
+            .quiz-table h5 { padding: 15px !important; }
+            .table th, .table td { padding: 12px 15px; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 576px) {
+            .d-flex.justify-content-between.align-items-center { flex-direction: column; align-items: flex-start !important; gap: 15px; }
+            .dropdown, #activeChildBtn { width: 100%; text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size: 1.8rem; margin-top: -5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <nav class="w-100 d-flex flex-column align-items-center align-items-lg-stretch">
+        <a href="#" class="nav-link-custom nav-dashboard active" title="Progress Dashboard"><i class="bi bi-graph-up-arrow"></i> <span>Progress Dashboard</span></a>
+        <a href="child-profiles.html" class="nav-link-custom nav-profiles" title="Manage Profiles"><i class="bi bi-people-fill"></i> <span>Manage Profiles</span></a>
+        <a href="learning-content.html" class="nav-link-custom nav-lessons" title="Learning Content"><i class="bi bi-book-half"></i> <span>Learning Content</span></a>
+    </nav>
+
+    <div class="logout-container mt-auto w-100 d-flex flex-column align-items-center align-items-lg-stretch">
+        <a href="signin.html" id="logoutBtn" class="nav-link-custom text-danger border-0" title="Logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0" style="color: var(--dark-navy); font-family: 'Fredoka';">Learning Insights 📊</h2>
+            <p class="text-muted fw-bold mb-0">Monitoring: <span class="text-primary" id="monitoringChildName">Loading...</span></p>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-white shadow-sm dropdown-toggle rounded-pill px-4 fw-bold bg-white" type="button" data-bs-toggle="dropdown" id="activeChildBtn">
+                Select Explorer
+            </button>
+            <ul class="dropdown-menu border-0 shadow" id="childDropdownMenu">
+            </ul>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-4">
+            <div class="stat-card-custom stars-gradient">
+                <div class="card-icon-wrapper">
+                    <span class="fs-1">⭐</span>
+                </div>
+                <div class="card-info">
+                    <h2 class="fw-bold mb-0" id="totalStars">0</h2>
+                    <span class="text-muted-custom">Total Stars Earned</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+            <div class="stat-card-custom lessons-gradient">
+                <div class="card-icon-wrapper">
+                    <span class="fs-1">✅</span>
+                </div>
+                <div class="card-info">
+                    <h2 class="fw-bold mb-0" id="lessonsCompleted">0/0</h2>
+                    <span class="text-muted-custom">Lessons Completed</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-lg-4">
+            <div class="stat-card-custom score-gradient">
+                <div class="card-icon-wrapper">
+                    <span class="fs-1">📈</span>
+                </div>
+                <div class="card-info">
+                    <h2 class="fw-bold mb-0" id="avgQuizScore">0%</h2>
+                    <span class="text-muted-custom">Avg. Quiz Score</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+            <div class="stat-card">
+                <h5 class="fw-bold mb-4" style="font-family: 'Fredoka';">Adaptive Quiz Performance</h5>
+                <div style="height: 300px; position: relative;">
+                    <canvas id="quizChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="stat-card">
+                <h5 class="fw-bold mb-4" style="font-family: 'Fredoka';">Curriculum Progress</h5>
+                <div id="dynamicBarsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quiz-table">
+        <h5 class="fw-bold p-4 mb-0" style="font-family: 'Fredoka';">Detailed Quiz History</h5>
+        <div class="table-responsive">
+            <table class="table mb-0 text-nowrap">
+                <thead>
+                <tr>
+                    <th>Lesson Name</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Score</th>
+                </tr>
+                </thead>
+                <tbody id="quizTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let quizChartInstance = null;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        loadParentChildren();
+
+        document.getElementById("logoutBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+            localStorage.removeItem("jwtToken");
+            window.location.href = "signin.html";
+        });
+    });
+
+    async function loadParentChildren() {
+        try {
+            const token = localStorage.getItem("jwtToken");
+            const res = await fetch("http://localhost:8080/api/v1/parent-child/my-children", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error("Failed to load children");
+
+            const children = await res.json();
+            const dropdownMenu = document.getElementById("childDropdownMenu");
+            dropdownMenu.innerHTML = "";
+
+            children.forEach(child => {
+                const li = document.createElement("li");
+                li.innerHTML = `<a class="dropdown-item" href="#" onclick="switchChild(${child.id}, '${child.name}')">${child.name}</a>`;
+                dropdownMenu.appendChild(li);
+            });
+
+            if (children.length > 0) switchChild(children[0].id, children[0].name);
+        } catch (err) { console.error("Error loading children:", err); }
+    }
+
+    function switchChild(childId, childName) {
+        document.getElementById("monitoringChildName").innerText = childName;
+        document.getElementById("activeChildBtn").innerText = childName;
+        loadChildInsights(childId);
+    }
+
+    async function loadChildInsights(childId) {
+        try {
+            const token = localStorage.getItem("jwtToken");
+
+            const [insightsRes, historyRes] = await Promise.all([
+                fetch(`http://localhost:8080/api/v1/parent-child/insights/${childId}`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                }),
+                fetch(`http://localhost:8080/api/v1/parent-child/history/${childId}`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                })
+            ]);
+
+            if (!insightsRes.ok) throw new Error("Insights load failed");
+            if (!historyRes.ok) throw new Error("History load failed");
+
+            const insightsResponse = await insightsRes.json();
+            const historyResponse = await historyRes.json();
+
+            const insights = insightsResponse.data || insightsResponse;
+            const history = historyResponse.data || historyResponse;
+
+            // Stats update
+            document.getElementById("totalStars").innerText = insights.totalStars || 0;
+            const completed = insights.completedLessons || 0;
+            const total = insights.totalLessons || 0;
+            document.getElementById("lessonsCompleted").innerText = `${completed}/${total}`;
+            document.getElementById("avgQuizScore").innerText = `${insights.avgScore || 0}%`;
+
+            renderCategoryBreakdown(insights.categories);
+            renderQuizHistoryTable(history);
+
+        } catch (err) {
+            console.error("Dashboard load error:", err);
+        }
+    }
+
+    function renderQuizHistoryTable(quizHistory) {
+        const tableBody = document.getElementById("quizTableBody");
+        tableBody.innerHTML = "";
+
+        if (!quizHistory || quizHistory.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No quiz history available yet.</td></tr>`;
+            renderChart([], []);
+            return;
+        }
+
+        const labels = [];
+        const scores = [];
+
+        quizHistory.forEach(quiz => {
+            const displayScore = quiz.starsEarned || 0;
+            let badgeClass = "bg-danger-subtle text-danger";
+            if (displayScore >= 7) badgeClass = "bg-success-subtle text-success";
+            else if (displayScore >= 4) badgeClass = "bg-warning-subtle text-warning";
+
+            tableBody.innerHTML += `
+        <tr>
+            <td>${quiz.lessonName || 'N/A'}</td>
+            <td>${quiz.category || 'N/A'}</td>
+            <td>${quiz.completedAt ? quiz.completedAt.split('T')[0] : 'N/A'}</td>
+            <td><span class="badge-score ${badgeClass}">${displayScore} Stars</span></td>
+        </tr>`;
+
+            labels.push(quiz.lessonName || 'N/A');
+            scores.push(displayScore);
+        });
+
+        renderChart(labels, scores);
+    }
+
+    function renderChart(labels, data) {
+        const ctx = document.getElementById("quizChart").getContext("2d");
+        if (quizChartInstance !== null) quizChartInstance.destroy();
+
+        quizChartInstance = new Chart(ctx, {
+            type: "line",
+            data: { labels, datasets: [{ label: "Stars Earned", data, borderColor: "#4D96FF", backgroundColor: "rgba(77,150,255,0.1)", fill: true, tension: 0.4, borderWidth: 4, pointRadius: 5 }]},
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}, scales: { y: { min:0, max:10, ticks:{stepSize:2}}, x:{ticks:{maxRotation:45,minRotation:45}}} }
+        });
+    }
+
+    function renderCategoryBreakdown(categories) {
+        const container = document.getElementById("dynamicBarsContainer");
+        container.innerHTML = "";
+
+        if (!categories || categories.length === 0) {
+            container.innerHTML = `<p class="text-muted text-center">No progress yet.</p>`;
+            return;
+        }
+
+        categories.forEach(item => {
+            const maxLessonsPerCategory = 10;
+            const percent = Math.min((item.count / maxLessonsPerCategory) * 100, 100);
+
+            const barHTML = `
+        <div class="mb-3">
+            <div class="d-flex justify-content-between fw-bold mb-1">
+                <span>${item.category}</span>
+                <span>${item.count} Lessons</span>
+            </div>
+            <div class="progress" role="progressbar" aria-label="${item.category} progress" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-primary" style="width: ${percent}%"></div>
+            </div>
+        </div>`;
+
+            container.innerHTML += barHTML;
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Songs | MiniToons EduHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --rainbow-red:#FF5E78; --rainbow-orange:#FF9F43; --rainbow-yellow:#FFD93D;
+            --rainbow-green:#2ecc71; --rainbow-blue:#4D96FF; --rainbow-purple:#927DFF;
+            --dark-navy:#2D3436; --glass: rgba(255,255,255,0.95);
+        }
+
+        body { font-family:'Quicksand', sans-serif; background: #dcb0e6; margin:0; overflow-x: hidden; }
+
+        /* --- SIDEBAR STYLE --- */
+        .sidebar {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            height:100vh;
+            width:260px;
+            position:fixed;
+            padding:25px 15px;
+            border-right:1px solid rgba(0,0,0,0.08);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            font-family: 'Fredoka', cursive;
+            text-align: center;
+            margin-bottom: 25px;
+            text-decoration: none;
+            display: block;
+        }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+        .child-profile-box {
+            text-align:center; background:white; border-radius:25px;
+            padding:15px; margin-bottom:20px; border:2px solid rgba(0,0,0,0.03);
+            cursor:pointer; transition:0.3s;
+            position: relative; /* 👈 Mobile එකේදී use කරන්න */
+        }
+        .child-profile-box:hover { transform: scale(1.03); box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+
+        .avatar-img {
+            width:65px; height:65px; background:#f0f4f8; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:2.2rem; margin:0 auto 10px; border:3px solid var(--rainbow-blue);
+            position: relative; z-index: 2; /* 👈 Mobile view එකට */
+        }
+
+        .nav-link-custom {
+            transition: all 0.3s; border-left:5px solid transparent;
+            margin-bottom: 5px; font-weight:700; padding:10px 18px;
+            border-radius:12px; display:flex; align-items:center;
+            text-decoration:none; color:#636e72; font-size: 0.95rem;
+        }
+        .nav-link-custom i { font-size:1.1rem; margin-right:12px; }
+
+        .nav-songs.active {
+            color: var(--rainbow-red) !important;
+            background: rgba(255, 94, 120, 0.08);
+            border-left-color: var(--rainbow-red);
+        }
+
+        .nav-link-custom:hover {
+            color: var(--rainbow-purple) !important;
+            background: rgba(146, 125, 255, 0.08);
+            border-left-color: var(--rainbow-purple);
+            transform: translateX(5px);
+        }
+
+        .logout-container {
+            margin-top: auto;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 15px;
+        }
+
+        .btn-logout {
+            color: var(--rainbow-red) !important;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 94, 120, 0.08);
+            transform: translateX(5px);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { margin-left:260px; padding:40px; }
+
+        .song-card {
+            background: #ffffff; border-radius: 35px; padding: 25px;
+            border: 4px solid #ffffff; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: all 0.4s; text-align: center; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .song-card:hover { transform: translateY(-12px); border-color: var(--rainbow-yellow); box-shadow: 0 20px 30px rgba(0,0,0,0.1); }
+
+        .song-img-top {
+            height: 110px; width: 110px; margin: 0 auto 15px; border-radius: 50%;
+            display: flex; align-items:center; justify-content: center;
+            font-size: 3.5rem; background: #f8fbff; transition: 0.3s;
+        }
+        .song-card:hover .song-img-top { transform: rotate(10deg) scale(1.1); background: var(--rainbow-yellow); }
+
+        .btn-play {
+            background: linear-gradient(45deg, var(--rainbow-blue), #3498db);
+            border: none; border-radius: 20px; padding: 12px;
+            font-weight: 800; color: white !important; transition: 0.3s;
+            text-decoration: none; display: inline-block;
+        }
+        .btn-play:hover { background: var(--rainbow-purple); transform: scale(1.05); }
+
+        /* --- MODERN LYRICS MODAL --- */
+        #lyricsModal .modal-content {
+            border-radius: 40px;
+            border: 8px solid var(--rainbow-yellow);
+            background: #fff;
+            overflow: hidden;
+        }
+        #lyricsModal .modal-header {
+            background: linear-gradient(135deg, var(--rainbow-blue), var(--rainbow-purple));
+            color: white; border-bottom: none; padding: 20px 25px;
+        }
+        #lyricsModal .modal-title { font-family: 'Fredoka'; font-size: 1.8rem; font-weight: 700; }
+        #lyricsModal .modal-body {
+            padding: 30px; text-align: center;
+            background-image: radial-gradient(#f0f0f0 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+        #lyricsText {
+            font-size: 1.25rem; line-height: 1.8; color: var(--dark-navy);
+            white-space: pre-line; font-weight: 600;
+        }
+        .btn-close-modal {
+            background: var(--rainbow-red); color: white; border: none;
+            padding: 12px 35px; border-radius: 20px; font-weight: 800;
+            margin-top: 25px; transition: 0.3s;
+        }
+        .btn-close-modal:hover { transform: scale(1.1); background: var(--dark-navy); color: white; }
+
+        /* --- ⚠️ මෙන්න මේ RESPONSIVE කොටස විතරයි මම වෙනස් කළේ --- */
+        @media (max-width: 992px) {
+            /* Sidebar එක කෙට්ටු කිරීම */
+            .sidebar {
+                width: 90px;
+                padding: 20px 10px;
+                align-items: center;
+                background: #FFFDF5; /* ඔයා එවපු photo එකේ sidebar එකේ තිබුණු background පාට */
+            }
+            .sidebar span, .sidebar-brand, .child-profile-box h6, .child-profile-box small {
+                display: none !important;
+            }
+            .main-content { margin-left: 90px; }
+
+            /* Avatar එක Image එකේ වගේ overflow oval shape එකක් කිරීම */
+            .child-profile-box {
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin-bottom: 25px;
+                width: 65px;
+                display: flex;
+                justify-content: center;
+            }
+            .child-profile-box::before {
+                content: '';
+                position: absolute;
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%);
+                width: 45px; height: 85px;
+                background: white;
+                border-radius: 25px;
+                z-index: 1;
+            }
+            .avatar-img {
+                width: 60px; height: 60px;
+                font-size: 1.8rem;
+                margin: 0;
+                background: white;
+                border: 4px solid var(--rainbow-blue);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+
+            /* Nav Links Icons Only කිරීම */
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+                width: 100%;
+            }
+            .nav-link-custom {
+                width: 50px; height: 50px;
+                justify-content: center;
+                padding: 0;
+                border-radius: 18px;
+                border-left: none;
+            }
+            .nav-link-custom i { font-size: 1.5rem; margin-right: 0; }
+
+            /* Active icon එකට Photo එකේ වගේ soft background එකක් දීම */
+            .nav-songs.active {
+                color: var(--rainbow-red) !important;
+                background: #FFF0F2;
+            }
+
+            /* Logout Button එකත් රවුම් කිරීම */
+            .btn-logout {
+                width: 50px; height: 50px;
+                justify-content: center;
+                padding: 0;
+                border-radius: 18px;
+            }
+            .btn-logout i { font-size: 1.5rem; margin-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size:1.8rem; margin-top:-5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <a href="profile.html" class="text-decoration-none">
+        <div class="child-profile-box shadow-sm">
+            <div class="avatar-img" id="sidebar-avatar">👦</div>
+            <h6 class="fw-bold mb-0" style="color: var(--dark-navy);" id="sidebar-name">Little Adventurer</h6>
+            <small class="text-muted fw-bold" id="sidebar-level">Explorer</small>
+        </div>
+    </a>
+
+    <nav class="nav-links">
+        <a href="child-dashboard.html" class="nav-link-custom nav-dashboard" title="Dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+        <a href="lessons.html" class="nav-link-custom nav-lessons" title="Lessons"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+        <a href="songs.html" class="nav-link-custom nav-songs active" title="Fun Songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+        <a href="cartoons.html" class="nav-link-custom nav-cartoons" title="Cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+        <a href="quizzes.html" class="nav-link-custom nav-quizzes" title="Quizzes"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+    </nav>
+
+    <div class="logout-container">
+        <a href="index.html" class="btn-logout" id="logout-btn" title="Logout">
+            <i class="bi bi-box-arrow-right me-2"></i> <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="d-flex align-items-center mb-4">
+        <div style="font-size: 3.5rem; margin-right: 20px;">🎶</div>
+        <div>
+            <h2 class="fw-bold mb-0" id="welcome-text" style="color: var(--dark-navy); font-family:'Fredoka'; font-size: 2.5rem;">Musical Time!</h2>
+            <p class="text-muted fw-bold mb-0" style="font-size: 1.1rem;">Let's sing and learn together!</p>
+        </div>
+    </div>
+    <div class="row g-4" id="songsContainer"></div>
+</div>
+
+<div class="modal fade" id="lyricsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header d-flex align-items-center justify-content-between">
+                <span style="font-size: 1.8rem;">🎤</span>
+                <h5 class="modal-title" id="lyricsTitle">Song Lyrics</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="lyricsText">
+                </div>
+                <button type="button" class="btn-close-modal" data-bs-dismiss="modal">Close ✕</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_URL = "http://localhost:8080/api/v1/songs";
+    const container = document.getElementById("songsContainer");
+
+    function getEmoji(title){
+        const t = title.toLowerCase();
+        if(t.includes("bus")) return "🚌";
+        if(t.includes("elephant")) return "🐘";
+        if(t.includes("abc") || t.includes("alphabet")) return "🔤";
+        if(t.includes("star")) return "⭐";
+        if(t.includes("shark")) return "🦈";
+        if(t.includes("duck")) return "🦆";
+        if(t.includes("rain")) return "☔";
+        return "🎵";
+    }
+
+    async function loadSongs(){
+        try{
+            const response = await fetch(API_URL);
+            if(!response.ok) throw new Error();
+            const data = await response.json();
+            renderSongs(data);
+        } catch(e){
+            const demoSongs = [
+                { title: "Wheels on the Bus", videoUrl: "https://www.youtube.com/embed/XqZsoesa55w", lyrics: "The wheels on the bus go round and round,\nRound and round, round and round.\nThe wheels on the bus go round and round,\nAll through the town!" },
+                { title: "The Elephant Song", videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4", lyrics: "Right left, right left,\nThe elephant is big and strong!\nWith a trunk so long,\nHe sings his happy song!" },
+                { title: "Baby Shark Dance", videoUrl: "https://www.youtube.com/embed/XqZsoesa55w", lyrics: "Baby shark, doo doo doo doo doo doo!\nBaby shark, doo doo doo doo doo doo!\nBaby shark, doo doo doo doo doo doo!\nBaby shark!" }
+            ];
+            renderSongs(demoSongs);
+        }
+    }
+
+    function showLyrics(title, lyrics){
+        document.getElementById("lyricsTitle").innerText = title;
+        document.getElementById("lyricsText").innerText = lyrics;
+        const lyricsModal = new bootstrap.Modal(document.getElementById('lyricsModal'));
+        lyricsModal.show();
+    }
+
+    function renderSongs(songs){
+        container.innerHTML = "";
+        songs.forEach(song=>{
+            const col = document.createElement("div");
+            col.className = "col-md-6 col-lg-4";
+            col.innerHTML = `
+            <div class="song-card">
+                <div>
+                    <div class="song-img-top">${getEmoji(song.title)}</div>
+                    <h5 class="fw-bold" style="font-family:'Fredoka'; font-size: 1.4rem;">${song.title}</h5>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="${song.videoUrl}" target="_blank" class="btn-play flex-fill">
+                        <i class="bi bi-play-fill"></i> Sing
+                    </a>
+                    <button class="btn-play flex-fill btn-lyrics" style="background: var(--rainbow-yellow); color: var(--dark-navy) !important;">
+                        <i class="bi bi-file-text-fill"></i> Lyrics
+                    </button>
+                </div>
+            </div>`;
+
+            col.querySelector(".btn-lyrics").onclick = () => showLyrics(song.title, song.lyrics);
+            container.appendChild(col);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        loadSongs();
+
+        const name = sessionStorage.getItem("childName");
+        const gender = sessionStorage.getItem("childGender");
+        const level = sessionStorage.getItem("childLevel");
+
+        const nameElement = document.getElementById("sidebar-name");
+        const welcomeElement = document.getElementById("welcome-text");
+
+        if (name) {
+            if(nameElement) nameElement.innerText = name;
+            if(welcomeElement) welcomeElement.innerText = `Hello, ${name}! 👋 Let's sing together.`;
+        }
+
+        const avatarElement = document.getElementById("sidebar-avatar");
+        if (gender && avatarElement) {
+            const upperGender = gender.toUpperCase();
+            if (upperGender === "FEMALE" || upperGender === "GIRL") {
+                avatarElement.innerText = "👧";
+                avatarElement.style.borderColor = "var(--rainbow-red)";
+            } else {
+                avatarElement.innerText = "👦";
+                avatarElement.style.borderColor = "var(--rainbow-blue)";
+            }
+        }
+
+        const levelElement = document.getElementById("sidebar-level");
+        if (level && levelElement) {
+            levelElement.innerText = level;
+        }
+
+        const logoutBtn = document.getElementById("logout-btn");
+        if(logoutBtn) {
+            logoutBtn.addEventListener("click", function() {
+                sessionStorage.clear();
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shadow Match Lesson | MiniToons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    :root {
+      --bg-gradient: #93c4f4;
+      --accent-color: #FF6B6B;
+      --card-back-bg: #6C5CE7;
+      --rainbow-red: #FF5E78;
+      --rainbow-orange: #FF9F43;
+      --rainbow-yellow: #FFD93D;
+      --rainbow-green: #2ecc71;
+      --rainbow-blue: #4D96FF;
+      --rainbow-purple: #927DFF;
+      --dark-navy: #2D3436;
+      --glass: rgba(255, 255, 255, 0.95);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg-gradient);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* 🚪 Sidebar Styles */
+    .sidebar {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      height: 100vh;
+      border-right: 1px solid rgba(0,0,0,0.08);
+      padding: 25px 15px;
+      position: fixed;
+      width: 260px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+    .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+    .child-profile-box { text-align: center; background: white; border-radius: 25px; padding: 15px; margin-bottom: 20px; border: 2px solid rgba(0,0,0,0.03); cursor:pointer; }
+    .avatar-img { width: 65px; height: 65px; background: #f0f4f8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 10px; border: 3px solid var(--rainbow-blue); }
+
+    .nav-link-custom { transition: all 0.3s; border-left: 5px solid transparent; margin-bottom: 5px; font-weight: 700; padding: 10px 18px; border-radius: 12px; display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem; }
+    .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+
+    .nav-lessons.active {
+      color: #6C5CE7 !important;
+      background: rgba(108, 92, 231, 0.08);
+      border-left-color: #6C5CE7;
+    }
+
+    .nav-link-custom:hover {
+      color: var(--rainbow-green) !important;
+      background: rgba(46, 204, 113, 0.08);
+      border-left-color: var(--rainbow-green);
+      transform: translateX(5px);
+    }
+
+    .logout-container {
+      margin-top: auto;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-top: 15px;
+    }
+
+    .btn-logout {
+      color: var(--rainbow-red) !important;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(255, 94, 120, 0.08);
+      transform: translateX(5px);
+    }
+
+    /* 📝 Main Content Area */
+    .main-content {
+      margin-left: 260px;
+      padding: 20px;
+      flex: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .main-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #4834D4;
+      margin-top: 0;
+      text-shadow: 3px 3px 0px white;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+    }
+
+    .stats-container {
+      background: white;
+      padding: 8px 25px;
+      border-radius: 50px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+      font-weight: 700;
+      color: #666;
+      border: 3px solid #6C5CE7;
+    }
+
+    .lesson-box {
+      background: white;
+      border-radius: 30px;
+      padding: 30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+      max-width: 700px;
+      width: 95%;
+      border: 4px solid #F0EEFF;
+    }
+
+    .original-item {
+      background: #F8F9FA;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      border: 3px dashed #6C5CE7;
+    }
+
+    .original-item i {
+      font-size: 5rem;
+      color: #FF6B6B;
+    }
+
+    .shadow-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .shadow-card {
+      background: #F8F9FA;
+      border: 3px solid #E9ECEF;
+      border-radius: 20px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .shadow-card i {
+      font-size: 3.5rem;
+      color: #2D3436; /* නිකන් කළු/අළු පාට හෙවණැල්ලක් වගේ පෙන්නන්න */
+      opacity: 0.9;
+    }
+
+    .shadow-card:hover {
+      transform: translateY(-5px);
+      border-color: #6C5CE7;
+      background: #F4F3FF;
+    }
+
+    .shadow-card.correct {
+      background: #E8F5E9 !important;
+      border-color: #2ecc71 !important;
+      animation: pulse 0.5s;
+    }
+
+    .shadow-card.wrong {
+      background: #FFEBEE !important;
+      border-color: #FF5E78 !important;
+      animation: shakeX 0.5s;
+    }
+
+    .back-btn {
+      margin: 25px 0 0 0;
+      padding: 12px 35px;
+      border-radius: 50px;
+      background: #6C5CE7;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.3s;
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+    }
+
+    .back-btn:hover {
+      background: #4834D4;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* Win Overlay */
+    .win-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(108, 92, 231, 0.9);
+      z-index: 2000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .win-card {
+      background: white;
+      padding: 40px;
+      border-radius: 40px;
+      text-align: center;
+      color: #333;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    @media (max-width: 992px) { .sidebar { width: 80px; } .sidebar span, .brand-text { display: none; } .main-content { margin-left: 80px; } }
+  </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+  <a href="#" class="sidebar-brand">
+    <div class="brand-text">
+      <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+    </div>
+    <div class="brand-text" style="font-size:1.8rem; margin-top:-5px;">
+      <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+    </div>
+  </a>
+
+  <a href="profile.html" class="text-decoration-none">
+    <div class="child-profile-box shadow-sm">
+      <div class="avatar-img" id="sidebar-avatar">👦</div>
+      <h6 class="fw-bold mb-0" style="color: var(--dark-navy);" id="sidebar-name">Little Adventurer</h6>
+      <small class="text-muted fw-bold" id="sidebar-level">Explorer</small>
+    </div>
+  </a>
+
+  <nav class="nav-links">
+    <a href="child-dashboard.html" class="nav-link-custom nav-dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+    <a href="lessons.html" class="nav-link-custom nav-lessons active"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+    <a href="songs.html" class="nav-link-custom nav-songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+    <a href="cartoons.html" class="nav-link-custom nav-cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+    <a href="quizzes.html" class="nav-link-custom nav-quizzes"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+  </nav>
+
+  <div class="logout-container">
+    <a href="index.html" class="btn-logout" id="logout-btn">
+      <i class="bi bi-box-arrow-right me-2"></i> <span>Logout</span>
+    </a>
+  </div>
+</div>
+
+<div class="main-content">
+  <h1 class="main-title animate__animated animate__rubberBand">Find the Shadow 🕵️‍♂️</h1>
+
+  <div class="stats-container animate__animated animate__fadeInDown">
+    Lesson Progress: <span id="progress-text" style="color:#6C5CE7;">1 / 10</span>
+  </div>
+
+  <div class="lesson-box">
+    <div class="row align-items-center g-4">
+      <div class="col-md-5">
+        <div class="original-item">
+          <i id="main-icon" class="fas fa-apple-whole"></i>
+          <h3 class="mt-3 fw-bold" id="item-text" style="font-family: 'Fredoka'; color: #4834D4;">A for Apple</h3>
+        </div>
+      </div>
+
+      <div class="col-md-7">
+        <p class="text-center fw-bold text-muted mb-3">Can you find the correct shadow?</p>
+        <div class="shadow-grid" id="shadow-grid">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="lessons.html" class="back-btn">
+    <i class="fas fa-arrow-left me-2"></i> Back to Lessons
+  </a>
+</div>
+
+<div class="win-overlay" id="winOverlay">
+  <div class="win-card animate__animated animate__zoomIn">
+    <i class="fas fa-star mb-3" style="font-size: 4rem; color: #FFD700;"></i>
+    <h2 class="fw-bold" style="font-family: 'Fredoka'; font-size: 2.3rem;">Great Job!</h2>
+    <p class="mb-4 lead">You completed all 10 Shadow Lessons!</p>
+    <a href="find-same-quiz.html" class="btn btn-lg rounded-pill px-5 fw-bold" style="background:#6C5CE7; color:white; text-decoration:none;">Go to Quiz 🏆</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // ඉගෙනගන්න දේවල් 10ක් දාලා තියෙනවා (පින්තූරය, අකුර සහ icon code එක)
+  const lessonData = [
+    { icon: 'fa-apple-whole', label: 'A for Apple', color: '#FF5E78' },
+    { icon: 'fa-bell', label: 'B for Bell', color: '#FF9F43' },
+    { icon: 'fa-cat', label: 'C for Cat', color: '#FFD93D' },
+    { icon: 'fa-dog', label: 'D for Dog', color: '#4D96FF' },
+    { icon: 'fa-egg', label: 'E for Egg', color: '#927DFF' },
+    { icon: 'fa-fish', label: 'F for Fish', color: '#FF5E78' },
+    { icon: 'fa-guitar', label: 'G for Guitar', color: '#FF9F43' },
+    { icon: 'fa-house', label: 'H for House', color: '#FFD93D' },
+    { icon: 'fa-ice-cream', label: 'I for Ice-cream', color: '#4D96FF' },
+    { icon: 'fa-jar', label: 'J for Jar', color: '#927DFF' }
+  ];
+
+  // වැරදි හෙවණැලි පෙන්නන්න icons ටිකක් (තවත් icons ටිකක් ඇතුලත් කරලා තියෙනවා)
+  const distractors = ['fa-rocket', 'fa-star', 'fa-ghost', 'fa-heart', 'fa-car', 'fa-sun', 'fa-moon', 'fa-tree', 'fa-anchor', 'fa-bone', 'fa-cloud', 'fa-umbrella', 'fa-plane', 'fa-bus', 'fa-hat-cowboy', 'fa-lightbulb'];
+
+  let currentStep = 0;
+  let canClick = true;
+
+  function loadStep() {
+    canClick = true;
+    const currentData = lessonData[currentStep];
+
+    document.getElementById('progress-text').innerText = `${currentStep + 1} / ${lessonData.length}`;
+    document.getElementById('main-icon').className = `fas ${currentData.icon}`;
+    document.getElementById('main-icon').style.color = currentData.color;
+    document.getElementById('item-text').innerText = currentData.label;
+
+    // වෙනත් හෙවණැලි 3ක් ගන්නවා
+    let otherOptions = distractors.filter(d => d !== currentData.icon);
+    let roundOptions = [];
+
+    for(let i=0; i<3; i++) {
+      let randIdx = Math.floor(Math.random() * otherOptions.length);
+      roundOptions.push(otherOptions[randIdx]);
+      otherOptions.splice(randIdx, 1);
+    }
+
+    roundOptions.push(currentData.icon);
+    roundOptions.sort(() => Math.random() - 0.5); // Shuffle
+
+    const grid = document.getElementById('shadow-grid');
+    grid.innerHTML = "";
+
+    roundOptions.forEach(icon => {
+      const card = document.createElement('div');
+      card.className = "shadow-card animate__animated animate__fadeIn";
+      card.innerHTML = `<i class="fas ${icon}"></i>`;
+      card.onclick = () => handleChoice(icon, card, currentData.icon);
+      grid.appendChild(card);
+    });
+  }
+
+  function handleChoice(selectedIcon, element, correctIcon) {
+    if (!canClick) return;
+    canClick = false;
+
+    if (selectedIcon === correctIcon) {
+      element.classList.add('correct');
+
+      setTimeout(() => {
+        currentStep++;
+        if (currentStep < lessonData.length) {
+          loadStep();
+        } else {
+          document.getElementById('winOverlay').style.display = 'flex';
+        }
+      }, 1000);
+
+    } else {
+      element.classList.add('wrong');
+      setTimeout(() => {
+        element.classList.remove('wrong');
+        canClick = true; // වැරදුනොත් ආයෙ click කරන්න දෙනවා
+      }, 600);
+    }
+  }
+
+  window.onload = loadStep;
+
+  // Profile Data Load කිරීම
+  document.addEventListener("DOMContentLoaded", function() {
+    const name = sessionStorage.getItem("childName");
+    const gender = sessionStorage.getItem("childGender");
+    const level = sessionStorage.getItem("childLevel");
+
+    const nameElement = document.getElementById("sidebar-name");
+    if (name && nameElement) nameElement.innerText = name;
+
+    const avatarElement = document.getElementById("sidebar-avatar");
+    if (gender && avatarElement) {
+      const upperGender = gender.toUpperCase();
+      if (upperGender === "FEMALE" || upperGender === "GIRL") {
+        avatarElement.innerText = "👧";
+        avatarElement.style.borderColor = "var(--rainbow-red)";
+      } else {
+        avatarElement.innerText = "👦";
+        avatarElement.style.borderColor = "var(--rainbow-blue)";
+      }
+    }
+
+    const levelElement = document.getElementById("sidebar-level");
+    if (level && levelElement) levelElement.innerText = level;
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if(logoutBtn) {
+      logoutBtn.addEventListener("click", function() {
+        sessionStorage.clear();
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

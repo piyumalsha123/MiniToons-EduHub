@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Same Game | MiniToons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78;
+            --rainbow-orange: #FF9F43;
+            --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71;
+            --rainbow-blue: #4D96FF;
+            --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #d48ae6 0%, #E3F2FD 100%);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* 🚪 Sidebar Styles */
+        .sidebar {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            height: 100vh;
+            border-right: 1px solid rgba(0,0,0,0.08);
+            padding: 25px 15px;
+            position: fixed;
+            width: 260px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+        .child-profile-box { text-align: center; background: white; border-radius: 25px; padding: 15px; margin-bottom: 20px; border: 2px solid rgba(0,0,0,0.03); cursor:pointer; }
+        .avatar-img { width: 65px; height: 65px; background: #f0f4f8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 10px; border: 3px solid var(--rainbow-blue); }
+
+        .nav-link-custom { transition: all 0.3s; border-left: 5px solid transparent; margin-bottom: 5px; font-weight: 700; padding: 10px 18px; border-radius: 12px; display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem; }
+        .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+
+        .nav-quizzes.active {
+            color: var(--rainbow-purple) !important;
+            background: rgba(146, 125, 255, 0.08);
+            border-left-color: var(--rainbow-purple);
+        }
+
+        .nav-link-custom:hover {
+            color: var(--rainbow-green) !important;
+            background: rgba(46, 204, 113, 0.08);
+            border-left-color: var(--rainbow-green);
+            transform: translateX(5px);
+        }
+
+        .logout-container {
+            margin-top: auto;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 15px;
+        }
+
+        .btn-logout {
+            color: var(--rainbow-red) !important;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 94, 120, 0.08);
+            transform: translateX(5px);
+        }
+
+        /* 📝 Main Content Area */
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+            flex: 1;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 40px;
+            border: 8px solid #6C5CE7;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            max-width: 550px;
+            width: 100%;
+            padding: 25px;
+            text-align: center;
+        }
+
+        /* Game Board Styles */
+        .target-box {
+            font-size: 4.5rem;
+            background: #F4F0FF;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 15px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px dashed #6C5CE7;
+            animation: pulse 2s infinite;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .emoji-block {
+            background: #F8F9FA;
+            border: 4px solid #E9ECEF;
+            border-radius: 25px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 0 #E9ECEF;
+        }
+
+        .emoji-block:hover {
+            transform: translateY(-5px);
+            background: #FFFBF0;
+            border-color: #FFD93D;
+            box-shadow: 0 12px 0 #FFD93D;
+        }
+
+        .emoji-block:active {
+            transform: translateY(3px);
+            box-shadow: 0 4px 0 #FFD93D;
+        }
+
+        /* Blast & Match Effects */
+        .emoji-block.correct-blast {
+            background: #E8F5E9 !important;
+            border-color: #2ecc71 !important;
+            box-shadow: 0 8px 0 #2ecc71 !important;
+            animation: jello 0.8s;
+        }
+
+        .emoji-block.wrong-shake {
+            background: #FFEBEE !important;
+            border-color: #FF5E78 !important;
+            box-shadow: 0 8px 0 #FF5E78 !important;
+            animation: shakeX 0.6s;
+        }
+
+        .progress { height: 12px; border-radius: 10px; background: #eef2f7; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 992px) { .sidebar { width: 80px; } .sidebar span, .brand-text { display: none; } .main-content { margin-left: 80px; } }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size:1.8rem; margin-top:-5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <a href="profile.html" class="text-decoration-none">
+        <div class="child-profile-box shadow-sm">
+            <div class="avatar-img" id="sidebar-avatar">👦</div>
+            <h6 class="fw-bold mb-0" style="color: var(--dark-navy);" id="sidebar-name">Little Adventurer</h6>
+            <small class="text-muted fw-bold" id="sidebar-level">Explorer</small>
+        </div>
+    </a>
+
+    <nav class="nav-links">
+        <a href="child-dashboard.html" class="nav-link-custom nav-dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+        <a href="lessons.html" class="nav-link-custom nav-lessons"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+        <a href="songs.html" class="nav-link-custom nav-songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+        <a href="cartoons.html" class="nav-link-custom nav-cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+        <a href="quizzes.html" class="nav-link-custom nav-quizzes active"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+    </nav>
+
+    <div class="logout-container">
+        <a href="index.html" class="btn-logout" id="logout-btn">
+            <i class="bi bi-box-arrow-right me-2"></i> <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="game-card animate__animated animate__zoomIn">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge bg-primary rounded-pill px-3 fw-bold" id="questionCounter" style="background-color: #6C5CE7 !important; font-size:1rem;">Match 1/10</span>
+            <a href="quizzes.html" class="btn-close" aria-label="Close"></a>
+        </div>
+
+        <div class="progress mb-3">
+            <div id="quizProgress" class="progress-bar bg-primary" style="width: 10%; background-color: #6C5CE7 !important;"></div>
+        </div>
+
+        <div id="game-ui">
+            <p class="fw-bold text-muted mb-1" style="font-size: 1.1rem;">Find the matching one!</p>
+            <div class="target-box" id="target-box">🚀</div>
+
+            <div class="grid-container" id="emoji-grid">
+            </div>
+        </div>
+
+        <div id="result-ui" class="d-none py-3 animate__animated animate__fadeIn">
+            <h1 style="font-size: 5rem;" id="result-emoji">🎉🏆🎉</h1>
+            <h2 class="fw-bold" style="font-family: 'Fredoka'; color: #2D3436;" id="result-title">Wow! Amazing!</h2>
+            <p class="fs-4 fw-bold mb-4">You scored <span id="finalScore" style="color: #6C5CE7;">0</span>/10 points!</p>
+            <div class="d-flex flex-column gap-2 align-items-center">
+                <a href="quizzes.html" class="btn btn-lg rounded-pill px-5 fw-bold shadow text-white w-75" style="background-color: #6C5CE7;">Back to Quizzes 🏆</a>
+                <a href="lessons.html" class="btn btn-lg btn-outline-primary rounded-pill px-5 fw-bold w-75" style="color: #6C5CE7; border-color: #6C5CE7;">Back to Lessons 📚</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    // ළමයින් ආස කරන ලස්සන Emojis 20ක්
+    const allEmojis = ["🚀", "🛸", "⭐️", "🎨", "🧸", "🎈", "🍭", "🍦", "🐶", "🐱", "🦁", "🐵", "🍓", "🍎", "🍕", "🍔", "🚗", "✈️", "🚂", "🏰"];
+
+    let currentQ = 0;
+    let score = 0;
+    let currentTarget = "";
+
+    window.onload = () => {
+        loadGameRound();
+    };
+
+    function loadGameRound() {
+        document.getElementById('questionCounter').innerText = `Match ${currentQ + 1}/10`;
+        document.getElementById('quizProgress').style.width = `${(currentQ + 1) * 10}%`;
+
+        // Random විදියට target emoji එකක් ගන්නවා
+        currentTarget = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+        document.getElementById('target-box').innerText = currentTarget;
+
+        // ඉතිරි කොටු 3ට වෙනත් emojis ගන්නවා
+        let otherEmojis = allEmojis.filter(e => e !== currentTarget);
+        let roundOptions = [];
+
+        for(let i=0; i<3; i++) {
+            let randIdx = Math.floor(Math.random() * otherEmojis.length);
+            roundOptions.push(otherEmojis[randIdx]);
+            otherEmojis.splice(randIdx, 1);
+        }
+
+        roundOptions.push(currentTarget);
+        // කොටු 4 එකම තැනක වැටෙන්නෙ නැති වෙන්න Shuffle කරනවා
+        roundOptions.sort(() => Math.random() - 0.5);
+
+        const grid = document.getElementById('emoji-grid');
+        grid.innerHTML = "";
+
+        roundOptions.forEach(emoji => {
+            const block = document.createElement('div');
+            block.className = "emoji-block";
+            block.innerText = emoji;
+            block.onclick = () => checkChoice(emoji, block);
+            grid.appendChild(block);
+        });
+    }
+
+    function checkChoice(selectedEmoji, element) {
+        const allBlocks = document.querySelectorAll('.emoji-block');
+        allBlocks.forEach(b => b.style.pointerEvents = "none"); // තප්පරේකට click කරන්න බැරි කරනවා
+
+        if (selectedEmoji === currentTarget) {
+            score++;
+            element.classList.add('correct-blast');
+
+            // Blast effect එක මෙන්න 👇
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        } else {
+            element.classList.add('wrong-shake');
+
+            // වැරදුනොත් හරි එක කොළ පාට කරලා පෙන්වනවා
+            allBlocks.forEach(b => {
+                if(b.innerText === currentTarget) {
+                    b.classList.add('correct-blast');
+                }
+            });
+        }
+
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ < 10) {
+                loadGameRound();
+            } else {
+                showFinalResults();
+            }
+        }, 1200);
+    }
+
+    function showFinalResults() {
+        document.getElementById('game-ui').classList.add('d-none');
+        document.getElementById('result-ui').classList.remove('d-none');
+        document.getElementById('finalScore').innerText = score;
+
+        const resultEmoji = document.getElementById('result-emoji');
+        const resultTitle = document.getElementById('result-title');
+
+        if(score >= 8) {
+            resultEmoji.innerText = "🎉🏆🎉";
+            resultTitle.innerText = "Wow! Amazing!";
+            // ලකුණු ගොඩක් ගත්තම ලොකු Blast එකක් වෙනවා
+            confetti({ particleCount: 200, spread: 100 });
+        } else if(score >= 5) {
+            resultEmoji.innerText = "👍⭐️👍";
+            resultTitle.innerText = "Good Job! Keep it up!";
+        } else {
+            resultEmoji.innerText = "🧸📚🧸";
+            resultTitle.innerText = "Nice Try! Let's Practice!";
+        }
+
+        // 🚀 [අලුත් කොටස] Dashboard එක Update වෙන්න මෙතන ඉඳන් Backend එකට Data යවනවා
+        const childId = sessionStorage.getItem("childId");
+        const token = localStorage.getItem("jwtToken"); // JWT Token එක ගන්නවා
+
+        const progressData = {
+            childId: parseInt(childId),
+            lessonName: "Find the Same", // Quiz එකේ නම
+            category: "Logic",           // Dashboard එකේ Logic progress bar එකට යන්න
+            starsEarned: score,          // ළමයා මේ game එකෙන් ගත්ත Score එක Stars විදියට යනවා
+            isCompleted: true
+        };
+
+        // Backend API එකට දත්ත යැවීම
+        fetch("http://localhost:8080/api/progress/save", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(progressData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Progress saved successfully in backend! 🚀");
+                } else {
+                    console.error("Failed to save progress. Status:", response.status);
+                }
+            })
+            .catch(error => {
+                console.error("Error saving progress to database:", error);
+            });
+    }
+    // Profile Data Load කිරීම
+    document.addEventListener("DOMContentLoaded", function() {
+        const name = sessionStorage.getItem("childName");
+        const gender = sessionStorage.getItem("childGender");
+        const level = sessionStorage.getItem("childLevel");
+
+        const nameElement = document.getElementById("sidebar-name");
+        if (name && nameElement) nameElement.innerText = name;
+
+        const avatarElement = document.getElementById("sidebar-avatar");
+        if (gender && avatarElement) {
+            const upperGender = gender.toUpperCase();
+            if (upperGender === "FEMALE" || upperGender === "GIRL") {
+                avatarElement.innerText = "👧";
+                avatarElement.style.borderColor = "var(--rainbow-red)";
+            } else {
+                avatarElement.innerText = "👦";
+                avatarElement.style.borderColor = "var(--rainbow-blue)";
+            }
+        }
+
+        const levelElement = document.getElementById("sidebar-level");
+        if (level && levelElement) levelElement.innerText = level;
+
+        const logoutBtn = document.getElementById("logout-btn");
+        if(logoutBtn) {
+            logoutBtn.addEventListener("click", function() {
+                sessionStorage.clear();
+            });
+        }
+    });
+</script>
+</body>
+</html>

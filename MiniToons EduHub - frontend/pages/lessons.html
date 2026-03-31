@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Lessons | MiniToons EduHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78;
+            --rainbow-orange: #FF9F43;
+            --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71;
+            --rainbow-blue: #4D96FF;
+            --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; min-height: 100vh; margin: 0; overflow-x: hidden; }
+
+        /* --- Sidebar --- */
+        .sidebar { background: var(--glass); backdrop-filter: blur(15px); height: 100vh; border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px; position: fixed; width: 260px; z-index: 1000; display: flex; flex-direction: column; overflow: hidden; }
+        .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+        .child-profile-box { text-align: center; background: white; border-radius: 25px; padding: 15px; margin-bottom: 20px; border: 2px solid rgba(0,0,0,0.03); cursor:pointer; position: relative; /* 👈 Mobile oval effect එකට */ }
+        .avatar-img { width: 65px; height: 65px; background: #f0f4f8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 10px; border: 3px solid var(--rainbow-blue); position: relative; z-index: 2; /* 👈 Mobile view එකට */ }
+
+        .nav-link-custom { transition: all 0.3s; border-left: 5px solid transparent; margin-bottom: 5px; font-weight: 700; padding: 10px 18px; border-radius: 12px; display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem; }
+        .nav-link-custom i { font-size: 1.1rem; margin-right: 12px; }
+
+        .nav-lessons.active {
+            color: var(--rainbow-green) !important;
+            background: rgba(46, 204, 113, 0.08);
+            border-left-color: var(--rainbow-green);
+        }
+
+        .nav-link-custom:hover {
+            color: var(--rainbow-purple) !important;
+            background: rgba(146, 125, 255, 0.08);
+            border-left-color: var(--rainbow-purple);
+            transform: translateX(5px);
+        }
+
+        .logout-container {
+            margin-top: auto;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 15px;
+        }
+
+        .btn-logout {
+            color: var(--rainbow-red) !important;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 94, 120, 0.08);
+            transform: translateX(5px);
+        }
+
+        /* --- Main Content --- */
+        .main-content { margin-left: 260px; padding: 35px; }
+        .filter-pill { border: none; padding: 8px 20px; border-radius: 20px; font-weight: 700; background: white; color: var(--dark-navy); margin-right: 8px; margin-bottom: 10px; transition: 0.3s; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor:pointer; }
+        .filter-pill.active { background: var(--rainbow-purple); color: white; }
+
+        .lesson-card { background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.04); transition: 0.3s ease; border: none; height: 100%; display: flex; flex-direction: column; text-decoration:none !important; color: inherit;}
+        .lesson-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+        .lesson-img-top { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+        .card-body-custom { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .btn-play { border-radius: 12px; font-weight: 800; padding: 10px; width: 100%; border: none; color: white; font-size: 0.9rem; margin-top: auto; text-align:center; }
+        .subject-tag { font-weight: 800; font-size: 0.65rem; padding: 3px 10px; border-radius: 8px; display: inline-block; margin-bottom: 8px; text-transform: uppercase; }
+
+        /* --- ⚠️ මෙන්න මේ RESPONSIVE කොටස විතරයි මම වෙනස් කළේ --- */
+        @media (max-width: 992px) {
+            /* Sidebar එක කෙට්ටු කිරීම */
+            .sidebar {
+                width: 90px;
+                padding: 20px 10px;
+                align-items: center;
+                background: #FFFDF5; /* Photo එකේ තිබුණු soft background පාට */
+            }
+            .sidebar span, .sidebar-brand, .child-profile-box h6, .child-profile-box small {
+                display: none !important;
+            }
+            .main-content { margin-left: 90px; padding: 20px; }
+
+            /* Avatar එක Image එකේ වගේ overflow oval shape එකක් කිරීම */
+            .child-profile-box {
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin-bottom: 25px;
+                width: 65px;
+                display: flex;
+                justify-content: center;
+            }
+            .child-profile-box::before {
+                content: '';
+                position: absolute;
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%);
+                width: 45px; height: 85px;
+                background: white;
+                border-radius: 25px;
+                z-index: 1;
+            }
+            .avatar-img {
+                width: 60px; height: 60px;
+                font-size: 1.8rem;
+                margin: 0;
+                background: white;
+                border: 4px solid var(--rainbow-blue);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+
+            /* Nav Links Icons Only කිරීම */
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+                width: 100%;
+            }
+            .nav-link-custom {
+                width: 50px; height: 50px;
+                justify-content: center;
+                padding: 0;
+                border-radius: 18px;
+                border-left: none;
+            }
+            .nav-link-custom:hover { transform: none; }
+            .nav-link-custom i { font-size: 1.5rem; margin-right: 0; }
+
+            /* Active icon එකට Photo එකේ වගේ soft background එකක් දීම */
+            .nav-lessons.active {
+                color: var(--rainbow-green) !important;
+                background: #EEFDF3;
+            }
+
+            /* Logout Button එකත් රවුම් කිරීම */
+            .logout-container { border-top: none; }
+            .btn-logout {
+                width: 50px; height: 50px;
+                justify-content: center;
+                padding: 0;
+                border-radius: 18px;
+                display: flex;
+                align-items: center;
+            }
+            .btn-logout:hover { transform: none; }
+            .btn-logout i { font-size: 1.5rem; margin-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size:1.8rem; margin-top:-5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <a href="profile.html" class="text-decoration-none">
+        <div class="child-profile-box shadow-sm" style="cursor: pointer; transition: 0.3s;">
+            <div class="avatar-img" id="sidebar-avatar">👦</div>
+            <h6 class="fw-bold mb-0" style="color: var(--dark-navy);" id="sidebar-name">Little Adventurer</h6>
+            <small class="text-muted fw-bold" id="sidebar-level">Explorer</small>
+        </div>
+    </a>
+
+    <nav class="nav-links">
+        <a href="child-dashboard.html" class="nav-link-custom nav-dashboard" title="Dashboard"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+        <a href="lessons.html" class="nav-link-custom nav-lessons active" title="Lessons"><i class="bi bi-book-half"></i> <span>Lessons</span></a>
+        <a href="songs.html" class="nav-link-custom nav-songs" title="Fun Songs"><i class="bi bi-music-note-beamed"></i> <span>Fun Songs</span></a>
+        <a href="cartoons.html" class="nav-link-custom nav-cartoons" title="Cartoons"><i class="bi bi-play-circle-fill"></i> <span>Cartoons</span></a>
+        <a href="quizzes.html" class="nav-link-custom nav-quizzes" title="Quizzes"><i class="bi bi-trophy-fill"></i> <span>Quizzes</span></a>
+    </nav>
+
+    <div class="logout-container">
+        <a href="index.html" class="btn-logout" id="logout-btn" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+
+<div class="main-content">
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1" id="welcome-text">Preschool Lessons 🎈</h2>
+        <p class="text-muted fw-bold">Let's learn and discover something new today!</p>
+
+        <div class="mt-4 d-flex flex-wrap" id="filterContainer">
+            <button class="filter-pill active" data-filter="All">All Lessons</button>
+            <button class="filter-pill" data-filter="Math">Numbers</button>
+            <button class="filter-pill" data-filter="Language">Alphabets</button>
+            <button class="filter-pill" data-filter="Nature">Nature</button>
+            <button class="filter-pill" data-filter="Logic">Logic</button>
+        </div>
+    </div>
+
+    <div class="row g-4" id="lessonContainer">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_URL = "http://localhost:8080/api/v1/lessons";
+    let lessonsData = [];
+
+    async function loadLessons() {
+        try {
+            const res = await fetch(API_URL);
+            lessonsData = await res.json();
+            renderLessons(lessonsData);
+        } catch (err) {
+            console.error("Error loading lessons", err);
+            lessonsData = [
+                {title: "Learn Numbers", category: "Math", ageGroup: "3-5", contentUrl: "find-the-same.html", status: "active"},
+                {title: "Learn ABC", category: "Language", ageGroup: "3-5", contentUrl: "#", status: "active"},
+                {title: "Our Animals", category: "Nature", ageGroup: "4-6", contentUrl: "#", status: "active"}
+            ];
+            renderLessons(lessonsData);
+        }
+    }
+
+    function renderLessons(lessons) {
+        const container = document.getElementById("lessonContainer");
+        container.innerHTML = "";
+
+        if (!lessons || lessons.length === 0) {
+            container.innerHTML = '<div class="col-12 text-center text-white"><p class="fs-4 fw-bold">No lessons found in this category! 🚀</p></div>';
+            return;
+        }
+
+        lessons.forEach(lesson => {
+            if (lesson.status && lesson.status.toLowerCase() !== "active") return;
+
+            let icon = "📚", bg = "#fff0f3", color="var(--rainbow-red)";
+            const category = lesson.category ? lesson.category.trim() : "";
+
+            if(category === "Maths" || category === "Math") { icon="🔢"; bg="#fff0f3"; color="var(--rainbow-red)"; }
+            if(category === "Language") { icon="🔤"; bg="#eefdf3"; color="var(--rainbow-purple)"; }
+            if(category === "Nature") { icon="🌿"; bg="#f5f3ff"; color="var(--rainbow-green)"; }
+            if(category === "Logic") { icon="🧩"; bg="#fff9e6"; color="var(--rainbow-orange)"; }
+
+            const card = document.createElement("div");
+            card.className = "col-md-6 col-lg-4";
+
+            card.innerHTML = `
+            <div class="lesson-card">
+                <div class="lesson-img-top" style="background:${bg}">${icon}</div>
+                <div class="card-body-custom">
+                    <span class="subject-tag" style="color:${color}">${category}</span>
+                    <h5 class="fw-bold mb-1">${lesson.title || 'No Title'}</h5>
+                    <p class="text-muted small fw-bold">Age Group: ${lesson.ageGroup || 'All'}</p>
+                    <a href="${lesson.contentUrl || '#'}" class="btn-play" style="background:${color}; text-decoration:none;">Start Learning 🚀</a>
+                </div>
+            </div>
+        `;
+            container.appendChild(card);
+        });
+    }
+
+    document.querySelectorAll(".filter-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".filter-pill").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.getAttribute("data-filter");
+
+            if (filter === "All") {
+                renderLessons(lessonsData);
+            } else {
+                const filtered = lessonsData.filter(l => {
+                    const cat = l.category ? l.category.trim().toLowerCase() : "";
+                    const filterLower = filter.toLowerCase();
+
+                    if (filterLower === "math") {
+                        return cat === "math" || cat === "maths";
+                    }
+                    return cat === filterLower;
+                });
+
+                renderLessons(filtered);
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        loadLessons();
+
+        const name = sessionStorage.getItem("childName");
+        const gender = sessionStorage.getItem("childGender");
+        const level = sessionStorage.getItem("childLevel");
+
+        const nameElement = document.getElementById("sidebar-name");
+        const welcomeElement = document.getElementById("welcome-text");
+
+        if (name && nameElement) {
+            nameElement.innerText = name;
+            if(welcomeElement) welcomeElement.innerText = `Hello, ${name}! 👋`;
+        }
+
+        const avatarElement = document.getElementById("sidebar-avatar");
+        if (gender && avatarElement) {
+            const upperGender = gender.toUpperCase();
+            if (upperGender === "FEMALE" || upperGender === "GIRL") {
+                avatarElement.innerText = "👧";
+                avatarElement.style.borderColor = "var(--rainbow-red)";
+            } else {
+                avatarElement.innerText = "👦";
+                avatarElement.style.borderColor = "var(--rainbow-blue)";
+            }
+        }
+
+        const levelElement = document.getElementById("sidebar-level");
+        if (level && levelElement) {
+            levelElement.innerText = level;
+        }
+
+        const logoutBtn = document.getElementById("logout-btn");
+        if(logoutBtn) {
+            logoutBtn.addEventListener("click", function() {
+                sessionStorage.clear();
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Profiles | MiniToons EduHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --rainbow-red: #FF5E78;
+            --rainbow-orange: #FF9F43;
+            --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71;
+            --rainbow-blue: #4D96FF;
+            --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+        body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; margin: 0; }
+        .sidebar { background: var(--glass); backdrop-filter: blur(15px); height: 100vh; border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px; position: fixed; width: 260px; z-index: 1000; display: flex; flex-direction: column; }
+        .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+        .nav-link-custom { transition: 0.3s; border-left: 5px solid transparent; margin-bottom: 5px; font-weight: 700; padding: 10px 18px; border-radius: 12px; display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem; }
+        .nav-profiles.active { color: var(--rainbow-orange) !important; background: rgba(255, 159, 67, 0.08); border-left-color: var(--rainbow-orange); }
+        .nav-dashboard:hover, .nav-dashboard.active { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+        .nav-profiles:hover, .nav-profiles.active { color: var(--rainbow-orange) !important; background: rgba(255, 159, 67, 0.08); border-left-color: var(--rainbow-orange); }
+        .nav-learning:hover, .nav-learning.active { color: var(--rainbow-purple) !important; background: rgba(146, 125, 255, 0.08); border-left-color: var(--rainbow-purple); }
+        .main-content { margin-left: 260px; padding: 35px; }
+        .profile-container { background: white; border-radius: 30px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+        .table-custom thead { background: #f8fafc; }
+        .table-custom th { border: none; padding: 20px; font-weight: 800; color: var(--dark-navy); }
+        .table-custom td { padding: 18px 20px; vertical-align: middle; border-top: 1px solid #f1f3f5; font-weight: 600; }
+        .gender-option { border: 3px solid #f1f3f5; border-radius: 20px; padding: 15px; cursor: pointer; transition: 0.3s; text-align: center; background: #f8fafc; }
+        .gender-option:hover { transform: translateY(-5px); border-color: var(--rainbow-blue); }
+        .gender-radio:checked + .gender-option { border-color: var(--rainbow-blue); background: rgba(77, 150, 255, 0.1); }
+        .gender-radio { display: none; }
+        .gender-icon { font-size: 2.5rem; display: block; }
+        .form-control-custom { border-radius: 15px; background: #f1f3f5; border: 2px solid transparent; padding: 12px 20px; font-weight: 600; transition: 0.3s; }
+        .form-control-custom:focus { background: white; border-color: var(--rainbow-blue); box-shadow: none; }
+        .btn-round { border-radius: 15px; padding: 12px 25px; font-weight: 700; }
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; }
+            .sidebar span, .brand-text { display: none; }
+            .main-content { margin-left: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size: 1.8rem; margin-top: -5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <nav>
+        <a href="parent-dashboard.html" class="nav-link-custom nav-dashboard">
+            <i class="bi bi-graph-up-arrow"></i> <span>Progress Dashboard</span>
+        </a>
+        <a href="child-profiles.html" class="nav-link-custom nav-profiles active">
+            <i class="bi bi-people-fill"></i> <span>Manage Profiles</span>
+        </a>
+        <a href="learning-content.html" class="nav-link-custom nav-learning ">
+            <i class="bi bi-book-half"></i> <span>Learning Content</span>
+        </a>
+    </nav>
+
+    <div class="logout-container mt-auto">
+        <a href="index.html" class="nav-link-custom text-danger border-0"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0" style="color: var(--dark-navy);">Child Profiles 🧑‍🤝‍🧑</h2>
+            <p class="text-muted fw-bold">Manage your little explorers here.</p>
+        </div>
+        <button class="btn btn-primary btn-round border-0 shadow-sm" style="background: var(--rainbow-blue);" data-bs-toggle="modal" data-bs-target="#addChildModal">
+            <i class="bi bi-plus-lg me-2"></i> Add New Child
+        </button>
+    </div>
+
+    <div class="profile-container">
+        <div class="table-responsive">
+            <table class="table table-custom mb-0">
+                <thead>
+                <tr>
+                    <th>Explorer</th>
+                    <th>Username</th>
+                    <th>Age</th>
+                    <th>Password</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- dynamic rows will load here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add Child Modal -->
+<div class="modal fade" id="addChildModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 30px;">
+            <div class="modal-header border-0 pt-4 px-4">
+                <h4 class="fw-bold mb-0">Add New Explorer 🚀</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="addChildForm">
+                    <label class="fw-bold mb-3 d-block">Select Explorer Type:</label>
+                    <div class="row mb-4">
+                        <div class="col-6 text-center">
+                            <input type="radio" name="gender" id="boy" class="gender-radio" value="boy" required>
+                            <label for="boy" class="gender-option d-block w-100">
+                                <span class="gender-icon">👦</span>
+                                <span class="fw-bold">Little Boy</span>
+                            </label>
+                        </div>
+                        <div class="col-6 text-center">
+                            <input type="radio" name="gender" id="girl" class="gender-radio" value="girl">
+                            <label for="girl" class="gender-option d-block w-100">
+                                <span class="gender-icon">👧</span>
+                                <span class="fw-bold">Little Girl</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold mb-2">Child's Name</label>
+                        <input type="text" id="childName" class="form-control form-control-custom" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold mb-2">Login Username</label>
+                            <input type="text" id="username" class="form-control form-control-custom" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold mb-2">Age</label>
+                            <input type="number" id="age" class="form-control form-control-custom" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-bold mb-2">Login Password</label>
+                        <input type="password" id="password" class="form-control form-control-custom" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-round py-3 border-0" style="background: var(--rainbow-green);">Create & Save ✨</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    async function loadChildProfiles() {
+        const token = localStorage.getItem("jwtToken");
+        if (!token) { alert("Please login first ⚠️"); return; }
+        try {
+            const res = await fetch("http://localhost:8080/api/v1/parent/children", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+            if (!res.ok) throw new Error("Failed to fetch children");
+            const children = await res.json();
+            const tbody = document.querySelector(".table-custom tbody");
+            tbody.innerHTML = "";
+            children.forEach(child => {
+                const genderIcon = child.gender === "boy" ? "👦" : "👧";
+                tbody.innerHTML += `
+            <tr data-id="${child.id}">
+                <td><span class="fs-3 me-2">${genderIcon}</span> <strong>${child.name}</strong></td>
+                <td>${child.user.username}</td>
+                <td>${child.age} Years</td>
+                <td>••••••••</td>
+                <td>
+                    <button class="btn btn-light btn-sm rounded-pill px-3 me-2 fw-bold text-primary border-0 btn-edit">Edit</button>
+                    <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold text-danger border-0 btn-delete">Delete</button>
+                </td>
+            </tr>`;
+            });
+        } catch (err) { console.error(err); alert("Unable to load child profiles"); }
+    }
+
+    window.addEventListener("DOMContentLoaded", loadChildProfiles);
+
+    document.getElementById("addChildForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        let name = document.getElementById("childName").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const age = parseInt(document.getElementById("age").value);
+        const password = document.getElementById("password").value;
+        const gender = document.querySelector('input[name="gender"]:checked')?.value;
+        if (!gender) return alert("Please select gender ⚠️");
+        if (!name.toLowerCase().startsWith("little")) name = "Little " + name;
+        const childData = { username, password, name, age, gender };
+        const token = localStorage.getItem("jwtToken");
+        if (!token) return alert("Please login first ⚠️");
+        try {
+            const res = await fetch("http://localhost:8080/api/v1/parent/save", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+                body: JSON.stringify(childData)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert("Child Account Created 🎉");
+                bootstrap.Modal.getInstance(document.getElementById('addChildModal')).hide();
+                document.getElementById("addChildForm").reset();
+                loadChildProfiles();
+            } else alert(data.message || "Failed ❌");
+        } catch (err) { console.error(err); alert("Server Error 🚨"); }
+    });
+
+    document.querySelector(".table-custom tbody").addEventListener("click", async function(e) {
+        if (e.target.closest(".btn-delete")) {
+            const row = e.target.closest("tr");
+            const childId = row.dataset.id;
+            if (!confirm(`Delete this child?`)) return;
+            const token = localStorage.getItem("jwtToken");
+            try {
+                const res = await fetch(`http://localhost:8080/api/v1/parent/delete/${childId}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                if (res.ok) loadChildProfiles();
+                else alert("Delete failed ❌");
+            } catch (err) { console.error(err); }
+        }
+    });
+</script>
+</body>
+</html>

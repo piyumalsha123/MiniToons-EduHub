@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniToons EduHub | Kids Learning & Entertainment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78;
+            --rainbow-orange: #FF9F43;
+            --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71;
+            --rainbow-blue: #6369dd;
+            --rainbow-purple: #927DFF;
+
+            --pastel-blue: #b3dafb;
+            --pastel-pink: #fda8c4;
+            --pastel-green: #b3efa6;
+            --soft-purple: #BDB2FF;
+            --text-dark: #000000;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #F8F9FA;
+            color: var(--text-dark);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fredoka', cursive;
+            font-weight: 700;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom: 4px solid var(--rainbow-yellow);
+        }
+
+        .navbar-brand {
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--rainbow-blue) !important;
+            transform: scale(1.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #A2D2FF, #CDB4DB, #FFC8DD);
+            padding: 80px 0;
+            border-bottom-left-radius: 100px 40px;
+            border-bottom-right-radius: 100px 40px;
+        }
+
+        .hero-title {
+            font-size: 3.6rem;
+            color: #766fcf;
+            margin-bottom: 20px;
+        }
+
+        /* Kids Friendly Buttons */
+        .btn-kids {
+            border-radius: 50px;
+            padding: 12px 35px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-login { background: linear-gradient(45deg, #ffda46, #edb067); color: #ffffff; }
+        .btn-signup { background: linear-gradient(45deg, #FF8FAB, #FF6F91); color: white; }
+
+        .btn-kids:hover { transform: translateY(-3px); color: inherit; box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+
+        /* Feature Cards */
+        .card-container { margin-top: -50px; }
+
+        .feature-card {
+            border-radius: 40px;
+            padding: 40px;
+            background: white;
+            transition: all 0.3s ease;
+            text-align: center;
+            height: 100%;
+            box-shadow: 0 8px 0 #2b2d42;
+            border: 3px solid #fff;
+        }
+
+        .bg-blue { background-color: var(--pastel-blue); }
+        .bg-pink { background-color: var(--pastel-pink); }
+        .bg-green { background-color: var(--pastel-green); }
+
+        .feature-icon { font-size: 3.5rem; margin-bottom: 15px; display: block; }
+
+        /* Parent Zone Section */
+        .parent-zone {
+            background: white;
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 80px;
+            border: 2px dashed var(--rainbow-purple);
+        }
+
+        .footer-section {
+            background: var(--text-dark);
+            color: #fff;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            padding: 60px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-link { color: #ccc; text-decoration: none; transition: 0.3s; }
+        .footer-link:hover { color: var(--rainbow-yellow); padding-left: 5px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand ms-3 fw-bold" href="#" style="font-family: 'Fredoka'; font-size: 1.7rem; letter-spacing: 1px; display: flex; align-items: center;">
+            <span style="margin-right: 10px;">🌈</span>
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+            <span style="margin-left: 8px; display: flex; font-weight: 800;">
+                <span style="color: var(--rainbow-red);">E</span><span style="color: var(--rainbow-orange);">d</span><span style="color: var(--rainbow-yellow);">u</span><span style="color: var(--rainbow-green);">H</span><span style="color: var(--rainbow-blue);">u</span><span style="color: var(--rainbow-purple);">b</span>
+            </span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
+                <li class="nav-item"><a class="nav-link fw-bold" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link fw-bold" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link fw-bold" href="#parent">For Parents</a></li>
+                <li class="nav-item"><a class="nav-link fw-bold" href="#footer">Contact Us</a></li>
+            </ul>
+            <div class="d-flex align-items-center me-3">
+                <a href="signin.html" class="btn btn-kids btn-login me-2">Sign In</a>
+                <a href="signup.html" class="btn btn-kids btn-signup d-none d-md-block">Join Now 🚀</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<header class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-lg-start text-center">
+                <h1 class="hero-title">Welcome to MiniToons Eduhub!</h1>
+                <p class="lead fs-4 mb-5 text-dark fw-bold">Where Learning Meets Fun! Built for Kids, Trusted by Parents.</p>
+                <div class="d-grid gap-3 d-md-block">
+                    <a href="signup.html" class="btn btn-kids btn-signup btn-lg shadow px-5">🚀 Let's Explore</a>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-5 mt-lg-0">
+                <div style="border: 8px solid white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                    <video class="w-100" autoplay muted loop playsinline>
+                        <source src="/src/main/resources/videos/WhatsApp%20Video%202026-03-31%20at%2019.21.44.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="features" class="container card-container">
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+            <div class="feature-card bg-blue">
+                <span class="feature-icon">📚</span>
+                <h3 style="color: var(--rainbow-blue);">Fun Lessons</h3>
+                <p class="text-muted">Interactive ABCs, Numbers, and Shapes designed for early learners.</p>
+                <a href="signin.html" class="btn btn-kids btn-signup mt-3 w-100">Unlock Lessons</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card bg-pink">
+                <span class="feature-icon">🎬</span>
+                <h3 style="color: var(--rainbow-red);">Cartoons</h3>
+                <p class="text-muted">Watch educational rhymes and animated stories in a safe environment.</p>
+                <a href="signin.html" class="btn btn-kids btn-login mt-3 w-100">Watch Now</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card bg-green">
+                <span class="feature-icon">🏆</span>
+                <h3 style="color: var(--rainbow-green);">Quizzes</h3>
+                <p class="text-muted">Test knowledge with fun quizzes that adapt to your child's level.</p>
+                <a href="signin.html" class="btn btn-kids btn-signup mt-3 w-100">Start Quiz</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="parent" class="container mb-5">
+    <div class="parent-zone">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <h2 class="mb-4" style="color: var(--rainbow-purple);">Parent's Command Center 🛡️</h2>
+                <p class="text-muted mb-4">Monitor your child's learning journey and view quiz scores from one secure place.</p>
+                <ul class="list-unstyled fw-bold">
+                    <li class="mb-2"><i class="bi bi-graph-up-arrow text-primary me-2"></i> Real-time Progress Tracking</li>
+                    <li class="mb-2"><i class="bi bi-shield-lock text-primary me-2"></i> Role-Based Secure Access</li>
+                </ul>
+                <a href="signin.html" class="btn btn-kids btn-login mt-3">Access Dashboard</a>
+            </div>
+            <div class="col-lg-7 text-center">
+                <div class="p-3 bg-light rounded-4">
+                    <h5 class="mb-3 fw-bold">Sample Weekly Progress</h5>
+                    <canvas id="progressChart" style="max-height: 250px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer-section" id="footer" style="background: #1a1a1a; color: #ffffff; border-top-left-radius: 60px; border-top-right-radius: 60px; padding: 70px 0 30px; margin-top: 100px;">
+    <div class="container">
+        <div class="row g-4 text-center text-md-start">
+            <div class="col-md-4">
+                <h3 class="fw-bold mb-3" style="font-family: 'Fredoka'; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;">
+                    <span style="margin-right: 10px;">🌈</span>
+                    <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+                    <span style="margin-left: 8px; font-weight: 800;">
+                        <span style="color: var(--rainbow-red);">E</span><span style="color: var(--rainbow-orange);">d</span><span style="color: var(--rainbow-yellow);">u</span><span style="color: var(--rainbow-green);">H</span><span style="color: var(--rainbow-blue);">u</span><span style="color: var(--rainbow-purple);">b</span>
+                    </span>
+                </h3>
+                <p class="opacity-75 pe-md-4">
+                    MiniToons EduHub is a magical digital learning space designed for curious little minds! We combine fun animations, catchy rhymes, and interactive quizzes to make early childhood education an unforgettable adventure. 🚀🎨
+                </p>
+                <div class="mt-4">
+                    <a href="http://facebook.com" class="btn btn-outline-light btn-sm rounded-circle me-2" style="width: 40px; height: 40px; line-height: 30px;"><i class="bi bi-facebook"></i></a>
+                    <a href="http://github.com" class="btn btn-outline-light btn-sm rounded-circle me-2" style="width: 40px; height: 40px; line-height: 30px;"><i class="bi bi-github"></i></a>
+                    <a href="http://linkedIn.com" class="btn btn-outline-light btn-sm rounded-circle me-2" style="width: 40px; height: 40px; line-height: 30px;"><i class="bi bi-linkedin"></i></a>
+                    <a href="http://youtube.com" class="btn btn-outline-light btn-sm rounded-circle" style="width: 40px; height: 40px; line-height: 30px;"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-4 px-md-5">
+                <h5 class="fw-bold mb-4" style="color: var(--rainbow-yellow); font-family: 'Fredoka';">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="footer-link" style="color: #ccc; text-decoration: none; transition: 0.3s;"><i class="bi bi-chevron-right text-warning me-2"></i>🏠 Home</a></li>
+                    <li class="mb-2"><a href="#features" class="footer-link" style="color: #ccc; text-decoration: none; transition: 0.3s;"><i class="bi bi-chevron-right text-warning me-2"></i>🎨 Child Zone</a></li>
+                    <li class="mb-2"><a href="#parent" class="footer-link" style="color: #ccc; text-decoration: none; transition: 0.3s;"><i class="bi bi-chevron-right text-warning me-2"></i>📊 Parent Dashboard</a></li>
+                    <li class="mb-2"><a href="#" class="footer-link" style="color: #ccc; text-decoration: none; transition: 0.3s;"><i class="bi bi-chevron-right text-warning me-2"></i>📜 Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="fw-bold mb-4" style="color: var(--rainbow-yellow); font-family: 'Fredoka';">Developer Info</h5>
+                <div class="p-3 rounded-4" style="background: rgba(255,255,255,0.05); border-left: 4px solid var(--rainbow-blue);">
+                    <p class="mb-1 fw-bold">Piyumalsha Isurandi</p>
+                    <p class="mb-1 small opacity-75">GDSE Batch 74</p>
+                    <p class="mb-0 small opacity-75">Institute of Software Engineering</p>
+                </div>
+                <p class="mt-3 small" style="font-style: italic;">Designed with ❤️ for AAD Final Project</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-5 pt-4 border-top border-secondary opacity-50">
+            <p class="small mb-0">© 2026 MiniToons EduHub. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Quiz Performance (%)',
+                data: [60, 75, 70, 90, 85, 95, 88],
+                borderColor: '#927DFF',
+                backgroundColor: 'rgba(146, 125, 255, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, max: 100 },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+</body>
+</html>

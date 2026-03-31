@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Content | MiniToons EduHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --rainbow-red: #FF5E78; --rainbow-orange: #FF9F43; --rainbow-yellow: #FFD93D;
+            --rainbow-green: #2ecc71; --rainbow-blue: #4D96FF; --rainbow-purple: #927DFF;
+            --dark-navy: #2D3436; --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; margin: 0; }
+
+        /* --- 🚪 Sidebar (Synced & Responsive) --- */
+        .sidebar {
+            background: var(--glass); backdrop-filter: blur(15px); height: 100vh;
+            border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px;
+            position: fixed; width: 260px; z-index: 1000; display: flex; flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .sidebar-brand { font-family: 'Fredoka', cursive; text-align: center; margin-bottom: 25px; text-decoration: none; display: block; }
+        .brand-text { display: flex; justify-content: center; line-height: 1; font-size: 2.2rem; font-weight: bolder; }
+
+        .nav-link-custom {
+            transition: 0.3s; border-left: 5px solid transparent; margin-bottom: 5px;
+            font-weight: 700; padding: 10px 18px; border-radius: 12px;
+            display: flex; align-items: center; text-decoration: none; color: #636e72; font-size: 0.95rem;
+        }
+
+        /* Hover Effects */
+        .nav-dashboard:hover, .nav-dashboard.active { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
+        .nav-profiles:hover, .nav-profiles.active { color: var(--rainbow-orange) !important; background: rgba(255, 159, 67, 0.08); border-left-color: var(--rainbow-orange); }
+        .nav-learning:hover, .nav-learning.active { color: var(--rainbow-purple) !important; background: rgba(146, 125, 255, 0.08); border-left-color: var(--rainbow-purple); }
+
+        /* --- 📝 Main Content --- */
+        .main-content { margin-left: 260px; padding: 35px; transition: all 0.3s ease; }
+
+        /* Category Tabs */
+        .category-card {
+            background: white; border-radius: 25px; padding: 20px;
+            transition: 0.3s; cursor: pointer; border: none; text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03); height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .category-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.08); }
+        .category-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+        /* Content List */
+        .content-item {
+            background: white; border-radius: 20px; padding: 20px;
+            margin-bottom: 15px; display: flex; align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02); transition: 0.3s;
+        }
+        .content-item:hover { transform: scale(1.01); }
+        .content-thumb { width: 100px; height: 75px; border-radius: 12px; object-fit: cover; margin-right: 20px; flex-shrink: 0; }
+
+        .status-badge { font-size: 0.75rem; padding: 5px 12px; border-radius: 10px; font-weight: 800; }
+
+        /* Custom Modal Styling for Access Restriction */
+        .lock-modal .modal-content { border-radius: 30px; border: none; text-align: center; padding: 20px; }
+        .lock-icon { font-size: 4rem; color: var(--rainbow-red); animation: shake 0.5s ease-in-out; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* 📱 💻 Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; }
+            .sidebar span, .brand-text { display: none !important; }
+            .nav-link-custom { width: 50px; height: 50px; justify-content: center; padding: 0; border-radius: 15px; border-left: none; }
+            .nav-link-custom i { margin-right: 0; font-size: 1.3rem; }
+            .main-content { margin-left: 80px; padding: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            .content-item { flex-direction: column; text-align: center; }
+            .content-thumb { margin-right: 0; margin-bottom: 15px; width: 100%; height: 180px; }
+            .content-item .flex-grow-1 { margin-bottom: 15px; }
+            .content-item .me-4 { margin-right: 0 !important; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow-sm">
+    <a href="#" class="sidebar-brand">
+        <div class="brand-text">
+            <span style="color: var(--rainbow-red);">M</span><span style="color: var(--rainbow-orange);">i</span><span style="color: var(--rainbow-yellow);">n</span><span style="color: var(--rainbow-green);">i</span><span style="color: var(--rainbow-blue);">T</span><span style="color: var(--rainbow-purple);">oons</span>
+        </div>
+        <div class="brand-text" style="font-size: 1.8rem; margin-top: -5px;">
+            <span style="color: var(--dark-navy);">Edu</span><span style="color: var(--rainbow-blue);">Hub</span>🌈
+        </div>
+    </a>
+
+    <nav class="w-100 d-flex flex-column align-items-center align-items-lg-stretch">
+        <a href="parent-dashboard.html" class="nav-link-custom nav-dashboard">
+            <i class="bi bi-graph-up-arrow"></i> <span>Progress Dashboard</span>
+        </a>
+        <a href="child-profiles.html" class="nav-link-custom nav-profiles">
+            <i class="bi bi-people-fill"></i> <span>Manage Profiles</span>
+        </a>
+        <a href="learning-content.html" class="nav-link-custom nav-learning active">
+            <i class="bi bi-book-half"></i> <span>Learning Content</span>
+        </a>
+    </nav>
+
+    <div class="logout-container mt-auto w-100 d-flex flex-column align-items-center align-items-lg-stretch">
+        <a href="index.html" class="nav-link-custom text-danger border-0"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0" style="color: var(--dark-navy); font-family: 'Fredoka';">Learning Content 📚</h2>
+            <p class="text-muted fw-bold">Explore the curriculum and monitor what your children are learning.</p>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-5 text-center justify-content-center">
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="category-card" onclick="filterContent('all')" style="border-bottom: 5px solid var(--rainbow-purple);">
+                <span class="category-icon">🌈</span>
+                <h6 class="fw-bold mb-0">All</h6>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="category-card" onclick="filterContent('lessons')" style="border-bottom: 5px solid var(--rainbow-blue);">
+                <span class="category-icon">📖</span>
+                <h6 class="fw-bold mb-0">Lessons</h6>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="category-card" onclick="filterContent('cartoons')" style="border-bottom: 5px solid var(--rainbow-red);">
+                <span class="category-icon">🎬</span>
+                <h6 class="fw-bold mb-0">Cartoons</h6>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="category-card" onclick="filterContent('songs')" style="border-bottom: 5px solid var(--rainbow-yellow);">
+                <span class="category-icon">🎵</span>
+                <h6 class="fw-bold mb-0">Songs</h6>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="category-card" onclick="filterContent('quizzes')" style="border-bottom: 5px solid var(--rainbow-green);">
+                <span class="category-icon">🧠</span>
+                <h6 class="fw-bold mb-0">Quizzes</h6>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="fw-bold mb-4" style="color: var(--dark-navy); font-family: 'Fredoka';">Available Content & Curriculum</h5>
+
+    <div class="content-list">
+
+        <div class="content-item mix-content lessons">
+            <img src="https://readingeggs.com/articles/counting-games-for-kids/" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Happy Counting 1-10</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">An interactive visual guide for toddlers to learn and identify numbers from 1 to 10 effectively.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-primary"></i> Mathematics</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">5 Quizzes Linked</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content lessons">
+            <img src="https://image.pollinations.ai/prompt/cute%20cartoon%20smiling%20vegetables" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Vegetables</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Learn about different types of healthy vegetables, their vibrant colors, and nutritional values.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-primary"></i> Nature & Health</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">3 Quizzes Linked</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content lessons">
+            <img src="https://image.pollinations.ai/prompt/kid%20learning%20ABC%20english%20alphabet%20cartoon" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">English Alphabets for Beginners</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">A basic foundation lesson teaching kids A to Z with simple words and phonics.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-primary"></i> Language</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">4 Quizzes Linked</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content lessons">
+            <img src="https://image.pollinations.ai/prompt/jungle%20animals%20lion%20elephant%20cartoon%20for%20kids" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Animal Kingdom Explorer</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Discover fascinating facts about wild and domestic animals living in our beautiful world.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-primary"></i> Nature</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">5 Quizzes Linked</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content lessons">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20puzzle%20memory%20game%20for%20kids" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Find the same things</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">An engaging lesson to boost memory and pattern recognition by matching identical objects.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-primary"></i> Logic & Brain</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">3 Quizzes Linked</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content lessons">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20delicious%20fruits%20basket%20colorful" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Fruits</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">A sweet guide introducing delicious fruits, where they grow, and why they are good for us.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-primary"></i> Health & Food</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">4 Quizzes Linked</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content lessons">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20beautiful%20colorful%20flowers%20garden" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Flowers</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Learn the names of beautiful flowers and explore the colorful world of botany.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-primary"></i> Nature</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">3 Quizzes Linked</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+
+        <div class="content-item mix-content quizzes">
+            <img src="https://readingeggs.com/articles/counting-games-for-kids/" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Counting Numbers Quiz</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Challenge your child to count objects and select the correct number from 1 to 10.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-success"></i> Mathematics</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">10 Questions</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content quizzes">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20vegetable%20quiz%20fun%20game" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Vegetables Identifier Quiz</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Test if the child can name various vegetables based on provided picture clues.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-success"></i> Health & Taste</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">10 Questions</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content quizzes">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20english%20alphabet%20test%20quiz" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Master the Alphabet Quiz</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Match letters with appropriate words and test basic English skills.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-success"></i> Language</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">10 Questions</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content quizzes">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20animal%20quiz%20for%20kids" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Animal Kingdom Explorer Quiz</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Test the child's knowledge about wild and domestic animals using funny picture questions.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-success"></i> Nature</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">10 Questions</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content quizzes">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20matching%20puzzle%20game%20quiz" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Match the Objects Quiz</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">A fast-paced visual matching quiz that checks concentration and quick reflexes.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-success"></i> Logic</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">10 Questions</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content quizzes">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20fruit%20guessing%20game%20quiz" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Delicious Fruits Quiz</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Challenge your child to identify different fruits based on their shapes and unique colors.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-success"></i> Nature</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">10 Questions</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content quizzes">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20flower%20guessing%20game%20quiz" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Colorful Flowers Quiz</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">A fun quiz activity to test how well children can recognize common flowers in nature.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-success"></i> Nature</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">10 Questions</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+
+        <div class="content-item mix-content songs">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20farm%20animals%20singing%20old%20mcdonald" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">All Mcdonalds had a farm</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">An energetic sing-along track that brings farm animals to life while teaching animal sounds.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-warning"></i> Music</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Audio Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content songs">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20kids%20in%20rain%20dancing%20with%20umbrella" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Rain rain Go away</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">A relaxing yet playful nursery rhyme perfect for interactive hand-motion play with toddlers.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-warning"></i> Music</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Audio Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content songs">
+            <img src="https://image.pollinations.ai/prompt/cartoon%20yellow%20bus%20with%20smiling%20wheels" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Wheels on the bus</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Get moving and grooving to the rhythm of the town's most famous yellow bus!</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-warning"></i> Music</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Audio Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content songs">
+            <img src="https://image.pollinations.ai/prompt/cute%20cartoon%20stars%20smiling%20in%20night%20sky" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Twinkle twinkle little stars</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">A soothing, melodic lullaby that introduces kids to the beauty of the starry night sky.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-warning"></i> Music</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Audio Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+
+        <div class="content-item mix-content cartoons">
+            <img src="https://image.pollinations.ai/prompt/hansel%20and%20gretel%20cute%20cartoon%20candy%20house" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Hansel & Gretel</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">A delightful retelling of the classic fairy tale, teaching kids the value of family and clever thinking.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-danger"></i> Moral Stories</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Video Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content cartoons">
+            <img src="https://image.pollinations.ai/prompt/the%20goose%20girl%20fairy%20tale%20cartoon%20style" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">The Goose Girl</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">An adventurous and magical story about a young princess, a talking horse, and finding true identity.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-danger"></i> Fairy Tale</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Video Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content cartoons">
+            <img src="https://image.pollinations.ai/prompt/snow%20queen%20and%20spring%20queen%20cartoon%20characters" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Snow Queen & Spring Queen</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">An enchanting animated visual contrast that helps children learn about seasonal changes through a story of two sisters.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-danger"></i> Entertainment</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Video Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+        <div class="content-item mix-content cartoons">
+            <img src="https://image.pollinations.ai/prompt/barbie%20fairytopia%20wings%20magic%20forest%20cartoon" class="content-thumb" alt="thumb">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">Barbie Fairytopia</h6>
+                <p class="text-muted mb-1" style="font-size: 0.85rem;">Enter a world of magic and courage with Elina on her journey to save the beautiful land of Fairytopia.</p>
+                <small class="text-muted fw-bold"><i class="bi bi-tag-fill me-1 text-danger"></i> Creativity</small>
+            </div>
+            <div class="me-4 text-center">
+                <span class="status-badge bg-success-subtle text-success d-block mb-1">Active</span>
+                <small class="text-muted" style="font-size: 0.7rem;">Video Content</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold border-0" data-bs-toggle="modal" data-bs-target="#lockModal"><i class="bi bi-eye-fill me-1"></i> View</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade lock-modal" id="lockModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg">
+            <div class="modal-body">
+                <div class="lock-icon mb-3">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </div>
+                <h4 class="fw-bold" style="font-family: 'Fredoka'; color: var(--dark-navy);">Child Access Only! 👶</h4>
+                <p class="text-muted">This content is for children only. Parents cannot play this directly.</p>
+                <button type="button" class="btn btn-dark rounded-pill px-4 fw-bold mt-2" data-bs-dismiss="modal">I Understand</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function filterContent(category) {
+        const items = document.querySelectorAll('.mix-content');
+        items.forEach(item => {
+            if (category === 'all' || item.classList.contains(category)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
