@@ -221,12 +221,31 @@
     let lessonsData = [];
 
     async function loadLessons() {
+        const container = document.getElementById("lessonContainer");
+        container.innerHTML = "<p class='fw-bold text-center text-white'>Loading lessons... 🚀</p>";
+
+        const token = localStorage.getItem("jwtToken");
+
         try {
-            const res = await fetch(API_URL);
+            const res = await fetch(API_URL, {
+                method: "GET",
+                headers: {
+                    "Authorization": token ? `Bearer ${token}` : "",
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!res.ok) throw new Error("Failed to fetch lessons from API");
+
             lessonsData = await res.json();
+            console.log("Lessons received:", lessonsData); // DB එකෙන් එන දත්ත Console එකේ බලාගන්න
             renderLessons(lessonsData);
+
         } catch (err) {
-            console.error("Error loading lessons", err);
+            console.error("API Error:", err);
+
+            container.innerHTML = `<div class="col-12 text-center mb-3"><p class="text-danger fw-bold">API Connection failed! Loading demo lessons...</p></div>`;
+
             lessonsData = [
                 {title: "Learn Numbers", category: "Math", ageGroup: "3-5", contentUrl: "find-the-same.html", status: "active"},
                 {title: "Learn ABC", category: "Language", ageGroup: "3-5", contentUrl: "#", status: "active"},
@@ -241,38 +260,46 @@
         container.innerHTML = "";
 
         if (!lessons || lessons.length === 0) {
-            container.innerHTML = '<div class="col-12 text-center text-white"><p class="fs-4 fw-bold">No lessons found in this category! 🚀</p></div>';
+            container.innerHTML = '<div class="col-12 text-center text-white"><p class="fs-4 fw-bold">No lessons found! 🚀</p></div>';
             return;
         }
 
         lessons.forEach(lesson => {
-            if (lesson.status && lesson.status.toLowerCase() !== "active") return;
-
             let icon = "📚", bg = "#fff0f3", color="var(--rainbow-red)";
-            const category = lesson.category ? lesson.category.trim() : "";
 
-            if(category === "Maths" || category === "Math") { icon="🔢"; bg="#fff0f3"; color="var(--rainbow-red)"; }
-            if(category === "Language") { icon="🔤"; bg="#eefdf3"; color="var(--rainbow-purple)"; }
-            if(category === "Nature") { icon="🌿"; bg="#f5f3ff"; color="var(--rainbow-green)"; }
-            if(category === "Logic") { icon="🧩"; bg="#fff9e6"; color="var(--rainbow-orange)"; }
+
+            const category = lesson.category ? String(lesson.category).trim() : "";
+            const catLower = category.toLowerCase();
+
+
+            if(catLower.includes("math")) {
+                icon="🔢"; bg="#fff0f3"; color="var(--rainbow-red)";
+            } else if(catLower.includes("language") || catLower.includes("alphabet")) {
+                icon="🔤"; bg="#eefdf3"; color="var(--rainbow-purple)";
+            } else if(catLower.includes("nature")) {
+                icon="🌿"; bg="#f5f3ff"; color="var(--rainbow-green)";
+            } else if(catLower.includes("logic")) {
+                icon="🧩"; bg="#fff9e6"; color="var(--rainbow-orange)";
+            }
 
             const card = document.createElement("div");
             card.className = "col-md-6 col-lg-4";
 
             card.innerHTML = `
-            <div class="lesson-card">
-                <div class="lesson-img-top" style="background:${bg}">${icon}</div>
-                <div class="card-body-custom">
-                    <span class="subject-tag" style="color:${color}">${category}</span>
-                    <h5 class="fw-bold mb-1">${lesson.title || 'No Title'}</h5>
-                    <p class="text-muted small fw-bold">Age Group: ${lesson.ageGroup || 'All'}</p>
-                    <a href="${lesson.contentUrl || '#'}" class="btn-play" style="background:${color}; text-decoration:none;">Start Learning 🚀</a>
+                <div class="lesson-card">
+                    <div class="lesson-img-top" style="background:${bg}">${icon}</div>
+                    <div class="card-body-custom">
+                        <span class="subject-tag" style="color:${color}">${category || 'General'}</span>
+                        <h5 class="fw-bold mb-1">${lesson.title || 'No Title'}</h5>
+                        <p class="text-muted small fw-bold">Age Group: ${lesson.ageGroup || 'All'}</p>
+                        <a href="${lesson.contentUrl || '#'}" class="btn-play" style="background:${color}; text-decoration:none;">Start Learning 🚀</a>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
             container.appendChild(card);
         });
     }
+
 
     document.querySelectorAll(".filter-pill").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -285,7 +312,7 @@
                 renderLessons(lessonsData);
             } else {
                 const filtered = lessonsData.filter(l => {
-                    const cat = l.category ? l.category.trim().toLowerCase() : "";
+                    const cat = l.category ? String(l.category).trim().toLowerCase() : "";
                     const filterLower = filter.toLowerCase();
 
                     if (filterLower === "math") {
@@ -299,6 +326,7 @@
         });
     });
 
+
     document.addEventListener("DOMContentLoaded", function() {
         loadLessons();
 
@@ -311,7 +339,9 @@
 
         if (name && nameElement) {
             nameElement.innerText = name;
-            if(welcomeElement)// Counting Quiz file එකට redirect වෙනවා welcomeElement.innerText = `Hello, ${name}! 👋`;
+            if(welcomeElement) {
+                welcomeElement.innerText = `Hello, ${name}! 👋`;
+            }
         }
 
         const avatarElement = document.getElementById("sidebar-avatar");
@@ -335,6 +365,7 @@
         if(logoutBtn) {
             logoutBtn.addEventListener("click", function() {
                 sessionStorage.clear();
+                localStorage.removeItem("jwtToken");
             });
         }
     });
