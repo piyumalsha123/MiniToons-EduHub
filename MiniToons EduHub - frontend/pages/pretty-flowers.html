@@ -372,7 +372,6 @@
 
             document.getElementById('progressInfo').innerText = `Tap all 10 flowers to unlock the Quiz! 🔓 (${viewedFlowers.size}/10)`;
 
-            // මල් 10 ම බැලුවට පස්සේ Quiz Button එක දානවා
             if (viewedFlowers.size === flowers.length && !quizButtonAdded) {
                 const actionButtons = document.getElementById('actionButtons');
                 const quizBtn = document.createElement('a');
@@ -387,7 +386,7 @@
         grid.appendChild(card);
     });
 
-    // Modal එක වැහුවම Quiz එකට Auto යන්න කලින් පාඩම් වල දාපු SweetAlert logic එක 👇
+
     document.getElementById('flowerModal').addEventListener('hidden.bs.modal', function () {
         if (viewedFlowers.size === flowers.length) {
             Swal.fire({
@@ -402,7 +401,7 @@
         }
     });
 
-    // Load Profile Data from Session
+
     document.addEventListener("DOMContentLoaded", function() {
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");

@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/progress")
 @RequiredArgsConstructor
-@CrossOrigin (origins = "http://localhost:63342") // ඔයාගේ Frontend එක run වෙන port එක
+@CrossOrigin (origins = "http://localhost:63342")
 public class ChildProgressController {
 
     private final ChildProgressService childProgressService;
@@ -21,11 +21,11 @@ public class ChildProgressController {
     @PostMapping("/save")
     public ResponseEntity<String> saveProgress(@RequestBody ChildProgressDTO dto) {
 
-        // DTO එක Entity එකකට Convert කිරීම
+
         ChildProgress childProgress = ChildProgress.builder()
                 .childId(dto.getChildId())
                 .lessonName(dto.getLessonName())
-                .category(dto.getCategory()) // ⭐ මෙන්න මේක ඔයා කලින් දාලා තිබුණේ නැහැ
+                .category(dto.getCategory())
                 .starsEarned(dto.getStarsEarned())
                 .build();
 

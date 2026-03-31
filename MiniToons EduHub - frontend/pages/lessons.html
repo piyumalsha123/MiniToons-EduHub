@@ -45,7 +45,6 @@
             border-left-color: var(--rainbow-purple);
             transform: translateX(5px);
         }
-
         .logout-container {
             margin-top: auto;
             border-top: 1px solid rgba(0,0,0,0.05);
@@ -68,7 +67,7 @@
             transform: translateX(5px);
         }
 
-        /* --- Main Content --- */
+
         .main-content { margin-left: 260px; padding: 35px; }
         .filter-pill { border: none; padding: 8px 20px; border-radius: 20px; font-weight: 700; background: white; color: var(--dark-navy); margin-right: 8px; margin-bottom: 10px; transition: 0.3s; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor:pointer; }
         .filter-pill.active { background: var(--rainbow-purple); color: white; }
@@ -80,21 +79,21 @@
         .btn-play { border-radius: 12px; font-weight: 800; padding: 10px; width: 100%; border: none; color: white; font-size: 0.9rem; margin-top: auto; text-align:center; }
         .subject-tag { font-weight: 800; font-size: 0.65rem; padding: 3px 10px; border-radius: 8px; display: inline-block; margin-bottom: 8px; text-transform: uppercase; }
 
-        /* --- ⚠️ මෙන්න මේ RESPONSIVE කොටස විතරයි මම වෙනස් කළේ --- */
+
         @media (max-width: 992px) {
-            /* Sidebar එක කෙට්ටු කිරීම */
+
             .sidebar {
                 width: 90px;
                 padding: 20px 10px;
                 align-items: center;
-                background: #FFFDF5; /* Photo එකේ තිබුණු soft background පාට */
+                background: #FFFDF5;
             }
             .sidebar span, .sidebar-brand, .child-profile-box h6, .child-profile-box small {
                 display: none !important;
             }
             .main-content { margin-left: 90px; padding: 20px; }
 
-            /* Avatar එක Image එකේ වගේ overflow oval shape එකක් කිරීම */
+
             .child-profile-box {
                 background: transparent;
                 border: none;
@@ -123,7 +122,7 @@
                 box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             }
 
-            /* Nav Links Icons Only කිරීම */
+
             .nav-links {
                 display: flex;
                 flex-direction: column;
@@ -312,7 +311,7 @@
 
         if (name && nameElement) {
             nameElement.innerText = name;
-            if(welcomeElement) welcomeElement.innerText = `Hello, ${name}! 👋`;
+            if(welcomeElement)// Counting Quiz file එකට redirect වෙනවා welcomeElement.innerText = `Hello, ${name}! 👋`;
         }
 
         const avatarElement = document.getElementById("sidebar-avatar");

@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class ChildProgressDTO {
     private Long childId;
     private String lessonName;
-    private String category; // ⭐ අලුතින් එකතු කළා
+    private String category;
     private int starsEarned;
 }

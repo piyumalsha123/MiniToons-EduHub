@@ -330,7 +330,7 @@
         if (stars === 0) starEmojis = "Keep practicing! 📚";
         document.getElementById('starDisplay').innerText = starEmojis;
 
-        // Backend එකට Progress Save කිරීමේ කොටස
+
         const childId = sessionStorage.getItem("childId");
         const token = localStorage.getItem("jwtToken");
 
@@ -370,7 +370,7 @@
             });
     }
 
-    // Profile Data Load කිරීම
+
     document.addEventListener("DOMContentLoaded", function() {
         loadQuestion();
 

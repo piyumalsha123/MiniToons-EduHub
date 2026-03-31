@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthResponseDto {
     private String access_token;
-    private Long id;       // 👈 🚨 මේක අලුතින් එකතු කරන්න!
+    private Long id;
     private String name;
     private String gender;
 }

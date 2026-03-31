@@ -13,7 +13,7 @@ const statusInput = document.getElementById("cartoonStatus");
 
 let cartoons = [];
 
-// 1. DB එකෙන් එන දත්ත Table එකට Load කිරීම
+
 function loadCartoons() {
     cartoonTableBody.innerHTML = cartoons.map(c => `
         <tr>
@@ -35,14 +35,12 @@ function loadCartoons() {
     `).join("");
 }
 
-// 2. Server එකෙන් Cartoons Fetch කිරීම
 async function loadCartoonsFromServer() {
     try {
         const res = await fetch("http://localhost:8080/api/v1/cartoons");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
-        // 🚨 Spring Boot DTO එකට කෙලින්ම map කරගත්තා
         cartoons = data.map(c => ({
             cartoonId: c.cartoonId,
             title: c.title,
@@ -74,7 +72,6 @@ document.querySelector('[data-bs-target="#cartoonModal"]').addEventListener("cli
     cartoonModal.show();
 });
 
-// 3. Form එක Submit කරලා Save/Update කිරීම
 cartoonForm.addEventListener("submit", async function(e) {
     e.preventDefault();
 
@@ -82,20 +79,20 @@ cartoonForm.addEventListener("submit", async function(e) {
         document.querySelectorAll("#cartoonForm input[type='checkbox']:checked")
     ).map(cb => cb.value);
 
-    // 🚨 Spring Boot DTO properties වලට හරියටම ගැලපෙන්න හැදුවා
+
     const cartoonData = {
         title: titleInput.value,
         category: selectedCategories.join(", "),
         videoUrl: videoUrlInput.value,
         ageGroup: ageGroupInput.value,
-        createdAt: createdAtInput.value || null, // null උනොත් backend එකෙන් LocalDate.now() ගනී
+        createdAt: createdAtInput.value || null,
         status: statusInput.value
     };
 
     try {
         const currentId = idInput.value;
 
-        // Edit එකක්ද නැද්ද කියලා බලනවා
+
         if (currentId && cartoons.some(c => c.cartoonId === currentId)) {
             // 🔄 UPDATE
             const res = await fetch(`http://localhost:8080/api/v1/cartoons/update/${currentId}`, {
@@ -110,7 +107,7 @@ cartoonForm.addEventListener("submit", async function(e) {
             const res = await fetch("http://localhost:8080/api/v1/cartoons/save", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(cartoonData) // ID එක යවන්නේ නැහැ, Backend එකෙන් auto හැදෙනවා
+                body: JSON.stringify(cartoonData)
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             alert("Cartoon added successfully! 🎉");
@@ -118,7 +115,7 @@ cartoonForm.addEventListener("submit", async function(e) {
 
         resetForm();
         cartoonModal.hide();
-        await loadCartoonsFromServer(); // Table එක reload කරනවා
+        await loadCartoonsFromServer();
     } catch (err) {
         console.error("Failed to save cartoon:", err);
         alert("Failed to save cartoon! See console.");

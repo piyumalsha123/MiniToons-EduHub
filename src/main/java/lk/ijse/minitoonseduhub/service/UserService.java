@@ -62,23 +62,21 @@ public class UserService {
                 "ROLE_" + user.getRole().name()
         );
 
-        // ⭐ Default values ටික හදාගන්නවා
-        Long id = null; // 👈 🚨 ID එකට අලුතින් variable එකක් හදනවා
+
+        Long id = null;
         String name = user.getUsername();
         String gender = "MALE";
 
-        // ලොග් වෙලා ඉන්නේ CHILD කෙනෙක් නම්, ඒ User ට අදාළ Child Profile එක හොයනවා
+
         if (user.getRole() == Role.CHILD) {
             var profile = childProfileRepository.findByUser(user)
                     .orElseThrow(() -> new RuntimeException("Child profile not found"));
 
-            id = profile.getId(); // 👈 🚨 මෙන්න ළමයාගේ ඇත්තම ID එක (20) ගන්නවා!
+            id = profile.getId();
             name = profile.getName();
             gender = profile.getGender();
         }
 
-        // 🚀 [අවසාන Response එක]
-        // Token එක, ID එක, නම සහ Gender එක හතරම දැන් යනවා!
         return new AuthResponseDto(token, id, name, gender);
     }
     }

@@ -66,14 +66,14 @@ public class ChildService {
 
     public List<ChildResponseDto> getChildrenByParent(String parentUsername) {
 
-        // 1. Username එකෙන් ලොග් වෙලා ඉන්න Parent ව හොයාගන්නවා
+
         User parent = userRepository.findByUsername(parentUsername)
                 .orElseThrow(() -> new RuntimeException("Parent not found"));
 
-        // 2. ඒ Parent ට අදාළ ParentChild records ටික විතරක් ගන්නවා
+
         List<ParentChild> relations = parentChildRepository.findByParent(parent);
 
-        // 3. ඒ relations වලින් ChildProfile ටික විතරක් අරන් DTO එකකට map කරනවා
+
         return relations.stream()
                 .map(relation -> {
                     ChildProfile c = relation.getChild();

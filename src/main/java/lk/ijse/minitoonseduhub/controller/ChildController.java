@@ -27,7 +27,7 @@ public class ChildController {
             List<ChildResponseDto> children = childService.getChildrenByParent(username);
             return ResponseEntity.ok(children);
         } catch (Exception e) {
-            return ResponseEntity.status(401).body(new ApiResponse(401, "Unauthorized ❌", null));
+            return ResponseEntity.status(401).body(new ApiResponse(401, "Unauthorized ", null));
         }
     }
 
@@ -39,7 +39,7 @@ public class ChildController {
         try {
             String username = extractUsernameFromToken(token);
             String result = childService.createChild(dto, username);
-            return ResponseEntity.ok(new ApiResponse(200, "Child Added ✅", result));
+            return ResponseEntity.ok(new ApiResponse(200, "Child Added ", result));
         } catch (Exception e) {
             return ResponseEntity.status(400).body(new ApiResponse(400, e.getMessage(), null));
         }
@@ -54,9 +54,9 @@ public class ChildController {
         try {
             String username = extractUsernameFromToken(token);
             childService.updateChild(childId, dto, username);
-            return ResponseEntity.ok(new ApiResponse(200, "Child Updated ✅", null));
+            return ResponseEntity.ok(new ApiResponse(200, "Child Updated ", null));
         } catch (Exception e) {
-            return ResponseEntity.status(401).body(new ApiResponse(401, "Unauthorized ❌", null));
+            return ResponseEntity.status(401).body(new ApiResponse(401, "Unauthorized ", null));
         }
     }
 
@@ -68,9 +68,9 @@ public class ChildController {
         try {
             extractUsernameFromToken(token); // validate token
             childService.deleteChild(childId);
-            return ResponseEntity.ok(new ApiResponse(200, "Child Deleted ✅", null));
+            return ResponseEntity.ok(new ApiResponse(200, "Child Deleted ", null));
         } catch (Exception e) {
-            return ResponseEntity.status(401).body(new ApiResponse(401, "Unauthorized ❌", null));
+            return ResponseEntity.status(401).body(new ApiResponse(401, "Unauthorized ", null));
         }
     }
 

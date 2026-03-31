@@ -383,7 +383,7 @@
 
       document.getElementById('progressInfo').innerText = `Tap all 26 letters to unlock the Quiz! 🔓 (${viewedLetters.size}/26)`;
 
-      // අකුරු 26 ම බැලුවට පස්සේ Quiz Button එක දානවා
+
       if (viewedLetters.size === Object.keys(alphabet).length && !quizButtonAdded) {
         const actionButtons = document.getElementById('actionButtons');
         const quizBtn = document.createElement('a');
@@ -398,7 +398,7 @@
     grid.appendChild(card);
   });
 
-  // Modal එක වැහුවම Quiz එකට Auto යන්න කලින් Fruit lesson එකේ දාපු SweetAlert logic එක 👇
+
   document.getElementById('letterModal').addEventListener('hidden.bs.modal', function () {
     if (viewedLetters.size === Object.keys(alphabet).length) {
       Swal.fire({
@@ -413,7 +413,7 @@
     }
   });
 
-  // Load Profile Data from Session
+
   document.addEventListener("DOMContentLoaded", function() {
     const name = sessionStorage.getItem("childName");
     const gender = sessionStorage.getItem("childGender");

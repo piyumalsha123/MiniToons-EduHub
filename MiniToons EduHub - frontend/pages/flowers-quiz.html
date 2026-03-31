@@ -30,13 +30,13 @@
 
         body {
             font-family: 'Quicksand', sans-serif;
-            background: #FFB7B2; /* මල් Quiz එකට ගැලපෙන Pink පසුබිමක් */
+            background: #FFB7B2;
             height: 100vh;
             display: flex;
             overflow: hidden;
         }
 
-        /* 🚪 Sidebar Styles */
+
         .sidebar {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -95,7 +95,7 @@
             transform: translateX(5px);
         }
 
-        /* 📝 Main Content Area */
+
         .main-content {
             margin-left: 260px;
             padding: 20px;
@@ -109,7 +109,7 @@
 
         .modal-content {
             border-radius: 40px;
-            border: 8px solid #2ecc71; /* කොළ පාට Border එකක් */
+            border: 8px solid #2ecc71;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             background: white;
             max-width: 500px;
@@ -267,7 +267,7 @@
             element.style.color = "white";
             element.style.borderColor = "#e84118";
 
-            // නිවැරදි එක කොළ පාටින් පෙන්වීම
+
             allOptions.forEach(opt => {
                 const text = opt.innerText.trim();
                 if(text === correct) {
@@ -293,7 +293,7 @@
         document.getElementById('result-ui').classList.remove('d-none');
         document.getElementById('finalScore').innerText = score;
 
-        // ලකුණු අනුව ප්‍රතිචාරය වෙනස් කිරීම
+
         const resultEmoji = document.getElementById('result-emoji');
         const resultTitle = document.getElementById('result-title');
 
@@ -308,16 +308,15 @@
             resultTitle.innerText = "Nice Try! Keep Practicing!";
         }
 
-        // 🚀 [අලුතෙන් ඇතුළත් කළා] Backend එකට Data යැවීමේ කොටස
         const childId = sessionStorage.getItem("childId");
         const token = localStorage.getItem("jwtToken");
 
         const progressData = {
             childId: parseInt(childId),
             lessonName: "Flower Garden Lesson",
-            category: "Nature", // Dashboard එකේ Nature progress bar එකට link වෙනවා
-            starsEarned: score,  // ළමයා ගත්ත score එකම (10න් කීයද කියලා) යවනවා
-            isCompleted: true    // පාඩම ඉවරයි කියලා දැනගන්න
+            category: "Nature",
+            starsEarned: score,
+            isCompleted: true
         };
 
         fetch('http://localhost:8080/api/progress/save', {
@@ -352,7 +351,7 @@
             });
     }
 
-    // Profile Data Load කිරීම
+
     document.addEventListener("DOMContentLoaded", function() {
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");

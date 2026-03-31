@@ -15,7 +15,6 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
 
-    // 🔹 Entity -> DTO
     private QuizDto toDto(Quiz quiz) {
         return QuizDto.builder()
                 .quizId(quiz.getQuizId())
@@ -27,13 +26,12 @@ public class QuizService {
                 .build();
     }
 
-    // 🔹 Generate ID
     private String generateQuizId() {
         long count = quizRepository.count() + 1;
         return String.format("Q%03d", count);
     }
 
-    // 🔹 CREATE
+
     public QuizDto createQuiz(QuizDto dto) {
 
         Quiz quiz = Quiz.builder()
@@ -48,7 +46,7 @@ public class QuizService {
         return toDto(quizRepository.save(quiz));
     }
 
-    // 🔹 GET ALL
+
     public List<QuizDto> getAllQuizzes() {
         return quizRepository.findAll()
                 .stream()
@@ -56,7 +54,7 @@ public class QuizService {
                 .collect(Collectors.toList());
     }
 
-    // 🔹 GET BY ID
+
     public QuizDto getQuizById(String quizId) {
         Quiz quiz = quizRepository.findByQuizId(quizId);
 
@@ -67,7 +65,6 @@ public class QuizService {
         return toDto(quiz);
     }
 
-    // 🔹 UPDATE
     public QuizDto updateQuiz(String quizId, QuizDto dto) {
 
         Quiz quiz = quizRepository.findByQuizId(quizId);
@@ -85,7 +82,7 @@ public class QuizService {
         return toDto(quizRepository.save(quiz));
     }
 
-    // 🔹 DELETE
+
     public void deleteQuiz(String quizId) {
 
         Quiz quiz = quizRepository.findByQuizId(quizId);

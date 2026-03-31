@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ===== Admin Quiz Management =====
+
     const quizTableBody = document.getElementById("quizTableBody");
     const quizModalEl = document.getElementById("quizModal");
     const quizModal = new bootstrap.Modal(quizModalEl);
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let quizzes = [];
 
-    // Generate unique quiz ID
+
     function generateQuizId() {
         const existingNumbers = quizzes.map(q => parseInt(q.quiz_id.replace("Q", ""), 10));
         let i = 1;
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return `Q${String(i).padStart(3, "0")}`;
     }
 
-    // Render table
+
     function loadQuizzes() {
         if (quizzes.length === 0) {
             quizTableBody.innerHTML = `<tr><td colspan="7" class="text-center">No quizzes available</td></tr>`;
@@ -45,13 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join("");
     }
 
-    // Reset form
+
     function resetQuizForm() {
         quizForm.reset();
         quizIdInput.value = "";
     }
 
-    // Save / Update
+
     quizForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             if (quizIdInput.value) {
-                // UPDATE
+
                 const res = await fetch(`http://localhost:8080/api/v1/quizzes/update/${quizIdInput.value}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!res.ok) throw new Error("Update failed");
                 alert("Quiz updated!");
             } else {
-                // CREATE
+
                 quizData.quizId = generateQuizId();
 
                 const res = await fetch("http://localhost:8080/api/v1/quizzes/save", {
@@ -97,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Edit / Delete buttons
     quizTableBody.addEventListener("click", async (e) => {
         const btn = e.target.closest("[data-action]");
         if (!btn) return;
@@ -134,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Load quizzes from backend
+
     async function loadQuizzesFromServer() {
         try {
             const res = await fetch("http://localhost:8080/api/v1/quizzes");
@@ -157,10 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Initial load
+
     loadQuizzesFromServer();
 
-    // ===== Child Quiz View =====
+
     const quizContainer = document.getElementById('quizContainer');
 
     async function loadQuizzesForChild() {
@@ -206,6 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Load child quizzes
+
     loadQuizzesForChild();
 });

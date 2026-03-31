@@ -184,7 +184,7 @@
         <p class="mb-4">Log in to keep learning and having fun with MiniToons!</p>
         <div class="video-container">
             <video width="100%" autoplay muted loop playsinline>
-                <source src="/src/main/resources/videos/WhatsApp%20Video%202026-03-31%20at%2019.21.44.mp4" type="video/mp4">
+                <source src="https://drive.google.com/uc?export=download&id=1VD_hf5E7AUIBiYzwNY_jFXJbjFpXW1NZ" type="video/mp4">
             </video>
         </div>
     </div>
@@ -227,20 +227,19 @@
 </div>
 
 <script>
-    // toggle password
-    // toggle password
+
     function togglePassword() {
         const passwordInput = document.getElementById("password");
         passwordInput.type =
             passwordInput.type === "password" ? "text" : "password";
     }
 
-    // form submit
+
     document.getElementById("signinForm").addEventListener("submit", async function (e) {
         e.preventDefault();
 
 
-        // 1. Input values ටික හරියට ගන්නවා
+
         const login = document.querySelector('input[name="login"]').value.trim();
         const password = document.querySelector('input[name="password"]').value.trim();
 
@@ -265,9 +264,9 @@
 
             const data = await res.json();
             if (res.ok) {
-                // 1. Backend එකෙන් එන නියම Data ටික ගන්නවා
+
                 const token = data?.data?.access_token;
-                const childId = data?.data?.id; // 👈 🚨 අලුතින් එකතු කරපු තැන (id එක ගන්නවා)
+                const childId = data?.data?.id;
                 const childName = data?.data?.name;
                 const gender = data?.data?.gender;
 
@@ -276,19 +275,19 @@
                     return;
                 }
 
-                // 2. Browser එකේ Session එකේ සේව් කරගන්නවා
+
                 localStorage.setItem("jwtToken", token);
-                sessionStorage.setItem("childId", childId); // 👈 🚨 අලුතින් එකතු කරපු තැන (ID එක සේව් කරනවා)
+                sessionStorage.setItem("childId", childId);
                 sessionStorage.setItem("childName", childName);
                 sessionStorage.setItem("childGender", gender);
 
                 console.log("Saved to session -> ID:", childId, "Name:", childName, "Gender:", gender);
 
-                // 3. JWT එක decode කරලා Role එක ගන්නවා
+
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 const role = payload.role;
 
-                // 4. Role එක අනුව Dashboard එකට යවනවා
+
                 if (role === "ROLE_ADMIN") {
                     window.location.href = "admin-dashboard.html";
                 } else if (role === "ROLE_PARENT") {

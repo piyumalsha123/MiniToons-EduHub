@@ -13,16 +13,16 @@ public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // AUTO INCREMENT
+    private Long id;
 
     @Column(nullable = false, unique = true)
-    private String quizId; // Q001
+    private String quizId;
 
     @Column(nullable = false)
-    private String title; // Quiz name
+    private String title;
 
     @Column(nullable = false)
-    private String url; // quiz page (quiz.html)
+    private String url;
 
     @Column(nullable = false)
     private String category;
@@ -31,5 +31,5 @@ public class Quiz {
     private String difficulty;
 
     @Column(nullable = false)
-    private String status; // Active / Draft
+    private String status;
 }

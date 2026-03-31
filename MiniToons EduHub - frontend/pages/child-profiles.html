@@ -22,7 +22,7 @@
 
         body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; margin: 0; }
 
-        /* --- Sidebar --- */
+
         .sidebar {
             background: var(--glass); backdrop-filter: blur(15px); height: 100vh;
             border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px;
@@ -39,7 +39,7 @@
         }
         .nav-profiles.active { color: var(--rainbow-orange) !important; background: rgba(255, 159, 67, 0.08); border-left-color: var(--rainbow-orange); }
 
-        /* --- Hover Effects --- */
+
 
         .nav-dashboard:hover, .nav-dashboard.active {
             color: var(--rainbow-red) !important;
@@ -232,10 +232,10 @@
     </div>
 </div>
 
-<!-- Bootstrap JS -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Custom JS -->
+
 <script>
     const addChildModalEl = document.getElementById('addChildModal');
     const addChildForm = document.getElementById("addChildForm");
@@ -244,7 +244,7 @@
     let isEditMode = false;
     let editingChildId = null;
 
-    // ================= MODAL RESET =================
+
     addChildModalEl.addEventListener('show.bs.modal', () => {
         if (!isEditMode) {
             addChildForm.reset();
@@ -260,7 +260,7 @@
         addChildForm.reset();
     });
 
-    // ================= LOAD CHILDREN =================
+
     async function loadChildProfiles() {
         try {
             const token = localStorage.getItem("jwtToken");
@@ -322,7 +322,7 @@
         }
     }
 
-    // ================= ADD / UPDATE =================
+
     async function addChildFormSubmitHandler(e) {
         e.preventDefault();
 
@@ -415,7 +415,6 @@
         }
     }
 
-    // ================= EDIT =================
     async function editChild(childId) {
         try {
             const token = localStorage.getItem("jwtToken");
@@ -455,7 +454,7 @@
         }
     }
 
-    // ================= INIT =================
+
     loadChildProfiles();
 </script>
 </body>

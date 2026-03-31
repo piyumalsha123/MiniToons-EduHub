@@ -317,16 +317,16 @@
         if (stars === 0) starEmojis = "Keep practicing! 📚";
         document.getElementById('starDisplay').innerText = starEmojis;
 
-        // Backend එකට Progress Save කිරීමේ කොටස
+
         const childId = sessionStorage.getItem("childId");
         const token = localStorage.getItem("jwtToken");
 
         const progressData = {
             childId: parseInt(childId),
             lessonName: "Colorful Veggies Lesson",
-            category: "Nature", // Dashboard එකේ Nature progress bar එකට link වෙනවා
-            starsEarned: score,  // 🚀 මෙතනට stars වෙනුවට score එක දැම්මා. Dashboard එකේ stars ගාන හරියටම එකතු වෙන්න!
-            isCompleted: true    // පාඩම ඉවරයි කියලා දැනගන්න
+            category: "Nature",
+            starsEarned: score,
+            isCompleted: true
         };
 
         fetch('http://localhost:8080/api/progress/save', {
@@ -361,7 +361,7 @@
             });
     }
 
-    // Load Profile Data from Session
+
     document.addEventListener("DOMContentLoaded", function() {
         loadQuestion();
 

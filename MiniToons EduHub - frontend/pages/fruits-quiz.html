@@ -36,7 +36,7 @@
             overflow: hidden;
         }
 
-        /* 🚪 Sidebar Styles */
+
         .sidebar {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -95,7 +95,7 @@
             transform: translateX(5px);
         }
 
-        /* 📝 Main Content Area */
+
         .main-content {
             margin-left: 260px;
             padding: 35px;
@@ -310,13 +310,13 @@
         const childId = sessionStorage.getItem("childId");
         const token = localStorage.getItem("jwtToken");
 
-        // 🚀 [මොඩිෆයි කරපු කොටස] Backend එකට Score එකම Stars විදියට යවනවා
+
         const progressData = {
             childId: parseInt(childId),
             lessonName: "Sweet Fruits Lesson",
-            category: "Nature", // Dashboard එකේ Nature progress bar එකට link වෙනවා
-            starsEarned: score,  // මෙතනට stars වෙනුවට score එක දැම්මා. එතකොට Dashboard එකේ stars ගාන හරියටම එකතු වෙනවා!
-            isCompleted: true    // පාඩම ඉවරයි කියලා දැනගන්න
+            category: "Nature",
+            starsEarned: score,
+            isCompleted: true
         };
 
         fetch('http://localhost:8080/api/progress/save', {

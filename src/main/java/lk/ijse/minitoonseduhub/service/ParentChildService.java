@@ -41,18 +41,17 @@ public class ParentChildService {
     public Map<String, Object> getInsights(Long childId) {
         List<ChildProgress> list = childProgressRepository.findAllByChildId(childId);
 
-        // 🚨 [මෙන්න වැදගත්ම වෙනස!]
-        // ළමයා කරපු list එකෙන් නෙවෙයි, Lesson table එකෙන්ම count එක ගන්නවා!
+
         int totalLessons = (int) lessonRepository.count();
 
-        // ළමයා කරපු lessons ගාන (Completed)
+
         int completedLessons = (int) list.stream().map(ChildProgress::getLessonName).distinct().count();
 
         List<ChildProgress> completedList = list.stream().filter(ChildProgress::isCompleted).toList();
         int totalStars = completedList.stream().mapToInt(ChildProgress::getStarsEarned).sum();
         int avgScore = completedLessons == 0 ? 0 : (int)Math.round((double)totalStars / completedLessons);
 
-        // CATEGORY count
+
         Map<String, Long> categoryMap = completedList.stream()
                 .collect(Collectors.groupingBy(ChildProgress::getCategory, Collectors.counting()));
 
@@ -63,7 +62,7 @@ public class ParentChildService {
             m.put("count", e.getValue());
             categories.add(m);
         }
-        // HISTORY
+
         List<Map<String, Object>> history = new ArrayList<>();
         for (ChildProgress p : completedList) {
             Map<String, Object> m = new HashMap<>();

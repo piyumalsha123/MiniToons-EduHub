@@ -271,8 +271,8 @@
         <h1>🌟 Twinkle Twinkle Little Star 🌟</h1>
 
         <audio controls>
-            <source src="/src/main/resources/audios/01%20Twinkle%20Twinkle%20Little%20Star.mp3" type="audio/mpeg">
-            ඔබේ Browser එක audio element එකට සහය නොදක්වයි.
+            <source src="https://drive.google.com/uc?export=download&id=1ZXj4KGgTVh5EMZJN4vsPhRfUJ44x0GAp" type="audio/mpeg">
+
         </audio>
 
         <div class="lyrics">
@@ -295,7 +295,6 @@
 </div>
 
 <script>
-    // Background floating stars script
     for (let i = 0; i < 40; i++) {
         let star = document.createElement("div");
         star.className = "star";
@@ -308,7 +307,7 @@
         document.body.appendChild(star);
     }
 
-    // Profile load Script
+
     document.addEventListener("DOMContentLoaded", function() {
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");

@@ -92,6 +92,6 @@ public class LessonService {
 
     @Transactional
     public void deleteLessonByLessonId(String lessonId) {
-        lessonRepository.deleteByLessonId(lessonId); // only this line is enough
+        lessonRepository.deleteByLessonId(lessonId);
     }
 }

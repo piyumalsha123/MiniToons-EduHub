@@ -35,7 +35,7 @@
             overflow: hidden;
         }
 
-        /* 🚪 Sidebar Styles */
+
         .sidebar {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -94,7 +94,7 @@
             transform: translateX(5px);
         }
 
-        /* 📝 Main Content Area */
+
         .main-content {
             margin-left: 260px;
             padding: 20px;
@@ -117,7 +117,7 @@
             text-align: center;
         }
 
-        /* Game Board Styles */
+
         .target-box {
             font-size: 4.5rem;
             background: #F4F0FF;
@@ -165,7 +165,7 @@
             box-shadow: 0 4px 0 #FFD93D;
         }
 
-        /* Blast & Match Effects */
+
         .emoji-block.correct-blast {
             background: #E8F5E9 !important;
             border-color: #2ecc71 !important;
@@ -261,7 +261,7 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-    // ළමයින් ආස කරන ලස්සන Emojis 20ක්
+
     const allEmojis = ["🚀", "🛸", "⭐️", "🎨", "🧸", "🎈", "🍭", "🍦", "🐶", "🐱", "🦁", "🐵", "🍓", "🍎", "🍕", "🍔", "🚗", "✈️", "🚂", "🏰"];
 
     let currentQ = 0;
@@ -276,11 +276,11 @@
         document.getElementById('questionCounter').innerText = `Match ${currentQ + 1}/10`;
         document.getElementById('quizProgress').style.width = `${(currentQ + 1) * 10}%`;
 
-        // Random විදියට target emoji එකක් ගන්නවා
+
         currentTarget = allEmojis[Math.floor(Math.random() * allEmojis.length)];
         document.getElementById('target-box').innerText = currentTarget;
 
-        // ඉතිරි කොටු 3ට වෙනත් emojis ගන්නවා
+
         let otherEmojis = allEmojis.filter(e => e !== currentTarget);
         let roundOptions = [];
 
@@ -291,7 +291,7 @@
         }
 
         roundOptions.push(currentTarget);
-        // කොටු 4 එකම තැනක වැටෙන්නෙ නැති වෙන්න Shuffle කරනවා
+
         roundOptions.sort(() => Math.random() - 0.5);
 
         const grid = document.getElementById('emoji-grid');
@@ -314,7 +314,7 @@
             score++;
             element.classList.add('correct-blast');
 
-            // Blast effect එක මෙන්න 👇
+
             confetti({
                 particleCount: 100,
                 spread: 70,
@@ -323,7 +323,7 @@
         } else {
             element.classList.add('wrong-shake');
 
-            // වැරදුනොත් හරි එක කොළ පාට කරලා පෙන්වනවා
+
             allBlocks.forEach(b => {
                 if(b.innerText === currentTarget) {
                     b.classList.add('correct-blast');
@@ -352,7 +352,7 @@
         if(score >= 8) {
             resultEmoji.innerText = "🎉🏆🎉";
             resultTitle.innerText = "Wow! Amazing!";
-            // ලකුණු ගොඩක් ගත්තම ලොකු Blast එකක් වෙනවා
+
             confetti({ particleCount: 200, spread: 100 });
         } else if(score >= 5) {
             resultEmoji.innerText = "👍⭐️👍";
@@ -362,19 +362,19 @@
             resultTitle.innerText = "Nice Try! Let's Practice!";
         }
 
-        // 🚀 [අලුත් කොටස] Dashboard එක Update වෙන්න මෙතන ඉඳන් Backend එකට Data යවනවා
+
         const childId = sessionStorage.getItem("childId");
-        const token = localStorage.getItem("jwtToken"); // JWT Token එක ගන්නවා
+        const token = localStorage.getItem("jwtToken");
 
         const progressData = {
             childId: parseInt(childId),
-            lessonName: "Find the Same", // Quiz එකේ නම
-            category: "Logic",           // Dashboard එකේ Logic progress bar එකට යන්න
-            starsEarned: score,          // ළමයා මේ game එකෙන් ගත්ත Score එක Stars විදියට යනවා
+            lessonName: "Find the Same",
+            category: "Logic",
+            starsEarned: score,
             isCompleted: true
         };
 
-        // Backend API එකට දත්ත යැවීම
+
         fetch("http://localhost:8080/api/progress/save", {
             method: "POST",
             headers: {
@@ -394,7 +394,7 @@
                 console.error("Error saving progress to database:", error);
             });
     }
-    // Profile Data Load කිරීම
+
     document.addEventListener("DOMContentLoaded", function() {
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");

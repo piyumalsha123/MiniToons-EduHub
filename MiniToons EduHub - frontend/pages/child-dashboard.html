@@ -17,7 +17,7 @@
 
     body { font-family: 'Quicksand', sans-serif; background: #cfb5f6; min-height: 100vh; margin: 0; }
 
-    /* --- Sidebar --- */
+
     .sidebar {
       background: var(--glass); backdrop-filter: blur(15px); height: 100vh;
       border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px;
@@ -52,7 +52,7 @@
     .nav-cartoons:hover { color: var(--rainbow-purple) !important; background: rgba(146, 125, 255, 0.08); border-left-color: var(--rainbow-purple); }
     .nav-quizzes:hover { color: var(--rainbow-red) !important; background: rgba(255, 94, 120, 0.08); border-left-color: var(--rainbow-red); }
 
-    /* --- Main Content --- */
+
     .main-content { margin-left: 260px; padding: 35px; }
 
     .welcome-banner {
@@ -72,21 +72,20 @@
     .play-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
     .play-img-top { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
 
-    /* --- ⚠️ මෙන්න මේ RESPONSIVE කොටස විතරයි මම වෙනස් කළේ --- */
+
     @media (max-width: 992px) {
-      /* Sidebar එක කෙට්ටු කිරීම */
       .sidebar {
         width: 90px;
         padding: 20px 10px;
         align-items: center;
-        background: #FFFDF5; /* Photo එකේ තිබුණු background පාට */
+        background: #FFFDF5;
       }
       .sidebar span, .sidebar-brand, .child-profile-box h6, .child-profile-box small {
         display: none !important;
       }
       .main-content { margin-left: 90px; padding: 20px; }
 
-      /* Avatar එක Image එකේ වගේ overflow oval shape එකක් කිරීම */
+
       .child-profile-box {
         background: transparent;
         border: none;
@@ -132,13 +131,13 @@
       }
       .nav-link-custom i { font-size: 1.5rem; margin-right: 0; }
 
-      /* Active icon එකට Photo එකේ වගේ soft background එකක් දීම */
+
       .nav-dashboard.active {
         color: var(--rainbow-red) !important;
         background: #FFF0F2;
       }
 
-      /* Logout Button එකත් රවුම් කිරීම */
+
       .btn-logout, .sidebar .text-danger {
         width: 50px; height: 50px;
         justify-content: center;
@@ -149,7 +148,7 @@
       }
       .btn-logout i, .sidebar .text-danger i { font-size: 1.5rem; margin-right: 0; }
 
-      /* Welcome banner එක mobile එකේදී පිළිවෙලකට පෙන්වීමට */
+
       .welcome-banner { flex-direction: column; text-align: center; gap: 20px; }
     }
   </style>

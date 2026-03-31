@@ -21,14 +21,14 @@ public class ParentChildController {
 
     private final ParentChildService parentChildService;
 
-    // 👨‍👩‍👦 1. Parent ට අයිති ළමයි ලිස්ට් එක ගන්න Method එක
+
     @GetMapping("/my-children")
     public ResponseEntity<List<ChildDashboardDto>> getMyChildren(Principal principal) {
         String parentUsername = principal.getName();
 
         List<ChildProfile> myChildren = parentChildService.getChildrenByParentUsername(parentUsername);
 
-        // Entity list එක Dashboard DTO list එකකට Map කරනවා
+
         List<ChildDashboardDto> dtoList = myChildren.stream()
                 .map(child -> new ChildDashboardDto(
                         String.valueOf(child.getId()),

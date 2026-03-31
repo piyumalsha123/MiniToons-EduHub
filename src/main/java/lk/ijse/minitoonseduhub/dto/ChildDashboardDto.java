@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChildDashboardDto {
-    private String id;   // 👈 Dropdown එකේ value එකට ඕන වෙනවා
-    private String name; // 👈 Dropdown එකේ display කරන්න ඕන වෙනවා
+    private String id;
+    private String name;
 }

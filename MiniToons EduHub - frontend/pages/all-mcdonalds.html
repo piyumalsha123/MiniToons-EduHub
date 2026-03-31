@@ -26,7 +26,7 @@
             position: relative;
         }
 
-        /* 🚪 Sidebar Styles */
+
         .sidebar {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -81,7 +81,7 @@
 
         .btn-logout:hover { background: rgba(255, 94, 120, 0.08); transform: translateX(5px); }
 
-        /* 📝 Main Content Area */
+
         .main-content {
             margin-left: 260px;
             flex: 1;
@@ -92,7 +92,7 @@
             position: relative;
         }
 
-        /* --- Main Compact Card --- */
+
         .song-container {
             position: relative;
             z-index: 100;
@@ -146,14 +146,13 @@
             background: rgba(243, 138, 176, 0.1);
         }
 
-        /* Scrollbar Style */
+
         .lyrics::-webkit-scrollbar { width: 6px; }
         .lyrics::-webkit-scrollbar-thumb {
             background: #d172e8;
             border-radius: 10px;
         }
 
-        /* පාවෙන මල් සහ සත්තු */
         .flower {
             position: absolute;
             font-size: 28px;
@@ -167,7 +166,7 @@
             to { transform: translateY(-20vh) rotate(360deg); }
         }
 
-        /* --- 📱 Mobile responsive styles --- */
+
         @media (max-width: 992px) {
             .sidebar {
                 width: 90px;
@@ -250,8 +249,8 @@
         <h1>🚜 Old MacDonald 🐄</h1>
 
         <audio controls>
-            <source src="/src/main/resources/audios/Old%20MacDonald%20Had%20A%20Farm%20%20utubee.mp3" type="audio/mpeg">
-            ඔබේ Browser එක audio element එකට සහය නොදක්වයි.
+            <source src="https://drive.google.com/uc?export=download&id=1FugAYSB12TLt0zsUZNOEe2tzvKBTCo2N" type="audio/mpeg">
+
         </audio>
 
         <div class="lyrics">
@@ -274,7 +273,7 @@
 </div>
 
 <script>
-    // පාවෙන මල් සහ සත්තු Script එක
+
     const emojis = ['🌸', '🌼', '🌻', '🐄', '🚜', '🐥', '🐷'];
     for (let i = 0; i < 15; i++) {
         let flower = document.createElement("div");
@@ -286,7 +285,7 @@
         document.body.appendChild(flower);
     }
 
-    // Profile Data Load Script එක
+
     document.addEventListener("DOMContentLoaded", function() {
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");

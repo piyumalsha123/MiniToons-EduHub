@@ -28,7 +28,7 @@
             overflow-x: hidden;
         }
 
-        /* --- SIDEBAR STYLE --- */
+
         .sidebar {
             background: var(--glass); backdrop-filter: blur(15px); height: 100vh;
             border-right: 1px solid rgba(0,0,0,0.08); padding: 25px 15px;
@@ -70,7 +70,7 @@
         }
         .btn-logout:hover { background: rgba(255, 94, 120, 0.08); transform: translateX(5px); }
 
-        /* --- MAIN CONTENT --- */
+
         .main-content { margin-left: 260px; padding: 35px; }
 
         .lesson-container {
@@ -118,14 +118,14 @@
             box-shadow: 0 15px 25px rgba(0,0,0,0.15);
         }
 
-        /* Rainbow Grid Colors */
+
         .n1 { background: var(--rb-red); }    .n2 { background: var(--rb-orange); color: #856404; }
         .n3 { background: var(--rainbow-yellow); color: #856404; } .n4 { background: var(--rb-green); }
         .n5 { background: var(--rb-blue); }   .n6 { background: var(--rainbow-purple); }
         .n7 { background: #ff4757; }          .n8 { background: #f38ab0; }
         .n9 { background: #d374ea; }          .n10 { background: #8489ec; }
 
-        /* Modal Styling */
+
         .modal-content {
             border: none;
             border-radius: 40px;
@@ -202,7 +202,7 @@
             transform: scale(1.05);
         }
 
-        /* නොබලපු අංක සඳහා "New" Badge එකක් */
+
         .new-badge {
             position: absolute;
             top: 5px;
@@ -216,7 +216,7 @@
             text-shadow: none;
         }
 
-        /* --- Finish Button Style --- */
+
         #finishLessonBtn {
             border-radius: 50px;
             font-family: 'Fredoka', sans-serif;
@@ -343,7 +343,7 @@
     const modal = new bootstrap.Modal(modalElement);
     let currentTaps = 0;
 
-    // බැලූ අංක ගණන් කරන්න Set එකක්
+
     const clickedNumbers = new Set();
 
     function openLesson(num, colorVar) {
@@ -356,12 +356,12 @@
         document.getElementById('mWord').innerText = item.word;
         document.getElementById('helperText').innerText = "Tap every box to count!";
 
-        // Emoji display
+
         let emojis = "";
         for(let i=0; i<num; i++) emojis += item.emoji;
         document.getElementById('emojiContainer').innerHTML = emojis;
 
-        // Dots generator
+
         const dotContainer = document.getElementById('dotContainer');
         dotContainer.innerHTML = '';
 
@@ -393,14 +393,14 @@
 
         clickedNumbers.add(num);
 
-        // බලපු අංකයේ "New" badge එක අයින් කරනවා
+
         const badge = document.getElementById(`badge-${num}`);
         if (badge) badge.remove();
 
-        // Progress එක update කිරීම
+
         document.getElementById('progressInfo').innerText = `Tap all numbers to unlock the Lesson! 🔓 (${clickedNumbers.size}/10)`;
 
-        // ඉලක්කම් 10ම බලා ඉවර වුණාම Button එක active කරනවා
+
         if(clickedNumbers.size === 10) {
             const finishBtn = document.getElementById('finishLessonBtn');
             finishBtn.disabled = false;
@@ -419,7 +419,7 @@
         if (window.navigator.vibrate) window.navigator.vibrate(20);
     }
 
-    // ⭐ Finish button එක click කරද්දී වෙන දේ
+
     document.getElementById('finishLessonBtn').addEventListener('click', function() {
         Swal.fire({
             title: 'Wow! You completed the lesson! 🥳',
@@ -432,7 +432,7 @@
             cancelButtonText: 'Not now'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Counting Quiz file එකට redirect වෙනවා
+
                 window.location.href = "counting-quiz.html";
             } else {
                 window.location.href = "child-dashboard.html";
@@ -440,7 +440,7 @@
         });
     });
 
-    // ⭐ Sidebar එක Dynamic කිරීමේ Script එක
+
     document.addEventListener("DOMContentLoaded", function() {
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");

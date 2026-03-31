@@ -131,9 +131,9 @@
 
     let name = sessionStorage.getItem("childName");
     let gender = sessionStorage.getItem("childGender");
-    const childId = sessionStorage.getItem("childId") || 1; // Default ID එක 1ක් දාලා තියෙන්නේ
+    const childId = sessionStorage.getItem("childId") || 1;
 
-    // Gender එක Backend එකෙන් Live ගැනීම
+
     if (!gender || gender === "null" || gender === "undefined" || !name) {
       try {
         const res = await fetch("http://localhost:8080/api/v1/child/my-profile", {
@@ -156,7 +156,7 @@
       }
     }
 
-    // UI elements update කිරීම
+
     document.getElementById("childName").textContent = name || "Little Friend";
     const avatarDiv = document.getElementById("childAvatar");
     const levelBadge = document.getElementById("levelBadge");
@@ -171,7 +171,7 @@
       if (levelBadge) levelBadge.style.background = "var(--rainbow-orange)";
     }
 
-    // ⭐ [අලුත්ම කොටස] Backend එකෙන් Category අනුව Progress එක Fetch කිරීම
+
     fetch(`http://localhost:8080/api/progress/category-progress/${childId}`, {
       headers: { "Authorization": `Bearer ${token}` }
     })
@@ -185,7 +185,7 @@
                 return;
               }
 
-              // ළමයින්ට ගැලපෙන කෙටි ලස්සන නම් Mapping එක
+
               const categoryMapping = {
                 "Maths": "Maths 🔢 ",
                 "Language": "Language 🔤 ",
@@ -198,7 +198,7 @@
 
               data.forEach((item, index) => {
                 const colorClass = colors[index % colors.length];
-                // DB එකෙන් එන නම mapping එකේ තිබුණොත් අලුත් එක ගන්නවා, නැත්නම් DB එකේ එකම දානවා
+
                 const displayName = categoryMapping[item.category] || item.category;
 
                 const progressHTML = `
@@ -226,7 +226,7 @@
             });
   });
 
-  // Logout Logic
+
   document.getElementById("logoutBtn").addEventListener("click", function(e) {
     e.preventDefault();
     sessionStorage.clear();

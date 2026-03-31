@@ -1,4 +1,4 @@
-// ====== Songs Module ======
+
 const songTableBody = document.querySelector('#songTableBody');
 const songModalEl = document.getElementById('songModal');
 const songModal = new bootstrap.Modal(songModalEl);
@@ -6,7 +6,7 @@ const songForm = songModalEl.querySelector('form');
 
 const API = "http://localhost:8080/api/v1/songs";
 let songs = [];
-let editSongId = null; // Track current song being edited
+let editSongId = null;
 
 async function loadSongs() {
     try {

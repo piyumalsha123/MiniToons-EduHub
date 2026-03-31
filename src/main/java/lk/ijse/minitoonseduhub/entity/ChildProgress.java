@@ -34,7 +34,7 @@ public class ChildProgress {
     private int starsEarned;
 
     @Column(name = "is_completed", nullable = false)
-    private boolean completed; // ⭐ මෙතන completed කියලා දැම්මම ලේසියි
+    private boolean completed;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;

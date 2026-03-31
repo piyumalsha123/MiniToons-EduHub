@@ -28,7 +28,7 @@
             overflow-x: hidden;
         }
 
-        /* 🚪 Sidebar Styles */
+
         .sidebar {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -86,7 +86,7 @@
             transform: translateX(5px);
         }
 
-        /* 📝 Main Content Area */
+
         .main-content {
             margin-left: 260px;
             padding: 35px;
@@ -95,7 +95,7 @@
             overflow-y: auto;
         }
 
-        /* 🎥 Video Card Styles */
+
         .video-card {
             background: white;
             border-radius: 25px;
@@ -137,21 +137,20 @@
             flex-grow: 1;
         }
 
-        /* --- ⚠️ මෙන්න මේ RESPONSIVE කොටස විතරයි මම වෙනස් කළේ --- */
+
         @media (max-width: 992px) {
-            /* Sidebar එක කෙට්ටු කිරීම */
+
             .sidebar {
                 width: 90px;
                 padding: 20px 10px;
                 align-items: center;
-                background: #FFFDF5; /* Soft background color එක */
+                background: #FFFDF5;
             }
             .sidebar span, .sidebar-brand, .child-profile-box h6, .child-profile-box small {
                 display: none !important;
             }
             .main-content { margin-left: 90px; padding: 20px; }
 
-            /* Avatar එක Image එකේ වගේ overflow oval shape එකක් කිරීම */
             .child-profile-box {
                 background: transparent;
                 border: none;
@@ -180,7 +179,7 @@
                 box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             }
 
-            /* Nav Links Icons Only කිරීම */
+
             .nav-links {
                 display: flex;
                 flex-direction: column;
@@ -198,13 +197,13 @@
             .nav-link-custom:hover { transform: none; }
             .nav-link-custom i { font-size: 1.5rem; margin-right: 0; }
 
-            /* Active icon එකට soft background එකක් දීම */
+
             .nav-cartoons.active {
                 color: var(--rainbow-red) !important;
                 background: #FFF0F2;
             }
 
-            /* Logout Button එකත් රවුම් කිරීම */
+
             .logout-container { border-top: none; }
             .btn-logout {
                 width: 50px; height: 50px;
@@ -262,7 +261,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // 1. Profile දත්ත load කිරීම
+
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");
         const level = sessionStorage.getItem("childLevel");
@@ -282,7 +281,7 @@
             }
         }
 
-        // 2. 🚀 Cartoons load කිරීමේ function එක call කිරීම
+
         loadCartoonsFromBackend();
     });
 
@@ -290,7 +289,7 @@
         const token = localStorage.getItem("jwtToken");
         const container = document.getElementById("cartoon-container");
 
-        // නිවැරදි API Endpoint එක
+
         fetch('http://localhost:8080/api/v1/cartoons', {
             method: 'GET',
             headers: {
@@ -300,9 +299,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                container.innerHTML = ""; // Loading text එක අයින් කරනවා
+                container.innerHTML = "";
 
-                // Active ඒව විතරක් Filter කිරීම
+
                 const activeCartoons = data.filter(cartoon => cartoon.status === "Active");
 
                 if (activeCartoons.length === 0) {
@@ -339,7 +338,7 @@
             });
     }
 
-    // YouTube URL එකෙන් ID එක කඩලා ගන්න function එක
+
     function extractYouTubeId(url) {
         if (!url) return null;
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;

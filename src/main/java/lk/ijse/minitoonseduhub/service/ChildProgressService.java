@@ -19,7 +19,7 @@ public class ChildProgressService {
 
     private final ChildProgressRepository childProgressRepository;
 
-    // 📌 1. Quiz එකක් ඉවර වුණාම Save හෝ Update කිරීම
+
     public String saveOrUpdateProgress(ChildProgress childProgress) {
         Optional<ChildProgress> existingProgress = childProgressRepository
                 .findByChildIdAndLessonName(childProgress.getChildId(), childProgress.getLessonName());
@@ -27,15 +27,14 @@ public class ChildProgressService {
         if (existingProgress.isPresent()) {
             ChildProgress current = existingProgress.get();
 
-            // වැඩි තරු ගානක් අරන් නම් විතරක් Update කරනවා
+
             if (childProgress.getStarsEarned() > current.getStarsEarned()) {
                 current.setStarsEarned(childProgress.getStarsEarned());
                 current.setCompletedAt(LocalDateTime.now());
                 current.setCompleted(true);
-                current.setCategory(childProgress.getCategory()); // Category එකත් දාමු
-
+                current.setCategory(childProgress.getCategory());
                 childProgressRepository.save(current);
-                return "Progress updated with higher stars! ⭐";
+                return "Progress updated with higher stars! ";
             }
             return "Progress already exists with higher or equal stars.";
 
@@ -44,11 +43,11 @@ public class ChildProgressService {
             childProgress.setCompleted(true);
 
             childProgressRepository.save(childProgress);
-            return "New progress saved successfully! 🎉";
+            return "New progress saved successfully! ";
         }
     }
 
-    // 📌 2. මුළු තරු ගණන ගැනීම
+
     public int getTotalStars(Long childId) {
         return childProgressRepository.findAllByChildId(childId).stream()
                 .filter(ChildProgress::isCompleted) // Only completed
@@ -56,7 +55,7 @@ public class ChildProgressService {
                 .sum();
     }
 
-    // 📌 3. ඉවර කරපු පාඩම් ගණන ගැනීම
+
     public int getTotalCompletedLessons(Long childId) {
         List<ChildProgress> progressList = childProgressRepository.findAllByChildId(childId);
         return (int) progressList.stream()
@@ -66,16 +65,15 @@ public class ChildProgressService {
                 .count();
     }
 
-    // 📌 4. [මොඩිෆයි කරපු කොටස] Profile එකට Category අනුව Percentage එක නිවැරදිව හැදීම
     public List<CategoryProgressDTO> getProgressByCategory(Long childId) {
         List<ChildProgress> progressList = childProgressRepository.findAllByChildId(childId);
 
-        // 🚀 අපේ අලුත් Quizzes වල උපරිම ලකුණු 10 නිසා මේක 10.0 විය යුතුයි!
+
         double maxStarsPerQuiz = 10.0;
 
         return progressList.stream()
                 .filter(cp -> cp.getCategory() != null)
-                // Category එක අනුව records ටික Group කරගන්නවා
+
                 .collect(Collectors.groupingBy(ChildProgress::getCategory))
                 .entrySet().stream()
                 .map(entry -> {
@@ -86,18 +84,18 @@ public class ChildProgressService {
                     int quizCount = categoryQuizzes.size();
 
                     for (ChildProgress p : categoryQuizzes) {
-                        // එක Quiz එකකට අදාළ percentage එක මෙතනදී හදනවා
+
                         double quizPercentage = (p.getStarsEarned() / maxStarsPerQuiz) * 100;
                         totalPercentage += quizPercentage;
                     }
 
-                    // 🚀 කරපු Quizzes ගණනෙන් බෙදලා Average එක ගන්නවා
+
                     int finalPercentage = 0;
                     if (quizCount > 0) {
                         finalPercentage = (int) Math.round(totalPercentage / quizCount);
                     }
 
-                    // 100% ට වඩා වැඩි වෙන්න දෙන්නෙ නැහැ
+
                     if (finalPercentage > 100) finalPercentage = 100;
 
                     return CategoryProgressDTO.builder()

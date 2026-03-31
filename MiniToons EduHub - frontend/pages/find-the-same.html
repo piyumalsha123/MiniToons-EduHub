@@ -98,7 +98,7 @@
       transform: translateX(5px);
     }
 
-    /* 📝 Main Content Area */
+
     .main-content {
       margin-left: 260px;
       padding: 20px;
@@ -174,7 +174,7 @@
 
     .shadow-card i {
       font-size: 3.5rem;
-      color: #2D3436; /* නිකන් කළු/අළු පාට හෙවණැල්ලක් වගේ පෙන්නන්න */
+      color: #2D3436;
       opacity: 0.9;
     }
 
@@ -316,7 +316,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // ඉගෙනගන්න දේවල් 10ක් දාලා තියෙනවා (පින්තූරය, අකුර සහ icon code එක)
+
   const lessonData = [
     { icon: 'fa-apple-whole', label: 'A for Apple', color: '#FF5E78' },
     { icon: 'fa-bell', label: 'B for Bell', color: '#FF9F43' },
@@ -330,7 +330,7 @@
     { icon: 'fa-jar', label: 'J for Jar', color: '#927DFF' }
   ];
 
-  // වැරදි හෙවණැලි පෙන්නන්න icons ටිකක් (තවත් icons ටිකක් ඇතුලත් කරලා තියෙනවා)
+
   const distractors = ['fa-rocket', 'fa-star', 'fa-ghost', 'fa-heart', 'fa-car', 'fa-sun', 'fa-moon', 'fa-tree', 'fa-anchor', 'fa-bone', 'fa-cloud', 'fa-umbrella', 'fa-plane', 'fa-bus', 'fa-hat-cowboy', 'fa-lightbulb'];
 
   let currentStep = 0;
@@ -345,7 +345,7 @@
     document.getElementById('main-icon').style.color = currentData.color;
     document.getElementById('item-text').innerText = currentData.label;
 
-    // වෙනත් හෙවණැලි 3ක් ගන්නවා
+
     let otherOptions = distractors.filter(d => d !== currentData.icon);
     let roundOptions = [];
 
@@ -390,14 +390,14 @@
       element.classList.add('wrong');
       setTimeout(() => {
         element.classList.remove('wrong');
-        canClick = true; // වැරදුනොත් ආයෙ click කරන්න දෙනවා
+        canClick = true;
       }, 600);
     }
   }
 
   window.onload = loadStep;
 
-  // Profile Data Load කිරීම
+
   document.addEventListener("DOMContentLoaded", function() {
     const name = sessionStorage.getItem("childName");
     const gender = sessionStorage.getItem("childGender");

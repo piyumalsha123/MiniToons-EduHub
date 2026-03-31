@@ -307,14 +307,14 @@
 
             clickedAnimals.add(animal.name);
 
-            // බලපු සතාගේ "New" badge එක අයින් කරනවා
+
             const badge = document.getElementById(`badge-${index}`);
             if (badge) badge.remove();
 
-            // Progress එක update කිරීම
+
             document.getElementById('progressInfo').innerText = `Tap all animals to unlock the Lesson! 🔓 (${clickedAnimals.size}/${animals.length})`;
 
-            // සත්තු 10 දෙනාම බලා ඉවර වුණාම Button එක active කරනවා
+
             if(clickedAnimals.size === animals.length) {
                 const finishBtn = document.getElementById('finishLessonBtn');
                 finishBtn.disabled = false;
@@ -339,7 +339,7 @@
             cancelButtonText: 'Not now'
         }).then((result) => {
             if (result.isConfirmed) {
-                // සතුන්ගේ Quiz file එකට redirect වෙනවා
+
                 window.location.href = "animal-quiz.html";
             } else {
                 window.location.href = "child-dashboard.html";

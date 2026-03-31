@@ -356,7 +356,7 @@
 
             document.getElementById('progressInfo').innerText = `Tap all 13 fruits to unlock the Quiz! 🔓 (${viewedFruits.size}/13)`;
 
-            // ඔක්කොම පලතුරු බැලුවට පස්සේ Quiz Button එක දානවා
+
             if (viewedFruits.size === fruitList.length && !quizButtonAdded) {
                 const actionButtons = document.getElementById('actionButtons');
                 const quizBtn = document.createElement('a');
@@ -370,7 +370,7 @@
         grid.appendChild(card);
     });
 
-    // ළමයා Modal එක වහපු ගමන් quiz එකට Auto යන්න කලින් තිබ්බ logic එක 👇
+
     document.getElementById('fruitModal').addEventListener('hidden.bs.modal', function () {
         if (viewedFruits.size === fruitList.length) {
             Swal.fire({
@@ -385,7 +385,7 @@
         }
     });
 
-    // Load Profile Data from Session
+
     document.addEventListener("DOMContentLoaded", function() {
         const name = sessionStorage.getItem("childName");
         const gender = sessionStorage.getItem("childGender");
