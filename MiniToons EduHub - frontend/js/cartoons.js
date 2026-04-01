@@ -66,7 +66,7 @@ function resetForm() {
     document.querySelectorAll("#cartoonForm input[type='checkbox']").forEach(cb => cb.checked = false);
 }
 
-// New Cartoon Button Click Event
+
 document.querySelector('[data-bs-target="#cartoonModal"]').addEventListener("click", () => {
     resetForm();
     cartoonModal.show();
@@ -94,7 +94,7 @@ cartoonForm.addEventListener("submit", async function(e) {
 
 
         if (currentId && cartoons.some(c => c.cartoonId === currentId)) {
-            // 🔄 UPDATE
+
             const res = await fetch(`http://localhost:8080/api/v1/cartoons/update/${currentId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -103,7 +103,7 @@ cartoonForm.addEventListener("submit", async function(e) {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             alert("Cartoon updated successfully! 🎉");
         } else {
-            // ➕ SAVE
+
             const res = await fetch("http://localhost:8080/api/v1/cartoons/save", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -122,7 +122,6 @@ cartoonForm.addEventListener("submit", async function(e) {
     }
 });
 
-// 4. Edit Function එක
 function editCartoon(id) {
     const c = cartoons.find(ct => ct.cartoonId === id);
     if (!c) return;
@@ -145,7 +144,6 @@ function editCartoon(id) {
     cartoonModal.show();
 }
 
-// 5. Delete Function එක
 async function deleteCartoon(id) {
     if (!confirm("Are you sure you want to delete this cartoon? ❌")) return;
 
