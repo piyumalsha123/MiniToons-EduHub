@@ -66,7 +66,7 @@ public class ChildController {
             @RequestHeader("Authorization") String token
     ) {
         try {
-            extractUsernameFromToken(token); // validate token
+            extractUsernameFromToken(token);
             childService.deleteChild(childId);
             return ResponseEntity.ok(new ApiResponse(200, "Child Deleted ", null));
         } catch (Exception e) {
